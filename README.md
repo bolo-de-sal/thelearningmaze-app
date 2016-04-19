@@ -1,2 +1,2 @@
 # thelearningmaze-app
-The front-end of The Learning Maze project.
+The application of The Learning Maze project.
