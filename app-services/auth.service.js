@@ -1,10 +1,11 @@
-(function(){
-
+(function (){
 	'use strict';
 
-	angular.module('app').factory('AuthService', AuthService);
+	angular
+	   .module('app')
+	   .factory('AuthService', AuthService);
 
-	AuthService.$inject = ['$http', '$cookieStore', '$rootScope', '%timeout', 'UserService'];
+	AuthService.$inject = ['$http', '$cookieStore', '$rootScope', '$timeout', 'UserService'];
 
 	function AuthService ($http, $cookieStore, $rootScope, $timeout, UserService) {
 		var service = {};
@@ -25,7 +26,7 @@
 							response = { success: true };
 						}
 						else {
-							response { success: false, message: 'Usuário e/ou senha estão incorretos' };
+							response = { success: false, message: 'Usuário e/ou senha estão incorretos' };
 						}
 						callback(response);
 					});
@@ -44,18 +45,18 @@
 			$rootScope.globals = {
 				currentUser: {
 					username: username,
-					token: token
+					authdata: token
 				}
 			};
 
-			$http.defaults.hearders.common['Authorization'] = 'Basic ' + token;
+			$http.defaults.headers.common['Authorization'] = 'Basic ' + token;
 			$cookieStore.put('globals', $rootScope.globals);
 		}
 
 		function ClearCredentials() {
 			$rootScope.globals = {};
 			$cookieStore.remove('globals');
-			$http.defaults.hearders.common.Authorization = 'Basic';
+			$http.defaults.headers.common.Authorization = 'Basic';
 		}
 	}
 
