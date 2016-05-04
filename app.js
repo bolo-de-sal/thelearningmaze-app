@@ -1,10 +1,10 @@
 ﻿(function () {
     'use strict';
 
-    angular
-        .module('app', ['ngRoute', 'ngCookies'])
-        .config(config)
-        .run(run);
+    var app = angular
+                .module('app', ['ngRoute', 'ngCookies'])
+                .config(config)
+                .run(run);
 
     config.$inject = ['$routeProvider', '$locationProvider'];
     function config($routeProvider, $locationProvider) {
@@ -29,7 +29,7 @@
         // Mantém o usuário logado no próximo refresh da página.
         $rootScope.globals = $cookieStore.get('globals') || {};
         if ($rootScope.globals.currentUser) {
-            $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
+            $http.defaults.headers.common['Authorization'] = 'Token ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
         }
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
@@ -42,12 +42,14 @@
         });
     }
 
-    $(function () {
-        $.get('/app/token', function (token) {
-            window.jwtToken = token;
+    // $(function () {
+    //     $.get('/app/token', function (token) {
+    //         window.jwtToken = token;
 
-            angular.bootstrap(document, ['app']);
-        });
-    });
+    //         angular.bootstrap(document, ['app']);
+    //     });
+    // });
+
+
 
 })();
