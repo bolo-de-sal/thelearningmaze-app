@@ -21,9 +21,9 @@ angular.module('thelearningmaze')
             $rootScope.dataLoading = true;
             AuthenticationService.Login(loginCtrl.username, loginCtrl.password, function (response) {
                 var user = response._professor; //verificar futuramente em caso de login do aluno
-                var newToken = response.newToken;
+                var userToken = response.newToken;
                 var tokenInfo = SessionService.getTokenInfo();
-                tokenInfo.newToken = newToken;
+                tokenInfo.userToken = userToken;
 
                 SessionService.setUser(user);
                 SessionService.setTokenInfo(tokenInfo);

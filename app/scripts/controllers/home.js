@@ -23,7 +23,7 @@ angular
             // verificar melhor lógica para remover usuário
             SessionService.setUser(undefined);
             var tokenInfo = SessionService.getTokenInfo();
-            delete tokenInfo.newToken;
+            delete tokenInfo.userToken;
             SessionService.setTokenInfo(tokenInfo);
 
             $location.path('/login');
