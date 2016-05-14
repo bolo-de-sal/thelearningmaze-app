@@ -3,6 +3,21 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
+:root{
+    --darkblue: #385965;
+    --lightblue: #00BBD4;
+    --orange: #D99259;
+    --lightgray: #B7C3C0;
+    --darkgray: #7C8C88;
+    --green: #99BD73;
+    --red: #C25763;
+}
+
+html{
+    height: 100%;
+    width: 100%;
+}
+
 body {
   padding: 0;
 }
@@ -81,4 +96,13 @@ body {
   .jumbotron {
     border-bottom: 0;
   }
+}
+
+/* UTILS */
+.none{
+    display: none;
+}
+
+.block{
+    display: block;
 }
