@@ -12,6 +12,7 @@ angular
 		session.setTokenInfo = setTokenInfo;
 		session.getUser = getUser;
 		session.setUser = setUser;
+		session.removeUserData = removeUserData;
 
 		return session;
 
@@ -27,7 +28,14 @@ angular
 			return $localStorage.user;
 		}
 
-		function setUser(user){			
+		function setUser(user){
 			$localStorage.user = user;
+		}
+
+		function removeUserData(){
+			this.setUser(undefined);
+      		var tokenInfo = this.getTokenInfo();
+        	delete tokenInfo.userToken;
+        	this.setTokenInfo(tokenInfo);
 		}
 	}

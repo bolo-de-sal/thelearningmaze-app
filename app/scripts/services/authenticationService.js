@@ -24,17 +24,12 @@ angular
         }
 
         function Logout(){
-          // Logout servidor
-          // $http.delete(AppConfig.api.identifier + '/professors/login', { email: username, senhaText: password })
+          // $http.delete(AppConfig.api.identifier + '/professors/login')
           //      .success(function (response) {
           //          callback(response);
           //      });
 
-          // Logout cliente
-          SessionService.setUser(undefined);
-          var tokenInfo = SessionService.getTokenInfo();
-          delete tokenInfo.userToken;
-          SessionService.setTokenInfo(tokenInfo);
+          SessionService.removeUserData();
 
           $location.path('/login');
         }

@@ -8,9 +8,9 @@ angular
 	}])
 	.run(RunInterceptor);
 
-    TokenInterceptor.$inject = ['$q', '$injector', 'AppConfig', 'SessionService'];
+    TokenInterceptor.$inject = ['$q', '$location', '$injector', 'AppConfig', 'SessionService'];
 
-    function TokenInterceptor($q, $injector, AppConfig, SessionService) {
+    function TokenInterceptor($q, $location, $injector, AppConfig, SessionService) {
 	    var tokenInterceptor = {
 	        request: function(config) {
 	        	var token = SessionService.getTokenInfo() ? SessionService.getTokenInfo().userToken ? SessionService.getTokenInfo().userToken : SessionService.getTokenInfo().token : null;
@@ -27,9 +27,7 @@ angular
 
 	            // Token expirado
 	            if(httpStatus === 419){
-	            	//Limpar os dados do usuário
-	            	SessionService.setUser(undefined);
-	            	//buscar novo token
+	            	// Buscar novo token
 	            	console.log('##TOKEN.INTERCEPTOR.RESPONSEERROR## TOKEN EXPIROU');         	
 	                var $http = $injector.get('$http');
 	                var deferred = $q.defer();
@@ -43,6 +41,14 @@ angular
             	        
             	        console.log('##TOKEN.INTERCEPTOR.ERROR## HTTP STATUS ' + response.status);
             	    }).then(deferred.resolve, deferred.reject);
+
+            	    // Limpar os dados
+            	    if(SessionService.getUser()){
+	            	    SessionService.removeUserData();
+	            	    $location.path('/login');
+
+	            	    return $q.reject(response);
+            	    }
 
 	                // Refaz as requisições
 	                return deferred.promise.then(function() {
