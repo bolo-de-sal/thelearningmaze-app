@@ -1,3 +1,13 @@
+/*
+* IMPORT
+*/
+
+@import "util\\variables.scss";
+
+/*
+* END IMPORT
+*/
+
 .bodyLogin{
     height: 100%;
     width: 100%;
@@ -32,7 +42,7 @@
         height: 90px;
         position: absolute;
         text-align: center;
-        background: --darkBlue;
+        background: $darkblue;
         border-radius: 50%;
         color: white;
         padding-top: 20px;
@@ -44,7 +54,8 @@
 
     span{
         font-size: 12px;
-        color: red;
+        color: $red;
+        margin-top: 25px;
     }
 
     img{
@@ -61,31 +72,32 @@
     input{
         background: $darkblue;
         padding: 6px 12px;
+        font-size: 15px;
         border: none;
-        color: var(--orange);
+        color: $orange;
         text-align: center;
     }
 
     :-webkit-input-placeholder{
-        color: var(--orange);
+        color: $orange;
     }
     ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-        color:    #909;
+        color: $orange;
     }
     :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-       color:    #909;
+       color: $orange;
        opacity:  1;
     }
     ::-moz-placeholder { /* Mozilla Firefox 19+ */
-       color:    #909;
+       color: $orange;
        opacity:  1;
     }
     :-ms-input-placeholder { /* Internet Explorer 10-11 */
-       color:    #909;
+       color: $orange;
     }
 
     label{
-        color: var(--orange);
+        color: $orange;
         font-weight: normal;
     }
 
@@ -93,7 +105,7 @@
         text-align: center;
 
         button{
-            background: var(--lightblue);
+            background: $lightblue;
         }
     }
 }

@@ -1,16 +1,12 @@
-$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
-// bower:scss
-// endbower
+/*
+* IMPORT
+*/
 
-$darkblue: #385965;
-:root{
-    --lightblue: #00BBD4;
-    --orange: #D99259;
-    --lightgray: #B7C3C0;
-    --darkgray: #7C8C88;
-    --green: #99BD73;
-    --red: #C25763;
-}
+@import "util\\variables.scss";
+
+/*
+* END IMPORT
+*/
 
 html{
     height: 100%;
