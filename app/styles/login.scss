@@ -65,11 +65,12 @@
         color: var(--orange);
         text-align: center;
     }
+    
     :-webkit-input-placeholder{
         color: var(--orange);
     }
     ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-    color:    #909;
+        color:    #909;
     }
     :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
        color:    #909;
