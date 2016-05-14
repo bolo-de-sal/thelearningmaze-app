@@ -16,9 +16,9 @@ angular
         function Login(username, password, callback) {
             
             $http.post(AppConfig.api.identifier + '/professors/login', { email: username, senhaText: password })
-               .success(function (response) {
-                   callback(response);
-               });
+            .success(function (response) {
+              callback(response);
+            });
 
         }
 

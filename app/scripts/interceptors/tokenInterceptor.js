@@ -8,9 +8,9 @@ angular
 	}])
 	.run(RunInterceptor);
 
-    TokenInterceptor.$inject = ['$q', 'SessionService'];
+    TokenInterceptor.$inject = ['$q', '$injector', 'AppConfig', 'SessionService'];
 
-    function TokenInterceptor($q, SessionService) {
+    function TokenInterceptor($q, $injector, AppConfig, SessionService) {
 	    var tokenInterceptor = {
 	        request: function(config) {
 	        	var token = SessionService.getTokenInfo() ? SessionService.getTokenInfo().userToken ? SessionService.getTokenInfo().userToken : SessionService.getTokenInfo().token : null;
@@ -23,18 +23,21 @@ angular
 				return config;
 	        },
 	        responseError: function(response) {
-	            // Sessão expirada
-	            if (response.status == 419){
+	            // Token expirado
+	            if (response.status === 419){
+	            	console.log('##TOKEN.INTERCEPTOR.RESPONSEERROR## SESSÃO EXPIRADA');         	
 	                var $http = $injector.get('$http');
 	                var deferred = $q.defer();
 
-            	    $http.get(AppConfig.api.identifier + '/Tokens/generateToken').success(function (tokenInfo) {
-            	        SessionService.setTokenInfo(tokenInfo);
-                        console.log('##TOKEN.INTERCEPTOR.SUCCESS## TOKEN ' + tokenInfo.token);
-            	    })
-            	    .error(function(){
-                        console.log('##TOKEN.INTERCEPTOR.ERROR##');
-                    });
+            	    $http.get(AppConfig.api.identifier + '/Tokens/generateToken').then(function (response) {
+            	    	console.log('##TOKEN.INTERCEPTOR## INICIANDO RECUPERAÇÃO DO TOKEN');
+            	    	if(response.status === 200){
+            	    		SessionService.setTokenInfo(response.data);
+	                        console.log('##TOKEN.INTERCEPTOR.SUCCESS## TOKEN ' + response.data.token);
+            	    	}
+            	        
+            	        console.log('##TOKEN.INTERCEPTOR.ERROR## HTTP STATUS ' + response.status);
+            	    }).then(deferred.resolve, deferred.reject);
 
 	                // Refaz as requisições
 	                return deferred.promise.then(function() {
@@ -53,7 +56,6 @@ angular
 
 	function RunInterceptor($http, SessionService, AppConfig){
 		console.log('##TOKEN.INTERCEPTOR##');
-
 		var token = SessionService.getTokenInfo() ? SessionService.getTokenInfo().token : null;
 
 		if(!token){
