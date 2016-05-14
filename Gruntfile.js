@@ -33,9 +33,6 @@ module.exports = function (grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
-      options: {
-        spawn: true
-      },
       bower: {
         files: ['bower.json'],
         tasks: ['wiredep']
@@ -175,6 +172,11 @@ module.exports = function (grunt) {
 
     // Add vendor prefixed styles
     postcss: {
+      options: {
+        processors: [
+          require('autoprefixer-core')({browsers: ['last 1 version']})
+        ]
+      },
       server: {
         options: {
           map: true
@@ -186,12 +188,7 @@ module.exports = function (grunt) {
           dest: '.tmp/styles/'
         }]
       },
-      dist: {
-        options: {
-          processors: [
-            require('autoprefixer-core')({browsers: ['last 1 version']})
-          ]
-        },
+      dist: {        
         files: [{
           expand: true,
           cwd: '.tmp/styles/',
@@ -233,8 +230,9 @@ module.exports = function (grunt) {
     // Compiles Sass to CSS and generates necessary files if requested
     sass: {
       options: {
+        sourceMap: true,
         includePaths: [
-        'bower_components'
+          'bower_components'
         ]
       },
       dist: {
