@@ -23,6 +23,7 @@ angular.module('thelearningmaze')
                 var user = response._professor; //verificar futuramente em caso de login do aluno
                 var userToken = response.newToken;
                 var tokenInfo = SessionService.getTokenInfo();
+                
                 tokenInfo.userToken = userToken;
 
                 SessionService.setUser(user);

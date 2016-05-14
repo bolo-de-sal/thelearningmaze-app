@@ -20,12 +20,6 @@ angular
         homeCtrl.logout = logout;
 
         function logout(){
-            // verificar melhor lógica para remover usuário
-            SessionService.setUser(undefined);
-            var tokenInfo = SessionService.getTokenInfo();
-            delete tokenInfo.userToken;
-            SessionService.setTokenInfo(tokenInfo);
-
-            $location.path('/login');
+            AuthenticationService.Logout();
         }
     }

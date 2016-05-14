@@ -23,9 +23,14 @@ angular
 				return config;
 	        },
 	        responseError: function(response) {
+	            var httpStatus = response.status;
+
 	            // Token expirado
-	            if (response.status === 419){
-	            	console.log('##TOKEN.INTERCEPTOR.RESPONSEERROR## SESSÃO EXPIRADA');         	
+	            if(httpStatus === 419){
+	            	//Limpar os dados do usuário
+	            	SessionService.setUser(undefined);
+	            	//buscar novo token
+	            	console.log('##TOKEN.INTERCEPTOR.RESPONSEERROR## TOKEN EXPIROU');         	
 	                var $http = $injector.get('$http');
 	                var deferred = $q.defer();
 
