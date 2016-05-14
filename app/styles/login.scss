@@ -1,3 +1,13 @@
+/*
+* IMPORT
+*/
+
+@import "util\\variables.scss";
+
+/*
+* END IMPORT
+*/
+
 .bodyLogin{
     height: 100%;
     width: 100%;
@@ -32,7 +42,7 @@
         height: 90px;
         position: absolute;
         text-align: center;
-        background: var(--darkblue);
+        background: $darkblue;
         border-radius: 50%;
         color: white;
         padding-top: 20px;
