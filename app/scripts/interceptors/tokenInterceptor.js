@@ -13,7 +13,7 @@ angular
     function TokenInterceptor($q, SessionService) {
 	    var tokenInterceptor = {
 	        request: function(config) {
-	        	var token = SessionService.getTokenInfo() ? SessionService.getTokenInfo().newToken ? SessionService.getTokenInfo().newToken : SessionService.getTokenInfo().token : null;
+	        	var token = SessionService.getTokenInfo() ? SessionService.getTokenInfo().userToken ? SessionService.getTokenInfo().userToken : SessionService.getTokenInfo().token : null;
 
 	        	if(token){
 
@@ -21,38 +21,44 @@ angular
 	        	}				
 
 				return config;
+	        },
+	        responseError: function(response) {
+	            // Sessão expirada
+	            if (response.status == 419){
+	                var $http = $injector.get('$http');
+	                var deferred = $q.defer();
 
-	            // var deferred = $q.defer();
-	            // var http = $injector.get('$http');
-	            // http.get('http://tlm-api-dev.azurewebsites.net/api/Tokens/generateToken').success(function (ret) {
-	            //     sessionData.setToken(ret);
-	            //     console.log("successfully authenticated with token " + sessionData.getToken());
-	            //     config.headers['Authorization'] = 'Token ' + sessionData.getToken();
-	            //     deferred.resolve(config);
-	            // })
-	            // .error(function(){
-	            //     console.log("failed to authenticate");
-	            //     deferred.resolve(config);
-	            // });
+            	    $http.get(AppConfig.api.identifier + '/Tokens/generateToken').success(function (tokenInfo) {
+            	        SessionService.setTokenInfo(tokenInfo);
+                        console.log('##TOKEN.INTERCEPTOR.SUCCESS## TOKEN ' + tokenInfo.token);
+            	    })
+            	    .error(function(){
+                        console.log('##TOKEN.INTERCEPTOR.ERROR##');
+                    });
 
-	            // return deferred.promise;
-
+	                // Refaz as requisições
+	                return deferred.promise.then(function() {
+	                    return $http(response.config);
+	                });
+	            }
+	            
+	            return $q.reject(response);
 	        }
 	    };
 
     	return tokenInterceptor;
 	}
 
-	RunInterceptor.$inject = ['$http', 'SessionService'];
+	RunInterceptor.$inject = ['$http', 'SessionService', 'AppConfig'];
 
-	function RunInterceptor($http, SessionService){
+	function RunInterceptor($http, SessionService, AppConfig){
 		console.log('##TOKEN.INTERCEPTOR##');
 
 		var token = SessionService.getTokenInfo() ? SessionService.getTokenInfo().token : null;
 
 		if(!token){
 			console.log('##TOKEN.INTERCEPTOR##');
-		    $http.get('/api/Tokens/generateToken').success(function (tokenInfo) {
+		    $http.get(AppConfig.api.identifier + '/Tokens/generateToken').success(function (tokenInfo) {
 		        SessionService.setTokenInfo(tokenInfo);
 	            console.log('##TOKEN.INTERCEPTOR.SUCCESS## TOKEN ' + tokenInfo.token);
 		    })
@@ -61,5 +67,5 @@ angular
 	        });
 		}	
 
-		console.log('##TOKEN.INTERCEPTOR.SUCCESS## TOKEN ' + token);    
+		console.log('##TOKEN.INTERCEPTOR## TOKEN ' + token);    
 	}

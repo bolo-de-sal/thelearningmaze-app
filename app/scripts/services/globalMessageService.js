@@ -7,14 +7,14 @@
     GlobalMessageService.$inject = ['$rootScope'];
 
     function GlobalMessageService($rootScope) {
-        var globalMessageService = {};
+        var globalMessage = {};
 
-        globalMessageService.Success = Success;
-        globalMessageService.Error = Error;
+        globalMessage.Success = Success;
+        globalMessage.Error = Error;
 
         initService();
 
-        return globalMessageService;
+        return globalMessage;
 
         function initService() {
             $rootScope.$on('$locationChangeStart', function () {
