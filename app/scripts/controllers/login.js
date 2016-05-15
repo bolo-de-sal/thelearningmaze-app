@@ -10,9 +10,9 @@
 angular.module('thelearningmaze')
     .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$location', '$rootScope', 'AuthenticationService', 'SessionService'];
+    LoginController.$inject = ['$location', '$rootScope', 'AuthenticationService', 'SessionService', 'AlertService'];
 
-    function LoginController($location, $rootScope, AuthenticationService, SessionService){
+    function LoginController($location, $rootScope, AuthenticationService, SessionService, AlertService){
         var loginCtrl = this;
 
         loginCtrl.login = login;
@@ -20,6 +20,8 @@ angular.module('thelearningmaze')
         $("body").addClass("bodyLogin");
 
         function login() {
+            AlertService.Clear();
+            
             // Exibe o loader
             $rootScope.dataLoading = true;
 

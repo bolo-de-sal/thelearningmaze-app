@@ -246,7 +246,19 @@ body {
   text-align: center;
   border-radius: 0;
   box-shadow: 0 0 8px -2px #000;
+  // Solução devido ao problema no angular na primeira vez não adiciona a class ng-enter
+  padding-right: 35px;
+  transition:0.5s linear all;
 }
+
+.global-alert.ng-enter, .global-alert.ng-leave.ng-leave-active {
+  opacity: 0;
+}
+
+.global-alert.ng-enter.ng-enter-active, .global-alert.ng-leave {
+  opacity: 1;
+}
+
 
 /*
 * END GLOBAL ALERT
@@ -412,16 +424,3 @@ body {
 /*
 * END GLOBAL LOADING
 */
-
-
-.alert{
-  transition: 0.5s linear all;
-}
-
-.alert.enter, .alert.ng-leave.ng-leave-active{
-  opacity: 0;
-}
-
-.alert.enter.ng-enter-active, .alert.ng-leave{
-  opacity: 1;
-}
