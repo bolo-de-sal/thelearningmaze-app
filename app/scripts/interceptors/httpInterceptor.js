@@ -13,12 +13,12 @@ angular
 		var httpInterceptor = {
 			responseError: function(response) {
 				var httpStatus = response.status;
-				var hideGlobalMessage = (httpStatus === 419 && !SessionService.getUser());
-
-				// Esconde o loading
-				$rootScope.dataLoading = false;
+				var hideGlobalMessage = (httpStatus === 400 && !SessionService.getUser());
 
 				if(!hideGlobalMessage){
+					// Esconde o loading
+					$rootScope.dataLoading = false;
+
 					// verificar o objeto de resposta se existir e exibir a mensagem senão exibir uma mensagem padrão
 					GlobalMessageService.Error('Ops! Parece que algo deu errado, tente novamente mais tarde.');
 				}
