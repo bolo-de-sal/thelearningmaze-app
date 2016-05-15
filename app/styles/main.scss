@@ -337,3 +337,16 @@ body {
 /*
 * END GLOBAL LOADING
 */
+
+
+.alert{
+  transition: 0.5s linear all;
+}
+
+.alert.enter, .alert.ng-leave.ng-leave-active{
+  opacity: 0;
+}
+
+.alert.enter.ng-enter-active, .alert.ng-leave{
+  opacity: 1;
+}
