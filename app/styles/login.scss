@@ -18,12 +18,14 @@
     background-repeat: no-repeat;
 
     .container{
-        background: white;
+        background-image: url("../images/maze.png");
+        background-size: contain;
         width: 360px;
         min-height: 380px;
         // border-top: 9px solid var(--colorOne);
         box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.80);
         padding: 15px 15px;
+        top: 0px;
     }
 }
 
@@ -38,75 +40,84 @@
     padding-right: 60px;
     text-align: center;
 
-    > p{
-        width: 90px;
-        height: 90px;
-        position: absolute;
-        text-align: center;
-        background: $darkblue;
-        border-radius: 50%;
-        color: white;
-        padding-top: 20px;
-        margin-left: -114px;
-        margin-top: -50px;
-        font-size: 34px;
-        font-weight: normal;
-    }
-
-    span{
-        font-size: 12px;
-        color: $red;
-        margin-top: 25px;
-    }
+    // > p{
+    //     width: 90px;
+    //     height: 90px;
+    //     position: absolute;
+    //     text-align: center;
+    //     background: $darkblue;
+    //     border-radius: 50%;
+    //     color: white;
+    //     padding-top: 20px;
+    //     margin-left: -114px;
+    //     margin-top: -50px;
+    //     font-size: 34px;
+    //     font-weight: normal;
+    // }
 
     img{
-        width: 150px;
-        height: 100px;
+        // width: 150px;
+        height: 90px;
         margin-top: 20px;
         margin-bottom: 30px;
     }
+    
+    form{
+        p{
+            color: $lightgray;
+        }
+        span{
+            font-size: 12px;
+            color: $red;
+            margin-top: 25px;
+            margin-bottom: 0px;
+        }
 
-    .form-group{
-        text-align: center;
-    }
 
-    input{
-        background: $darkblue;
-        padding: 6px 12px;
-        font-size: 15px;
-        border: none;
-        color: $orange;
-        text-align: center;
-    }
+        .form-group{
+            text-align: center;
+        }
 
-    :-webkit-input-placeholder{
-        color: $orange;
-    }
-    ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-        color: $orange;
-    }
-    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-       color: $orange;
-       opacity:  1;
-    }
-    ::-moz-placeholder { /* Mozilla Firefox 19+ */
-       color: $orange;
-       opacity:  1;
-    }
-    :-ms-input-placeholder { /* Internet Explorer 10-11 */
-       color: $orange;
-    }
+        input{
+            // background: $darkblue;
+            padding: 6px 12px;
+            font-size: 15px;
+            border: none;
+            color: $orange;
+            text-align: center;
+            font-weight: bold;
+        }
 
-    label{
-        color: $orange;
-        font-weight: normal;
-    }
+        :-webkit-input-placeholder{
+            color: $orange;
+        }
+        ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+            color: $orange;
+        }
+        :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+            color: $orange;
+            opacity:  1;
+        }
+        ::-moz-placeholder { /* Mozilla Firefox 19+ */
+            color: $orange;
+            opacity:  1;
+        }
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+            color: $orange;
+        }
 
-    .form-actions{
-        text-align: center;
+        label{
+            color: $orange;
+            font-weight: normal;
+        }
 
-        button{
-            background: $lightblue;
+        .form-actions{
+            text-align: center;
+
+            button{
+                background: $lightblue;
+            }
         }
     }
+
 }

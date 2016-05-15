@@ -14,6 +14,7 @@
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/login.css">
+    <link rel="stylesheet" href="styles/home.css">
     <!-- endbuild -->
   </head>
 
@@ -47,6 +48,14 @@
               <li><a ng-href="#/about">Evento Atual</a></li>
               <!-- <li><a ng-href="#/">Contact</a></li> -->
             </ul>
+
+            <ul class="nav navbar-nav">
+              <li class="active"><p>{{user.nome}}</p></li>
+              <li><img src="../images/pu.jpg" alt="Professor Utonio"></li>
+              <li ng-click="logout()"><img src="../images/pu.jpg" alt="Professor Utonio"></li>
+              <!-- <li><a ng-href="#/">Contact</a></li> -->
+            </ul>
+
           </div>
         </div>
       </div>
@@ -57,10 +66,10 @@
       <div ng-if="dataLoading" class="loader-overlay">
         <div class="jumping" data-loader="jumping"></div>
       </div>
-      <div ng-class="{ 'alert fade in': globalMessage, 'alert-success': globalMessage.type === 'success', 'alert-danger': globalMessage.type === 'error' }" ng-if="globalMessage">
+      <!-- <div ng-class="{ 'alert fade in': globalMessage, 'alert-success': globalMessage.type === 'success', 'alert-danger': globalMessage.type === 'error' }" ng-if="globalMessage">
           <a href="#" class="close" data-dismiss="alert" aria-label="close" title="fechar">×</a>
           <div ng-bind="globalMessage.message"></div>
-      </div>
+      </div> -->
     </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -107,6 +116,7 @@
         <script src="scripts/services/authenticationService.js"></script>
         <script src="scripts/services/globalMessageService.js"></script>
         <script src="scripts/services/sessionService.js"></script>
+        <script src="scripts/services/eventService.js"></script>
         <!-- endbuild -->
 </body>
 </html>

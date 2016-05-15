@@ -1,7 +1,7 @@
 ﻿<div class="wrapperLogin">
     <!-- <p>L</p> -->
 
-    <img src="../images/logo_senac.png" alt="Logo Senac">
+    <img src="../images/lm.png" alt="Logo Senac">
     <form name="form" ng-submit="login.login()" role="form">
         <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
             <!-- <label for="username">USUÁRIO</label> -->
@@ -18,7 +18,7 @@
             <button type="submit" ng-disabled="form.$invalid || login.dataLoading" class="btn btn-primary">ENTRAR</button>
             <!-- <a href="#/register" class="btn btn-link">Register</a> -->
 
-            <span ng-show="form.username.$dirty && form.username.$error.required || form.password.$dirty && form.password.$error.required" class="help-block">Todos os campos são obriatórios</span>
+            <span ng-show="form.username.$dirty && form.username.$error.required || form.password.$dirty && form.password.$error.required" class="help-block">Todos os campos são obrigatórios</span>
         </div>
     </form>
 </div>
