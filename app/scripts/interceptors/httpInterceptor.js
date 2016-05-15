@@ -7,9 +7,9 @@ angular
     	$httpProvider.interceptors.push('HttpInterceptor');
 	}]);
 
-	HttpInterceptor.$inject = ['$q', '$rootScope', 'SessionService', 'GlobalMessageService'];
+	HttpInterceptor.$inject = ['$q', '$rootScope', 'SessionService', 'AlertService'];
 
-	function HttpInterceptor($q, $rootScope, SessionService, GlobalMessageService){
+	function HttpInterceptor($q, $rootScope, SessionService, AlertService){
 		var httpInterceptor = {
 			responseError: function(response) {
 				var httpStatus = response.status;
@@ -19,8 +19,8 @@ angular
 					// Esconde o loading
 					$rootScope.dataLoading = false;
 
-					// verificar o objeto de resposta se existir e exibir a mensagem senão exibir uma mensagem padrão
-					GlobalMessageService.Error('Ops! Parece que algo deu errado, tente novamente mais tarde.');
+					// Recuperar mensagem vinda do servidor
+					AlertService.Add('danger', 'Ops! Parece que algo deu errado, tente novamente mais tarde.');
 				}
 				
 				return $q.reject(response);

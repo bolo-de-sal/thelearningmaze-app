@@ -17,12 +17,9 @@
     <!-- endbuild -->
   </head>
 
-  <body class="">
+  <body class="bodyLogin">
 
-    <div class="global-message" ng-class="{ 'alert fade in': globalMessage, 'alert-success': globalMessage.type === 'success', 'alert-danger': globalMessage.type === 'error' }" ng-if="globalMessage">
-      <a href="#" class="close" data-dismiss="alert" aria-label="close" title="fechar">×</a>
-      <div ng-bind="globalMessage.message"></div>
-    </div>
+    <uib-alert class="global-alert" ng-repeat="alert in alerts" type="{{ alert.type }}" close="CloseAlert($index)">{{ alert.msg }}</uib-alert>
 
     <!-- Add your site or application content here -->
     <div class="header" style="display: none;">
@@ -103,6 +100,7 @@
         <script src="scripts/services/authenticationService.js"></script>
         <script src="scripts/services/globalMessageService.js"></script>
         <script src="scripts/services/sessionService.js"></script>
+        <script src="scripts/services/alertService.js"></script>
         <!-- endbuild -->
 </body>
 </html>

@@ -10,9 +10,9 @@
 angular.module('thelearningmaze')
     .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$location', '$rootScope', 'AuthenticationService', 'SessionService', 'GlobalMessageService'];
+    LoginController.$inject = ['$location', '$rootScope', 'AuthenticationService', 'SessionService'];
 
-    function LoginController($location, $rootScope, AuthenticationService, SessionService, GlobalMessageService) {
+    function LoginController($location, $rootScope, AuthenticationService, SessionService){
         var loginCtrl = this;
 
         loginCtrl.login = login;

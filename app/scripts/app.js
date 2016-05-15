@@ -17,7 +17,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ngStorage'
+    'ngStorage',
+    'ui.bootstrap'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -51,9 +52,10 @@ angular
         redirectTo: '/404'
       });
   })
-  .run(function ($rootScope, $location, $cookieStore, $http, SessionService) {
+  .run(function ($rootScope, $location, SessionService, AlertService) {
 
       $rootScope.$on('$locationChangeStart', function (event, next, current) {
+          AlertService.Clear();
 
           // redirect to login page if not logged in and trying to access a restricted page
           var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
@@ -71,4 +73,6 @@ angular
           }
 
       });
+
+      $rootScope.CloseAlert = AlertService.CloseAlert;
   });

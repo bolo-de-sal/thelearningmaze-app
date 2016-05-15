@@ -39,7 +39,6 @@ angular
 	                        console.log('##TOKEN.INTERCEPTOR.SUCCESS## TOKEN ' + response.data.token);
             	    	}
             	        
-            	        console.log('##TOKEN.INTERCEPTOR.ERROR## HTTP STATUS ' + response.status);
             	    }).then(deferred.resolve, deferred.reject);
 
             	    // Limpar os dados
