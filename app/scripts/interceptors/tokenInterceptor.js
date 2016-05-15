@@ -26,7 +26,7 @@ angular
 	            var httpStatus = response.status;
 
 	            // Token expirado
-	            if(httpStatus === 419){
+	            if(httpStatus === 400){
 	            	// Buscar novo token
 	            	console.log('##TOKEN.INTERCEPTOR.RESPONSEERROR## TOKEN EXPIROU');         	
 	                var $http = $injector.get('$http');
