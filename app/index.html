@@ -57,10 +57,6 @@
       <div ng-if="dataLoading" class="loader-overlay">
         <div class="jumping" data-loader="jumping"></div>
       </div>
-      <div ng-class="{ 'alert fade in': globalMessage, 'alert-success': globalMessage.type === 'success', 'alert-danger': globalMessage.type === 'error' }" ng-if="globalMessage">
-          <a href="#" class="close" data-dismiss="alert" aria-label="close" title="fechar">×</a>
-          <div ng-bind="globalMessage.message"></div>
-      </div>
     </div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
