@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="styles/login.css">
     <!-- endbuild -->
   </head>
-  <body class="bodyLogin">
+  <body class="">
     <!-- Add your site or application content here -->
     <div class="header none">
       <div class="navbar navbar-default" role="navigation">
@@ -30,29 +30,29 @@
               <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand" href="#/">The Learning Maze</a>
+            <a class="navbar-brand" href="#/"><img src="../images/tlm.jpg" alt="Learning Maze"></a>
           </div>
 
           <div class="collapse navbar-collapse" id="js-navbar-collapse">
 
             <ul class="nav navbar-nav">
-              <li class="active"><a href="#/">Home</a></li>
-              <li><a ng-href="#/about">About</a></li>
-              <li><a ng-href="#/">Contact</a></li>
+              <li class="active"><a href="#/">Eventos</a></li>
+              <li><a ng-href="#/about">Evento Atual</a></li>
+              <!-- <li><a ng-href="#/">Contact</a></li> -->
             </ul>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="container">
-      <div ng-class="{ 'alert fade in': globalMessage, 'alert-success': globalMessage.type === 'success', 'alert-danger': globalMessage.type === 'error' }" ng-if="globalMessage">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="fechar">×</a>
-        <div ng-bind="globalMessage.message"></div>
-      </div>
+    <div class="container content">
       <div ng-view></div>
       <div>
         <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+      </div>
+      <div ng-class="{ 'alert fade in': globalMessage, 'alert-success': globalMessage.type === 'success', 'alert-danger': globalMessage.type === 'error' }" ng-if="globalMessage">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close" title="fechar">×</a>
+          <div ng-bind="globalMessage.message"></div>
       </div>
     </div>
 

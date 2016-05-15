@@ -19,6 +19,9 @@ angular
         homeCtrl.user = SessionService.getUser();
         homeCtrl.logout = logout;
 
+        $("body").removeClass("bodyLogin");
+        $(".header").show();
+
         function logout(){
             // verificar melhor lógica para remover usuário
             SessionService.setUser(undefined);
@@ -26,6 +29,8 @@ angular
             delete tokenInfo.userToken;
             SessionService.setTokenInfo(tokenInfo);
 
+            $("body").addClass("bodyLogin");
+            $(".header").hide();
             $location.path('/login');
         }
     }

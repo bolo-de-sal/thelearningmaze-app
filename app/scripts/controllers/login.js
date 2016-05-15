@@ -17,6 +17,8 @@ angular.module('thelearningmaze')
 
         loginCtrl.login = login;
 
+        $("body").addClass("bodyLogin");
+
         function login() {
             $rootScope.dataLoading = true;
             AuthenticationService.Login(loginCtrl.username, loginCtrl.password, function (response) {
@@ -28,7 +30,7 @@ angular.module('thelearningmaze')
                 SessionService.setUser(user);
                 SessionService.setTokenInfo(tokenInfo);
 
-                $location.path('/home');
+                $location.path('/');
             });
         };
     }
