@@ -14,7 +14,11 @@ html{
 }
 
 body {
-  padding: 0;
+    padding: 0;
+    background-image: url("../images/maze.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -27,8 +31,11 @@ body {
 
 /* Custom page header */
 .header {
-  border-bottom: 1px solid #e5e5e5;
-  margin-bottom: 10px;
+    // border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 10px !important;
+    position: fixed;
+    width: 100%;
+    z-index: 2;
 
   /* Make the masthead heading the same height as the navigation */
   h3 {
@@ -70,10 +77,44 @@ body {
   }
 }
 
+.navbar{
+    margin-bottom: 0px !important;
+    background: $lightblue;
+    border: none;
+    border-radius: inherit;
+}
+
+.navbar-brand{
+    padding: 0px;
+
+    > img{
+        display: block;
+        height: 40px;
+        margin-top: 5px;
+        margin-right: 60px;
+    }
+}
+
+.navbar-default .navbar-nav > li > a{
+    color: white;
+    padding: 15px 40px;
+}
+
+.navbar-default .navbar-nav > .active > a{
+    color: $lightblue;
+    background: white;
+}
+
+.content{
+    padding: 0px 60px;
+    position: relative;
+    top: 50px;
+}
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   .container {
-    max-width: 730px;
+    // max-width: 730px;
   }
 
   /* Remove the padding we set earlier */

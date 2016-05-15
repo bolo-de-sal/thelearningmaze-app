@@ -21,12 +21,13 @@ angular
   ])
   .config(function ($routeProvider) {
     $routeProvider
+    //   .when('/', {
+    //     templateUrl: 'views/main.html',
+    //     controller: 'MainCtrl',
+    //     controllerAs: 'main'
+    //   })
+    //   .when('/home', {
       .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main'
-      })
-      .when('/home', {
           templateUrl: 'views/home.html',
           controller: 'HomeController',
           controllerAs: 'home'
@@ -61,10 +62,12 @@ angular
 
           if (restrictedPage && !loggedIn) {
             $location.path('/login');
-            //$(".header").show();
+            $(".header").hide();
+            $("body").addClass("bodyLogin");
           }else if(loggedIn && $location.path() === '/login'){
             $location.path('/');
-            //$(".header").hide();
+            $(".header").show();
+            $("body").removeClass("bodyLogin");
           }
 
       });

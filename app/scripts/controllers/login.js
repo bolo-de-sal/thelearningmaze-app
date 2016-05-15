@@ -17,6 +17,8 @@ angular.module('thelearningmaze')
 
         loginCtrl.login = login;
 
+        $("body").addClass("bodyLogin");
+
         function login() {
             // Exibe o loader
             $rootScope.dataLoading = true;
@@ -26,13 +28,13 @@ angular.module('thelearningmaze')
                 var user = response._professor;
                 var userToken = response.newToken;
                 var tokenInfo = SessionService.getTokenInfo();
-                
+
                 tokenInfo.userToken = userToken;
 
                 SessionService.setUser(user);
                 SessionService.setTokenInfo(tokenInfo);
 
-                $location.path('/home');
+                $location.path('/');
 
                 $rootScope.dataLoading = false;
             });

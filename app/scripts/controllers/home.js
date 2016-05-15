@@ -19,7 +19,13 @@ angular
         homeCtrl.user = SessionService.getUser();
         homeCtrl.logout = logout;
 
+        $("body").removeClass("bodyLogin");
+        $(".header").show();
+
         function logout(){
+
+            $("body").addClass("bodyLogin");
+            $(".header").hide();
             AuthenticationService.Logout();
         }
     }
