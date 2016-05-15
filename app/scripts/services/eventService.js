@@ -2,11 +2,11 @@
 
 angular
     .module('thelearningmaze')
-    .factory('eventService', eventService);
+    .factory('EventService', EventService);
 
-    AuthenticationService.$inject = ['$http', '$rootScope', '$timeout', '$location', 'AppConfig', 'GlobalMessageService'];
+    EventService.$inject = ['$http', 'AppConfig'];
 
-    function eventService($http, $rootScope, $timeout, $location, AppConfig, GlobalMessageService) {
+    function EventService($http, AppConfig) {
         var events = {};
 
         events.getEvents = getEvents;

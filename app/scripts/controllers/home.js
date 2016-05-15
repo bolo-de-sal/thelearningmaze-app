@@ -11,28 +11,24 @@ angular
     .module('thelearningmaze')
     .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['AuthenticationService', 'SessionService', 'eventService', '$rootScope', '$location'];
+    HomeController.$inject = ['AuthenticationService', 'SessionService', 'EventService', '$rootScope', '$location'];
 
-    function HomeController(AuthenticationService, SessionService, eventService, $rootScope, $location) {
+    function HomeController(AuthenticationService, SessionService, EventService, $rootScope, $location) {
         var homeCtrl = this;
 
-        homeCtrl.user = SessionService.getUser();
+        //homeCtrl.user = SessionService.getUser();
         $rootScope.user = SessionService.getUser();
-        homeCtrl.logout = logout;
-        $rootScope.logout = logout;
-
-        console.log("objProfessor: ", $rootScope.user);
+        //homeCtrl.logout = logout;
+        $rootScope.Logout = Logout;
 
         $("body").removeClass("bodyLogin");
         $(".header").show();
 
-        eventService.getEvents(function(response){
-            console.log("Response getEvents: ", response);
+        EventService.getEvents(function(response){
             homeCtrl.events = response;
         });
 
-        function logout(){
-
+        function Logout(){
             AuthenticationService.Logout();
             $("body").addClass("bodyLogin");
             $(".header").hide();

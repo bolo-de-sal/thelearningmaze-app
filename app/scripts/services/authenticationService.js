@@ -4,9 +4,9 @@ angular
     .module('thelearningmaze')
     .factory('AuthenticationService', AuthenticationService);
 
-    AuthenticationService.$inject = ['$http', '$rootScope', '$timeout', '$location', 'AppConfig', 'SessionService', 'GlobalMessageService'];
+    AuthenticationService.$inject = ['$http', '$location', 'AppConfig', 'SessionService'];
 
-    function AuthenticationService($http, $rootScope, $timeout, $location, AppConfig, SessionService, GlobalMessageService) {
+    function AuthenticationService($http, $location, AppConfig, SessionService) {
         var authentication = {};
 
         authentication.Login = Login;
