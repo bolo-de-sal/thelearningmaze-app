@@ -33,8 +33,8 @@ angular
 
         function logout(){
 
+            AuthenticationService.Logout();
             $("body").addClass("bodyLogin");
             $(".header").hide();
-            AuthenticationService.Logout();
         }
     }

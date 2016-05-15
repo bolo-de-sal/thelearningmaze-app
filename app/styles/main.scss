@@ -219,10 +219,25 @@ body {
 }
 
 /*
-* GLOBAL MESSAGE
+* BOOTSTRAP UI
 */
 
-.global-message{
+.nav, 
+.pagination,
+.carousel,
+.panel-title a { 
+  cursor: pointer; 
+}
+
+/*
+* END BOOTSTRAP UI
+*/
+
+/*
+* GLOBAL ALERT
+*/
+
+.global-alert{
   position: fixed;
   top: 0;
   left: 0;
@@ -234,7 +249,7 @@ body {
 }
 
 /*
-* END GLOBAL MESSAGE
+* END GLOBAL ALERT
 */
 
 /*
