@@ -18,9 +18,12 @@ angular.module('thelearningmaze')
         loginCtrl.login = login;
 
         function login() {
+            // Exibe o loader
             $rootScope.dataLoading = true;
+
             AuthenticationService.Login(loginCtrl.username, loginCtrl.password, function (response) {
-                var user = response._professor; //verificar futuramente em caso de login do aluno
+                // Verificar futuramente em caso de login do aluno
+                var user = response._professor;
                 var userToken = response.newToken;
                 var tokenInfo = SessionService.getTokenInfo();
                 
@@ -30,6 +33,8 @@ angular.module('thelearningmaze')
                 SessionService.setTokenInfo(tokenInfo);
 
                 $location.path('/home');
+
+                $rootScope.dataLoading = false;
             });
         };
     }

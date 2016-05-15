@@ -61,10 +61,10 @@ angular
 
           if (restrictedPage && !loggedIn) {
             $location.path('/login');
-            $(".header").show();
+            //$(".header").show();
           }else if(loggedIn && $location.path() === '/login'){
             $location.path('/');
-            $(".header").hide();
+            //$(".header").hide();
           }
 
       });
