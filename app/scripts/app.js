@@ -28,6 +28,11 @@ angular
     //     controllerAs: 'main'
     //   })
     //   .when('/home', {
+      .when('/index', {
+          templateUrl: 'index.html',
+          controller: 'MainCtrl',
+          controllerAs: 'main'
+      })
       .when('/', {
           templateUrl: 'views/home.html',
           controller: 'HomeController',

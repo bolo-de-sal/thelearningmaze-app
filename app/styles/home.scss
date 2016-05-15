@@ -1,0 +1,63 @@
+/*
+* IMPORT
+*/
+
+@import "util\\variables.scss";
+
+/*
+* END IMPORT
+*/
+
+.eventosAbertos{
+
+    .titleColumns{
+        background: $orange;
+    }
+
+    .eventos{
+        .evento:nth-child(odd){
+            background: white;
+        }
+        .evento{
+            background: $lightgray;
+            height: 30px;
+            padding-top: 5px;
+
+            p:first-of-type{
+                width: 10%;
+            }
+            p{
+                float: left;
+                width: 18%;
+                text-align: center;
+            }
+        }
+    }
+}
+
+.todosEventos{
+
+    .titleColumns{
+        background: $lightblue;
+    }
+
+    .eventos{
+        .evento:nth-child(odd){
+            background: white;
+        }
+        .evento{
+            background: $lightgray;
+            height: 30px;
+            padding-top: 5px;
+
+            p:first-of-type{
+                width: 10%;
+            }
+            p{
+                float: left;
+                width: 18%;
+                text-align: center;
+            }
+        }
+    }
+}
