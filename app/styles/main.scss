@@ -127,6 +127,7 @@ body {
 
 .navbar-collapse .navbar-nav:last-of-type{
     float: right;
+    cursor: default;
 
     p{
         margin: 14px;
@@ -222,11 +223,11 @@ body {
 * BOOTSTRAP UI
 */
 
-.nav, 
+.nav,
 .pagination,
 .carousel,
-.panel-title a { 
-  cursor: pointer; 
+.panel-title a {
+  cursor: pointer;
 }
 
 /*
