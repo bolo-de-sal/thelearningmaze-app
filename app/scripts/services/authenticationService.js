@@ -4,12 +4,13 @@ angular
     .module('thelearningmaze')
     .factory('AuthenticationService', AuthenticationService);
 
-    AuthenticationService.$inject = ['$http', '$cookieStore', '$rootScope', '$timeout', 'AppConfig', 'GlobalMessageService'];
+    AuthenticationService.$inject = ['$http', '$rootScope', '$timeout', '$location', 'AppConfig', 'SessionService', 'GlobalMessageService'];
 
-    function AuthenticationService($http, $cookieStore, $rootScope, $timeout, AppConfig, GlobalMessageService) {
+    function AuthenticationService($http, $rootScope, $timeout, $location, AppConfig, SessionService, GlobalMessageService) {
         var authentication = {};
 
         authentication.Login = Login;
+        authentication.Logout = Logout;
 
         return authentication;
 
@@ -22,11 +23,14 @@ angular
 
         }
 
-        function logout(){
-          // $http.delete(AppConfig.api.identifier + '/professors/login', { email: username, senhaText: password })
+        function Logout(){
+          // $http.delete(AppConfig.api.identifier + '/professors/login')
           //      .success(function (response) {
           //          callback(response);
           //      });
-          return true;
+
+          SessionService.removeUserData();
+
+          $location.path('/login');
         }
     }

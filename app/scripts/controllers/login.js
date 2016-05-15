@@ -20,17 +20,23 @@ angular.module('thelearningmaze')
         $("body").addClass("bodyLogin");
 
         function login() {
+            // Exibe o loader
             $rootScope.dataLoading = true;
+
             AuthenticationService.Login(loginCtrl.username, loginCtrl.password, function (response) {
-                var user = response._professor; //verificar futuramente em caso de login do aluno
+                // Verificar futuramente em caso de login do aluno
+                var user = response._professor;
                 var userToken = response.newToken;
                 var tokenInfo = SessionService.getTokenInfo();
+
                 tokenInfo.userToken = userToken;
 
                 SessionService.setUser(user);
                 SessionService.setTokenInfo(tokenInfo);
 
                 $location.path('/');
+
+                $rootScope.dataLoading = false;
             });
         };
     }

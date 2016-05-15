@@ -23,14 +23,9 @@ angular
         $(".header").show();
 
         function logout(){
-            // verificar melhor lógica para remover usuário
-            SessionService.setUser(undefined);
-            var tokenInfo = SessionService.getTokenInfo();
-            delete tokenInfo.userToken;
-            SessionService.setTokenInfo(tokenInfo);
 
             $("body").addClass("bodyLogin");
             $(".header").hide();
-            $location.path('/login');
+            AuthenticationService.Logout();
         }
     }

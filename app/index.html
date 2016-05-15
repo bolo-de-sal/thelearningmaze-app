@@ -16,9 +16,16 @@
     <link rel="stylesheet" href="styles/login.css">
     <!-- endbuild -->
   </head>
+
   <body class="">
+
+    <div class="global-message" ng-class="{ 'alert fade in': globalMessage, 'alert-success': globalMessage.type === 'success', 'alert-danger': globalMessage.type === 'error' }" ng-if="globalMessage">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close" title="fechar">×</a>
+      <div ng-bind="globalMessage.message"></div>
+    </div>
+
     <!-- Add your site or application content here -->
-    <div class="header none">
+    <div class="header" style="display: none;">
       <div class="navbar navbar-default" role="navigation">
         <div class="container">
           <div class="navbar-header">
@@ -47,8 +54,8 @@
 
     <div class="container content">
       <div ng-view></div>
-      <div>
-        <img ng-if="dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+      <div ng-if="dataLoading" class="loader-overlay">
+        <div class="jumping" data-loader="jumping"></div>
       </div>
       <div ng-class="{ 'alert fade in': globalMessage, 'alert-success': globalMessage.type === 'success', 'alert-danger': globalMessage.type === 'error' }" ng-if="globalMessage">
           <a href="#" class="close" data-dismiss="alert" aria-label="close" title="fechar">×</a>
@@ -79,7 +86,6 @@
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/ngstorage/ngStorage.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
