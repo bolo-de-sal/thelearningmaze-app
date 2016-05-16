@@ -11,28 +11,31 @@ angular
     .module('thelearningmaze')
     .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['AuthenticationService', 'SessionService', 'eventService', '$rootScope', '$location'];
+    HomeController.$inject = ['AuthenticationService', 'SessionService', 'EventService', '$rootScope', '$location'];
 
-    function HomeController(AuthenticationService, SessionService, eventService, $rootScope, $location) {
+    function HomeController(AuthenticationService, SessionService, EventService, $rootScope, $location) {
         var homeCtrl = this;
 
-        homeCtrl.user = SessionService.getUser();
+        //homeCtrl.user = SessionService.getUser();
         $rootScope.user = SessionService.getUser();
-        homeCtrl.logout = logout;
-        $rootScope.logout = logout;
-
-        console.log("objProfessor: ", $rootScope.user);
+        //homeCtrl.logout = logout;
+        $rootScope.Logout = Logout;
 
         $("body").removeClass("bodyLogin");
         $(".header").show();
 
-        eventService.getEvents(function(response){
-            console.log("Response getEvents: ", response);
-            homeCtrl.events = response;
+        EventService.getEvents(function(response){
+            var eventos = response.Eventos;
+            angular.forEach(eventos, function(evento, key){
+                console.log(evento.data);
+                evento.data = (evento.data.substr(8, 2) + evento.data.substr(4, 4) + evento.data.substr(0, 4)).replace(/\-/g, "/");
+                console.log(evento);
+            });
+            homeCtrl.events = eventos;
+            //adaquaData(response);
         });
 
-        function logout(){
-
+        function Logout(){
             AuthenticationService.Logout();
             $("body").addClass("bodyLogin");
             $(".header").hide();

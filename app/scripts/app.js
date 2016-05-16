@@ -55,7 +55,7 @@ angular
       })
       .otherwise({
         redirectTo: '/404'
-      });
+    });
   })
   .run(function ($rootScope, $location, SessionService, AlertService) {
 
