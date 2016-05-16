@@ -24,6 +24,8 @@ angular
         $("body").removeClass("bodyLogin");
         $(".header").show();
 
+        $rootScope.dataLoading = true;
+
         EventService.getEvents(function(response){
             var eventos = response.Eventos;
             angular.forEach(eventos, function(evento, key){
@@ -32,8 +34,29 @@ angular
                 console.log(evento);
             });
             homeCtrl.events = eventos;
-            //adaquaData(response);
+            $rootScope.dataLoading = false;
+
+            //Pagination controls
+            homeCtrl.viewby = 10;
+            homeCtrl.totalItems = homeCtrl.events.length;
+            homeCtrl.currentPage = 1;
+            homeCtrl.itemsPerPage = homeCtrl.viewby;
+            homeCtrl.maxSize = 5; //Number of pager buttons to show
         });
+
+
+        homeCtrl.setPage = function (pageNo) {
+            homeCtrl.currentPage = pageNo;
+        };
+
+        homeCtrl.pageChanged = function() {
+            console.log('Page changed to: ' + homeCtrl.currentPage);
+        };
+
+        homeCtrl.setItemsPerPage = function(num) {
+            homeCtrl.itemsPerPage = num;
+            homeCtrl.currentPage = 1; //reset to first paghe
+        }
 
         function Logout(){
             AuthenticationService.Logout();

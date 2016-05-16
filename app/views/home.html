@@ -33,7 +33,7 @@
 	</div>
 
 	<div class="eventos">
-		<div class="evento" ng-repeat="event in home.events">
+		<div class="evento" ng-repeat="event in home.events.slice(((home.currentPage-1)*home.itemsPerPage), ((home.currentPage)*home.itemsPerPage))">
 			<p>{{event.codEvento}}</p>
 			<p>{{event.data}}</p>
 			<p>{{event.codStatus}}</p>
@@ -42,4 +42,11 @@
 			<p>+</p>
 		</div>
 	</div>
+
+	<uib-pagination total-items="home.totalItems"
+				ng-model="home.currentPage"
+				ng-change="home.pageChanged()"
+				class="pagination-sm"
+				items-per-page="home.itemsPerPage">
+	</uib-pagination>
 </div>

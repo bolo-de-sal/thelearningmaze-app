@@ -94,6 +94,7 @@ body {
 
 .navbar-brand{
     padding: 0px;
+    margin-left: 0px !important;
 
     > img{
         display: block;
@@ -109,8 +110,8 @@ body {
 }
 
 .navbar-default .navbar-nav > .active > a{
-    color: $lightblue;
-    background: white;
+    color: $lightblue !important;
+    background: white !important;
 }
 
 .navbar-default .navbar-nav > .active > a:hover {
@@ -276,6 +277,7 @@ body {
   width: 100%;
   height: 100%;
   background: rgba($darkblue, .7);
+  z-index: 3;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
