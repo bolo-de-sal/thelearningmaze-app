@@ -53,11 +53,16 @@ angular
         controller: 'AboutCtrl',
         controllerAs: 'about'
       })
+      .when('/control-panel', {
+        templateUrl: 'views/control-panel.html',
+        controller: 'ControlPanelController',
+        controllerAs: 'controlPanel'
+      })
       .otherwise({
         redirectTo: '/404'
     });
   })
-  .run(function ($rootScope, $location, SessionService, AlertService) {
+  .run(function ($rootScope, $location, AuthenticationService, SessionService, AlertService) {
 
       $rootScope.$on('$locationChangeStart', function (event, next, current) {
           AlertService.Clear();
@@ -79,5 +84,8 @@ angular
 
       });
 
+      // Global
+      $rootScope.user = SessionService.getUser();
+      $rootScope.Logout = AuthenticationService.Logout;
       $rootScope.CloseAlert = AlertService.CloseAlert;
   });

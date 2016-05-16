@@ -28,8 +28,12 @@ angular
           //      .success(function (response) {
           //          callback(response);
           //      });
+          console.log("aqui");
 
           SessionService.removeUserData();
+
+          $("body").addClass("bodyLogin");
+          $(".header").hide();
 
           $location.path('/login');
         }

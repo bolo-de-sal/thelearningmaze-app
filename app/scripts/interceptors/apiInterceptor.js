@@ -16,7 +16,7 @@ angular
 					config.url = AppConfig.app.production ? AppConfig.api.endpoint.production + config.url : AppConfig.api.endpoint.staging + config.url;
 				}
 				
-				return config || $q.when(config);
+				return config;
 			}
 		};
 
