@@ -9,55 +9,93 @@
 */
 
 .eventosAbertos{
-
     .titleColumns{
         background: $orange;
-    }
 
-    .eventos{
-        .evento:nth-child(odd){
-            background: white;
-        }
-        .evento{
-            background: $lightgray;
-            height: 40px;
-            padding-top: 10px;
-
-            p:first-of-type{
-                width: 10%;
-            }
-            p{
-                float: left;
-                width: 18%;
-                text-align: center;
-            }
+        p{
+            width: 22.5%;
         }
     }
 }
 
 .todosEventos{
+    height: 587px;
+    position: relative;
 
     .titleColumns{
         background: $lightblue;
+
+        p{
+            width: 22.5%;
+        }
     }
+}
 
-    .eventos{
-        .evento:nth-child(odd){
-            background: white;
+.eventos{
+    .evento:nth-child(odd){
+        background: white;
+    }
+    .evento{
+        background: #EDEDED;
+        height: 44px;
+        padding-top: 12px;
+
+        p:first-of-type{
+            width: 10%;
         }
-        .evento{
-            background: $lightgray;
-            height: 40px;
-            padding-top: 10px;
 
-            p:first-of-type{
-                width: 10%;
-            }
+        div{
+            display: flex;
+
             p{
-                float: left;
-                width: 18%;
-                text-align: center;
+                width: 90px !important;
+                height: 26px;
+                margin: 0 auto;
+                margin-top: -3px;
+                border-radius: 4px;
+                padding-top: 2px;
+                color: white;
+                cursor: pointer;
+            }
+
+            .green{
+                background: $green;
+            }
+
+            .gray{
+                background: $lightgray;
+            }
+
+            .disabled{
+                opacity: 0.5;
+                cursor: not-allowed;
+                color: rgba(255,255,255,0.5);
+            }
+
+            .enabled{
+                opacity: 1;
+                cursor: default;
             }
         }
+
+        p,
+        div{
+            float: left;
+            width: 22.5%;
+            text-align: center;
+        }
+
+    }
+}
+
+.pag{
+    text-align: center;
+    bottom: 16px;
+    position: absolute;
+    width: 100%;
+
+    .pagination{
+        margin-top: 16px;
+        margin-bottom: -5px;
     }
 }

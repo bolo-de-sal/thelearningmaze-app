@@ -11,6 +11,15 @@
 html{
   height: 100%;
   width: 100%;
+  overflow: hidden;
+  cursor: default;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none; 
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 body {
@@ -19,6 +28,8 @@ body {
     // background-repeat: no-repeat;
     // background-size: cover;
     background-attachment: fixed;
+    overflow-y: scroll;
+    height: 100%;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -99,7 +110,7 @@ body {
     > img{
         display: block;
         height: 40px;
-        margin-top: 5px;
+        margin-top: 6px;
         margin-right: 60px;
     }
 }
@@ -427,3 +438,17 @@ body {
 /*
 * END GLOBAL LOADING
 */
+
+::-webkit-scrollbar {
+    width: 8px!important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 187, 212, 0.7);
+    // border-left: 1px dashed $darkblue;
+}
+
+::-webkit-scrollbar-track {
+    background: #385965 !important;
+    // border-left: 1px dashed $lightblue;
+}

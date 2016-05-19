@@ -188,7 +188,7 @@ module.exports = function (grunt) {
           dest: '.tmp/styles/'
         }]
       },
-      dist: {        
+      dist: {
         files: [{
           expand: true,
           cwd: '.tmp/styles/',
@@ -225,7 +225,7 @@ module.exports = function (grunt) {
         src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
         ignorePath: /(\.\.\/){1,2}bower_components\//
       }
-    }, 
+    },
 
     // Compiles Sass to CSS and generates necessary files if requested
     sass: {

@@ -10,15 +10,25 @@ angular
         var events = {};
 
         events.getEvents = getEvents;
+        events.encerraEvento = encerraEvento;
 
         return events;
 
-        function getEvents(callback) {
+        function getEvents(page, callback) {
 
-            $http.get(AppConfig.api.identifier + '/Eventos/Paged/0/100')
+            $http.get(AppConfig.api.identifier + '/Eventos/Paged/' + page + '/10')
             .success(function (response) {
               callback(response);
             });
         }
+
+        function encerraEvento() {
+            $http.post(AppConfig.api.identifier + '/Eventos/Encerrar', { "codEvento": 166 } )
+            .success(function (response) {
+                console.log("Response: ", response);
+              // callback(response);
+            });            
+        }
+
 
     }
