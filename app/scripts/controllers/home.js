@@ -16,11 +16,6 @@ angular
     function HomeController(AuthenticationService, SessionService, EventService, $rootScope, $location) {
         var homeCtrl = this;
 
-        //homeCtrl.user = SessionService.getUser();
-        $rootScope.user = SessionService.getUser();
-        //homeCtrl.logout = logout;
-        $rootScope.Logout = Logout;
-
         $("body").removeClass("bodyLogin");
         $(".header").show();
 
