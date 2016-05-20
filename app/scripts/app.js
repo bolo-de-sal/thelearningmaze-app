@@ -58,6 +58,11 @@ angular
         controller: 'ControlPanelController',
         controllerAs: 'controlPanel'
       })
+      .when('/lobby', {
+        templateUrl: 'views/lobby.html',
+        controller: 'LobbyController',
+        controllerAs: 'lobby'
+      })
       .otherwise({
         redirectTo: '/404'
     });

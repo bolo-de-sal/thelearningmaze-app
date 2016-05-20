@@ -222,6 +222,30 @@ body {
   }
 }
 
+@media (min-width: 768px){
+  .col-md-4 {
+    float: left;
+  }
+}
+
+@media (min-width: 992px){  
+  .lobby .grupos .col-md-4 .grupo{
+      width: 260px !important;
+  }
+  .lobby .grupos .col-md-4 .grupo > p:nth-child(2){
+    font-size: 30px !important;
+  }
+}
+
+@media (min-width: 1200px){
+  .lobby .grupos .col-md-4 .grupo{
+      width: 300px !important;
+  }
+  .lobby .grupos .col-md-4 .grupo > p:nth-child(2){
+    font-size: 34px !important;
+  }
+}
+
 .title-section{
   font-size: 32px;
   color: $white;

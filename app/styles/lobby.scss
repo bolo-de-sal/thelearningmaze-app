@@ -1,0 +1,224 @@
+.lobby{
+	
+	.topo{
+		text-align: center;
+		color: white;
+		height: 200px;
+
+		.play{
+			position: absolute;
+			top: 40px;
+			right: 100px;
+
+			img{
+				border-radius: 50%;
+			    box-shadow: 4px 0px 10px 0px rgba(0, 0, 0, 0.5);
+			}
+		}
+	}
+
+	.grupos{
+		.col-md-4{
+			padding-left: 8px;
+			padding-right: 8px;
+
+			.grupo{
+
+				text-align: center;
+			    padding: 40px;
+			    padding-top: 30px;
+			    border-top: 8px solid darkviolet;
+			    width: 300px;
+			    margin-bottom: 40px !important;
+			    margin: 0 auto;
+			    position: relative;
+			    min-height: 502px;
+
+				> p:first-child{
+					    height: 60px;
+					    width: 60px;
+					    background: darkviolet;
+					    color: white;
+					    font-size: 30px;
+					    border-radius: 50%;
+					    position: absolute;
+					    top: -30px;
+					    left: -30px;
+					    padding: 11px;
+					    text-align: center;
+					    margin: 0px !important;
+				}
+
+				> p:nth-child(2){
+				    font-size: 34px;
+				    color: darkviolet;
+				    font-weight: bold;
+				    margin: 0px;
+				}
+
+				> p:nth-child(3){
+				    margin-top: 0px;
+				    text-align: right;
+				    font-size: 20px;
+				}
+
+				.alunos{
+
+				    /*padding: 20px;*/
+				    text-align: center;
+				    margin-top: 30px;
+				    margin-bottom: 20px;
+				    height: 254px;
+				    overflow-y: auto;
+
+				    > p{
+				    	font-size: 24px;
+				    	margin-bottom: 20px;
+				    }
+
+					.aluno{
+					    height: 40px;
+					    display: flex;
+					    align-items: center;
+					    margin: 10px;
+
+					    img{
+							height: 40px;
+							float: left;
+							border-radius: 50%;
+							border: 1px solid black;
+							margin-right: 10px;
+					    }
+
+					    p{
+					    	margin: 0px;
+					    }
+
+					    ::nth-word(2){
+					    	color: red;
+					    }
+
+
+					}
+
+				}
+
+				div.alunos::-webkit-scrollbar{
+					width: 2px !important;
+				}
+
+				> p:last-of-type{
+					text-align: center;
+				    font-size: 24px;
+				    background: darkviolet;
+				    color: white;
+				    padding: 5px;
+				    margin: 0px;
+				}			
+
+			}
+		}
+		.col-md-4:nth-child(6n+1){
+			 .grupo{
+				border-top: 8px solid red;
+
+				> p:first-child{
+					background: red;
+				}
+
+				> p:nth-child(2){
+				    color: red;
+				}
+
+				> p:last-of-type{
+				    background: red;
+				}	
+			}
+		}
+		.col-md-4:nth-child(6n+2){
+			.grupo{
+				border-top: 8px solid blue;
+
+				> p:first-child{
+					background: blue;
+				}
+
+				> p:nth-child(2){
+				    color: blue;
+				}
+
+				> p:last-of-type{
+				    background: blue;
+				}	
+			}			
+		}
+		.col-md-4:nth-child(6n+3){
+			.grupo{
+				border-top: 8px solid green;
+
+				> p:first-child{
+					background: green;
+				}
+
+				> p:nth-child(2){
+				    color: green;
+				}
+
+				> p:last-of-type{
+				    background: green;
+				}	
+			}			
+		}
+		.col-md-4:nth-child(6n+4){
+			.grupo{
+				border-top: 8px solid pink;
+
+				> p:first-child{
+					background: pink;
+				}
+
+				> p:nth-child(2){
+				    color: pink;
+				}
+
+				> p:last-of-type{
+				    background: pink;
+				}	
+			}			
+		}
+		.col-md-4:nth-child(6n+5){
+			.grupo{
+				border-top: 8px solid darkviolet;
+
+				> p:first-child{
+					background: darkviolet;
+				}
+
+				> p:nth-child(2){
+				    color: darkviolet;
+				}
+
+				> p:last-of-type{
+				    background: darkviolet;
+				}	
+			}			
+		}
+		.col-md-4:nth-child(6n+6){
+			.grupo{
+				border-top: 8px solid cyan;
+
+				> p:first-child{
+					background: cyan;
+				}
+
+				> p:nth-child(2){
+				    color: cyan;
+				}
+
+				> p:last-of-type{
+				    background: cyan;
+				}	
+			}			
+		}
+	}
+}
