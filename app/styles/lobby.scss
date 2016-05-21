@@ -4,10 +4,11 @@
 		text-align: center;
 		color: white;
 		height: 200px;
+		padding-top: 30px;
 
 		.play{
 			position: absolute;
-			top: 40px;
+			top: 50px;
 			right: 100px;
 
 			img{
@@ -26,13 +27,14 @@
 
 				text-align: center;
 			    padding: 40px;
-			    padding-top: 30px;
-			    border-top: 8px solid darkviolet;
-			    width: 300px;
+			    padding-top: 24px;
+			    border-top: 6px solid darkviolet;
+			    width: 250px;
 			    margin-bottom: 40px !important;
 			    margin: 0 auto;
 			    position: relative;
-			    min-height: 502px;
+			    min-height: 400px;
+			    height: 400px;
 
 				> p:first-child{
 					    height: 60px;
@@ -54,36 +56,45 @@
 				    color: darkviolet;
 				    font-weight: bold;
 				    margin: 0px;
+				    font-size: 26px !important;
 				}
 
 				> p:nth-child(3){
-				    margin-top: 0px;
+				    margin-top: -6px;
 				    text-align: right;
 				    font-size: 20px;
+				    margin-bottom: 20px;
+				}
+
+				> p:nth-child(4){
+				    font-size: 22px;
+			    	margin-bottom: 16px;
 				}
 
 				.alunos{
 
 				    /*padding: 20px;*/
 				    text-align: center;
-				    margin-top: 30px;
+				    /*margin-top: 22px;*/
 				    margin-bottom: 20px;
-				    height: 254px;
+				    height: 160px;
 				    overflow-y: auto;
 
-				    > p{
-				    	font-size: 24px;
+				    /*> p{
+				    	font-size: 22px;
 				    	margin-bottom: 20px;
-				    }
+				    }*/
 
 					.aluno{
 					    height: 40px;
 					    display: flex;
 					    align-items: center;
 					    margin: 10px;
+					    margin-top: 0px;
+				        margin-bottom: 8px;
 
 					    img{
-							height: 40px;
+							height: 28px;
 							float: left;
 							border-radius: 50%;
 							border: 1px solid black;
@@ -92,6 +103,7 @@
 
 					    p{
 					    	margin: 0px;
+					    	text-align: left;
 					    }
 
 					    ::nth-word(2){
@@ -114,13 +126,14 @@
 				    color: white;
 				    padding: 5px;
 				    margin: 0px;
+				    border-radius: 3px;
 				}			
 
 			}
 		}
 		.col-md-4:nth-child(6n+1){
 			 .grupo{
-				border-top: 8px solid red;
+				border-color: red;
 
 				> p:first-child{
 					background: red;
@@ -137,7 +150,7 @@
 		}
 		.col-md-4:nth-child(6n+2){
 			.grupo{
-				border-top: 8px solid blue;
+				border-color: blue;
 
 				> p:first-child{
 					background: blue;
@@ -154,7 +167,7 @@
 		}
 		.col-md-4:nth-child(6n+3){
 			.grupo{
-				border-top: 8px solid green;
+				border-color: green;
 
 				> p:first-child{
 					background: green;
@@ -171,7 +184,7 @@
 		}
 		.col-md-4:nth-child(6n+4){
 			.grupo{
-				border-top: 8px solid pink;
+				border-color: pink;
 
 				> p:first-child{
 					background: pink;
@@ -188,7 +201,7 @@
 		}
 		.col-md-4:nth-child(6n+5){
 			.grupo{
-				border-top: 8px solid darkviolet;
+				border-color: darkviolet;
 
 				> p:first-child{
 					background: darkviolet;
@@ -205,7 +218,7 @@
 		}
 		.col-md-4:nth-child(6n+6){
 			.grupo{
-				border-top: 8px solid cyan;
+				border-color: cyan;
 
 				> p:first-child{
 					background: cyan;
