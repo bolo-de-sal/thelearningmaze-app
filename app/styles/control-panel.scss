@@ -12,7 +12,34 @@
 * PAGE STYLES
 */
 
+.box{
+	padding: 10px 15px;
+}
 
+.box-pergunta{
+	position: relative;
+	padding: 10px 55px 10px 15px;
+	background: $white;
+	border-top: 5px solid $orange;
+
+	.titulo{
+		font-size: 24px;
+		color: $darkgray;
+		margin: 0 0 45px;
+	}
+
+	.pergunta{
+		font-size: 20px;		
+		text-align: right;
+		margin: 0;
+	}
+
+	.assunto{
+		font-size: 18px;
+		color: $orange;
+		text-align: right;
+	}
+}
 
 /*
 * END PAGE STYLES

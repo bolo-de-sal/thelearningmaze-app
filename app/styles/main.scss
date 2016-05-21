@@ -163,7 +163,7 @@ body {
 }
 
 .content{
-    padding: 0px 60px;
+    padding: 0px 30px;
     position: relative;
     top: 50px;
     padding-top: 16px;
@@ -491,3 +491,24 @@ body {
     background: #385965 !important;
     // border-left: 1px dashed $lightblue;
 }
+
+/*
+* GLOBAL GROUP
+*/
+
+.grupo-icone{
+  $dimension: 35px;
+
+  display: inline-block;
+  width: $dimension;
+  height: $dimension;
+  line-height: $dimension;
+  border-radius: 50%;
+  color: $white;
+  font-size: 16px;
+  text-align: center;
+}
+
+/*
+* END GLOBAL GROUP
+*/

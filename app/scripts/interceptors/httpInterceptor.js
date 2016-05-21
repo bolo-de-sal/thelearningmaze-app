@@ -13,7 +13,7 @@ angular
 		var httpInterceptor = {
 			responseError: function(response) {
 				var httpStatus = response.status;
-				var hideGlobalMessage = (httpStatus === 400 && !SessionService.getUser());
+				var hideGlobalMessage = (httpStatus === 419 && !SessionService.getUser());
 
 				if(!hideGlobalMessage){
 					// Esconde o loading
