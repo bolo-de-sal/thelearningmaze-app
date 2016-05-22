@@ -8,8 +8,8 @@
 * END IMPORT
 */
 
-.eventosAbertos{
-    .titleColumns{
+.open-events{
+    .title-columns{
         background: $orange;
 
         p{
@@ -18,11 +18,11 @@
     }
 }
 
-.todosEventos{
+.all-events{
     height: 587px;
     position: relative;
 
-    .titleColumns{
+    .title-columns{
         background: $lightblue;
 
         p{
@@ -31,11 +31,11 @@
     }
 }
 
-.eventos{
-    .evento:nth-child(odd){
+.events{
+    .event:nth-child(odd){
         background: white;
     }
-    .evento{
+    .event{
         background: #EDEDED;
         height: 44px;
         padding-top: 12px;

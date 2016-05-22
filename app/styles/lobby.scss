@@ -1,15 +1,38 @@
+/*
+* IMPORT
+*/
+
+@import "util\\variables.scss";
+
+/*
+* END IMPORT
+*/
+
 .lobby{
 	
-	.topo{
+	.top{
 		text-align: center;
 		color: white;
 		height: 200px;
 		padding-top: 30px;
 
+		> h1{
+			font-weight: bold;
+		}
+
+		> p{
+			font-size: 24px;
+		}
+
 		.play{
 			position: absolute;
 			top: 50px;
 			right: 100px;
+
+			p{
+				font-size: 24px;
+				color: $lightblue;
+			}
 
 			img{
 				border-radius: 50%;
@@ -18,23 +41,23 @@
 		}
 	}
 
-	.grupos{
+	.groups{
 		.col-md-4{
 			padding-left: 8px;
 			padding-right: 8px;
 
-			.grupo{
+			.group{
 
 				text-align: center;
-			    padding: 40px;
-			    padding-top: 24px;
+			    padding: 36px;
+			    padding-top: 22px;
 			    border-top: 6px solid darkviolet;
 			    width: 250px;
 			    margin-bottom: 40px !important;
 			    margin: 0 auto;
 			    position: relative;
-			    min-height: 400px;
-			    height: 400px;
+			    min-height: 360px;
+			    height: 360px;
 
 				> p:first-child{
 					    height: 60px;
@@ -56,28 +79,28 @@
 				    color: darkviolet;
 				    font-weight: bold;
 				    margin: 0px;
-				    font-size: 26px !important;
+				    font-size: 24px !important;
 				}
 
 				> p:nth-child(3){
 				    margin-top: -6px;
 				    text-align: right;
-				    font-size: 20px;
-				    margin-bottom: 20px;
+				    font-size: 18px;
+				    margin-bottom: 18px;
 				}
 
 				> p:nth-child(4){
-				    font-size: 22px;
-			    	margin-bottom: 16px;
+				    font-size: 20px;
+			    	margin-bottom: 15px;
 				}
 
-				.alunos{
+				.students{
 
 				    /*padding: 20px;*/
 				    text-align: center;
 				    /*margin-top: 22px;*/
 				    margin-bottom: 20px;
-				    height: 160px;
+				    height: 130px;
 				    overflow-y: auto;
 
 				    /*> p{
@@ -85,7 +108,7 @@
 				    	margin-bottom: 20px;
 				    }*/
 
-					.aluno{
+					.student{
 					    height: 40px;
 					    display: flex;
 					    align-items: center;
@@ -113,9 +136,13 @@
 
 					}
 
+					.student:last-child{
+						margin-bottom: 0px;
+					}
+
 				}
 
-				div.alunos::-webkit-scrollbar{
+				div.students::-webkit-scrollbar{
 					width: 2px !important;
 				}
 
@@ -132,7 +159,7 @@
 			}
 		}
 		.col-md-4:nth-child(6n+1){
-			 .grupo{
+			 .group{
 				border-color: red;
 
 				> p:first-child{
@@ -145,11 +172,15 @@
 
 				> p:last-of-type{
 				    background: red;
-				}	
+				}
+
+				div.students::-webkit-scrollbar-thumb{
+					background-color: red;
+				}
 			}
 		}
 		.col-md-4:nth-child(6n+2){
-			.grupo{
+			.group{
 				border-color: blue;
 
 				> p:first-child{
@@ -162,11 +193,15 @@
 
 				> p:last-of-type{
 				    background: blue;
+				}
+
+				div.students::-webkit-scrollbar-thumb{
+					background-color: blue;
 				}	
 			}			
 		}
 		.col-md-4:nth-child(6n+3){
-			.grupo{
+			.group{
 				border-color: green;
 
 				> p:first-child{
@@ -180,10 +215,14 @@
 				> p:last-of-type{
 				    background: green;
 				}	
+
+				div.students::-webkit-scrollbar-thumb{
+					background-color: green;
+				}
 			}			
 		}
 		.col-md-4:nth-child(6n+4){
-			.grupo{
+			.group{
 				border-color: pink;
 
 				> p:first-child{
@@ -197,10 +236,14 @@
 				> p:last-of-type{
 				    background: pink;
 				}	
+
+				div.students::-webkit-scrollbar-thumb{
+					background-color: pink;
+				}
 			}			
 		}
 		.col-md-4:nth-child(6n+5){
-			.grupo{
+			.group{
 				border-color: darkviolet;
 
 				> p:first-child{
@@ -214,10 +257,14 @@
 				> p:last-of-type{
 				    background: darkviolet;
 				}	
+
+				div.students::-webkit-scrollbar-thumb{
+					background-color: darkviolet;
+				}
 			}			
 		}
 		.col-md-4:nth-child(6n+6){
-			.grupo{
+			.group{
 				border-color: cyan;
 
 				> p:first-child{
@@ -231,6 +278,10 @@
 				> p:last-of-type{
 				    background: cyan;
 				}	
+
+				div.students::-webkit-scrollbar-thumb{
+					background-color: cyan;
+				}
 			}			
 		}
 	}

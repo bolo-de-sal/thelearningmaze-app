@@ -44,6 +44,8 @@ angular
             	    // Limpar os dados
             	    if(SessionService.getUser()){
 	            	    SessionService.removeUserData();
+	            	    $(".header").hide();
+            			$("body").addClass("bodyLogin");
 	            	    $location.path('/login');
 
 	            	    return $q.reject(response);

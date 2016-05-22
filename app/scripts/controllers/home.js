@@ -25,10 +25,10 @@ angular
         var pageContentControl = [{ loaded: true }];
 
         // Variável para desabilitar botões
-        homeCtrl.disableButtons = true;
+        homeCtrl.disableButtons = false;
 
         function setFunctionButton(){
-            $(".eventos").on("click", ".listButton", function(){                
+            $(".events").on("click", ".list-button", function(){
                 if($(this).hasClass("disabled")){
                     console.log("Evento: " + $(this).parent().siblings().first().html() + " !hasClass('enabled')");
                 }
@@ -39,44 +39,61 @@ angular
             });
         }
 
-        EventService.getEvents(0, function(response){
-            var eventos = response.Eventos;
-            angular.forEach(eventos, function(evento, key){
-                console.log(evento.data);
-                evento.inicio = evento.data.substr(11, 5);
-                evento.data = (evento.data.substr(8, 2) + evento.data.substr(4, 4) + evento.data.substr(0, 4)).replace(/\-/g, "/");
-                evento.codStatus = homeCtrl.replaceStatus(evento.codStatus);
-                console.log(evento);
-            });
-            homeCtrl.events = eventos;
-
-            //Pagination controls
-            homeCtrl.viewby = 10;
-            homeCtrl.totalItems = response.TotalEventos;
-            homeCtrl.currentPage = 1;
-            homeCtrl.itemsPerPage = homeCtrl.viewby;
-            homeCtrl.maxSize = 5; //Number of pager buttons to show
-            homeCtrl.numPages = parseInt(homeCtrl.totalItems / homeCtrl.itemsPerPage);
-
-            console.log("homeCtrl.totalItems ", homeCtrl.totalItems);
-            console.log("homeCtrl.itemsPerPage: ", homeCtrl.itemsPerPage);
-            console.log("homeCtrl.numPages: ", homeCtrl.numPages);
-
-            //Completa o tamanho do array com objetos em vazios
-            for(var i = homeCtrl.viewby - 1; i < homeCtrl.totalItems - 1; i++){
-                homeCtrl.events.push({});
+        EventService.getActiveEvent(function(response){
+            console.log("Evento aberto: ", response);
+            if(response){
+                homeCtrl.activeEvent = homeCtrl.adaptEvent(response);
+                homeCtrl.disableButtons = true;
             }
 
-            //Iteração do array de com a quantidade total de páginas
-            for(var i = 1; i <= homeCtrl.numPages; i++){
-                pageContentControl.push({loaded: false});
-                console.log("pageContentControl: ", pageContentControl);
-            }
-
-            setFunctionButton();
-            
-            $rootScope.dataLoading = false;
+            getEvents();
         });
+
+        function getEvents(){
+            EventService.getEvents(0, function(response){
+                console.log("Eventos: ", response);
+                var eventos = response.Eventos;
+                angular.forEach(eventos, function(evento, key){
+                    evento = homeCtrl.adaptEvent(evento);
+                });
+                homeCtrl.events = eventos;
+
+                //Pagination controls
+                homeCtrl.viewby = 10;
+                homeCtrl.totalItems = response.TotalEventos;
+                homeCtrl.currentPage = 1;
+                homeCtrl.itemsPerPage = homeCtrl.viewby;
+                homeCtrl.maxSize = 5; //Number of pager buttons to show
+                homeCtrl.numPages = parseInt(homeCtrl.totalItems / homeCtrl.itemsPerPage);
+
+                console.log("homeCtrl.totalItems ", homeCtrl.totalItems);
+                console.log("homeCtrl.itemsPerPage: ", homeCtrl.itemsPerPage);
+                console.log("homeCtrl.numPages: ", homeCtrl.numPages);
+
+                //Completa o tamanho do array com objetos em vazios
+                for(var i = homeCtrl.viewby - 1; i < homeCtrl.totalItems - 1; i++){
+                    homeCtrl.events.push({});
+                }
+
+                //Iteração do array de com a quantidade total de páginas
+                for(var i = 1; i <= homeCtrl.numPages; i++){
+                    pageContentControl.push({loaded: false});
+                    console.log("pageContentControl: ", pageContentControl);
+                }
+
+                setFunctionButton();
+                
+                $rootScope.dataLoading = false;
+            });            
+        }
+
+        homeCtrl.adaptEvent = function(evento){
+            evento.inicio = evento.data.substr(11, 5);
+            evento.data = (evento.data.substr(8, 2) + evento.data.substr(4, 4) + evento.data.substr(0, 4)).replace(/\-/g, "/");
+            evento.codStatus = homeCtrl.replaceStatus(evento.codStatus);
+
+            return evento;
+        };
 
         // EventService.encerraEvento();
 
@@ -110,26 +127,17 @@ angular
                 $rootScope.dataLoading = false;
             }
             else{
-                // $('.eventos').hide();
+                // $('.event').hide();
                 EventService.getEvents(homeCtrl.currentPage - 1, function(response){
                     var eventos = response.Eventos;
                     angular.forEach(eventos, function(evento, key){
-                        console.log(evento.data);
-                        evento.inicio = evento.data.substr(11, 5);
-                        evento.data = (evento.data.substr(8, 2) + evento.data.substr(4, 4) + evento.data.substr(0, 4)).replace(/\-/g, "/");
-                        if(evento.codEvento == 166){
-                            evento.codStatus = "FECHADO";
-                        }
-                        else{
-                            evento.codStatus = homeCtrl.replaceStatus(evento.codStatus);
-                        }
-                        console.log(evento);
+                        evento = homeCtrl.adaptEvent(evento);
                         homeCtrl.events[inicio + key] = evento;
                     });
                     pageContentControl[homeCtrl.currentPage - 1].loaded = true;
 
                     $rootScope.dataLoading = false;
-                    // $('.eventos').show();
+                    // $('.event').show();
                 });
             }
             console.log('Page changed to: ' + homeCtrl.currentPage);

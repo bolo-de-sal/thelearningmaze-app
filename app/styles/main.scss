@@ -180,7 +180,7 @@ body {
         font-size: 18px;
     }
 
-    .titleColumns{
+    .title-columns{
 
         height: 40px;
         padding-top: 10px;
@@ -200,9 +200,24 @@ body {
 }
 
 /* Responsive: Portrait tablets and up */
+@media screen and (min-width: 320px) {
+    .lobby .top {
+        height: 330px !important;
+        .play{
+            position: relative !important;
+            right: inherit !important;
+            top: 30px !important;
+        }
+    }
+}
+
 @media screen and (min-width: 768px) {
   .container {
     // max-width: 730px;
+  }
+
+  .navbar-default .navbar-nav > li > a{
+      padding: 15px 28px;
   }
 
   /* Remove the padding we set earlier */
@@ -220,17 +235,24 @@ body {
   .jumbotron {
     border-bottom: 0;
   }
-}
 
-@media (min-width: 768px){
+  .lobby .top {
+        height: 200px !important;
+        .play{
+            position: absolute !important;
+            right: 100px !important;
+            top: 50px !important;
+        }
+    }
+
   .col-md-4 {
     float: left;
     width: 50%;
   }
-  .lobby .grupos .col-md-4 .grupo{
-    width: 250px !important;
+  .lobby .groups .col-md-4 .group{
+    width: 225px !important;
   }
-  .lobby .grupos .col-md-4 .grupo > p:nth-child(2){
+  .lobby .groups .col-md-4 .group > p:nth-child(2){
     /*font-size: 26px !important;*/
   }
 }
@@ -239,20 +261,20 @@ body {
   .col-md-4 {
     width: 33.33333333%;
   }
-  /*.lobby .grupos .col-md-4 .grupo{
+  /*.lobby .groups .col-md-4 .group{
     width: 260px !important;
   }
-  .lobby .grupos .col-md-4 .grupo > p:nth-child(2){
+  .lobby .groups .col-md-4 .group > p:nth-child(2){
     font-size: 30px !important;
   }*/
 }
 
 @media (min-width: 1200px){
-  .lobby .grupos .col-md-4 .grupo{
-      width: 250px !important;
+  .lobby .groups .col-md-4 .group{
+      width: 225px !important;
   }
-  .lobby .grupos .col-md-4 .grupo > p:nth-child(2){
-    font-size: 26px !important;
+  .lobby .groups .col-md-4 .group > p:nth-child(2){
+    font-size: 24px !important;
   }
 }
 
@@ -496,7 +518,7 @@ body {
 * GLOBAL GROUP
 */
 
-.grupo-icone{
+.group-icone{
   $dimension: 35px;
 
   display: inline-block;

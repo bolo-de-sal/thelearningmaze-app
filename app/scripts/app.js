@@ -69,6 +69,13 @@ angular
   })
   .run(function ($rootScope, $location, AuthenticationService, SessionService, AlertService) {
 
+      $(".navbar-nav:first li").each(function(){
+          $(this).click(function(){
+              $(this).siblings().removeClass("active");
+              $(this).addClass("active");
+          });
+      });
+
       $rootScope.$on('$locationChangeStart', function (event, next, current) {
           AlertService.Clear();
 

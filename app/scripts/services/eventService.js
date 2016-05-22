@@ -10,6 +10,7 @@ angular
         var events = {};
 
         events.getEvents = getEvents;
+        events.getActiveEvent = getActiveEvent;
         events.encerraEvento = encerraEvento;
 
         return events;
@@ -17,6 +18,14 @@ angular
         function getEvents(page, callback) {
 
             $http.get(AppConfig.api.identifier + '/Eventos/Paged/' + page + '/10')
+            .success(function (response) {
+              callback(response);
+            });
+        }
+
+        function getActiveEvent(callback) {
+
+            $http.get(AppConfig.api.identifier + '/Eventos/Ativo')
             .success(function (response) {
               callback(response);
             });
