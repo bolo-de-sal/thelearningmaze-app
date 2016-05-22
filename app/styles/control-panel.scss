@@ -12,32 +12,20 @@
 * PAGE STYLES
 */
 
-.box{
-	padding: 10px 15px;
-}
+.card-question{
 
-.box-pergunta{
-	position: relative;
-	padding: 10px 55px 10px 15px;
-	background: $white;
-	border-top: 5px solid $orange;
-
-	.titulo{
-		font-size: 24px;
+	.fullscreen{
 		color: $darkgray;
-		margin: 0 0 45px;
 	}
 
-	.pergunta{
-		font-size: 20px;		
-		text-align: right;
-		margin: 0;
+	.group-icon{
+		background: $orange;
 	}
-
-	.assunto{
-		font-size: 18px;
-		color: $orange;
-		text-align: right;
+	
+	.time{
+		float: right;
+		margin-right: -40px;
+		background: $orange;
 	}
 }
 

@@ -2,7 +2,7 @@
 * IMPORT
 */
 
-@import "util\\variables.scss";
+@import "util\/variables.scss";
 
 /*
 * END IMPORT
@@ -518,7 +518,7 @@ body {
 * GLOBAL GROUP
 */
 
-.group-icone{
+.group-icon{
   $dimension: 35px;
 
   display: inline-block;
@@ -533,4 +533,73 @@ body {
 
 /*
 * END GLOBAL GROUP
+*/
+
+/*
+* CARDS
+*/
+
+.card{
+  position: relative;
+  padding: 10px 15px;
+
+  .title{
+    font-size: 24px;
+    color: $darkgray;
+    margin: 0 0 45px;
+  }
+
+  .fullscreen{
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+    border: none;
+    background: transparent;
+    font-weight: bold;
+  }
+}
+
+.card-question{
+  padding: 10px 55px 10px 15px;
+  background: $white;
+  border-top: 5px solid $orange;
+
+  .question{
+    font-size: 20px;    
+    text-align: right;
+    margin: 0;
+  }
+
+  .theme{
+    font-size: 18px;
+    color: $orange;
+    text-align: right;
+  }
+
+  .time{
+    display: inline-block;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    border-radius: 50%;
+    text-align: center;
+    color: $white;
+  }
+}
+
+.card-score{
+  background: $lightblack;
+
+  .title{
+    color: $lightgray;
+  }
+
+  .fullscreen{
+    color: $lightgray;
+  }
+}
+
+/*
+* END CARDS
 */
