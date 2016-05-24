@@ -531,6 +531,13 @@ body {
   text-align: center;
 }
 
+.group-name{
+  display: inline-block;
+  font-size: 18px;
+  line-height: 30px;
+  text-transform: uppercase;
+}
+
 /*
 * END GLOBAL GROUP
 */
@@ -557,10 +564,11 @@ body {
     border: none;
     background: transparent;
     font-weight: bold;
+    color: $darkgray;
   }
 }
 
-.card-question{
+.wrap-card-question{
   padding: 10px 55px 10px 15px;
   background: $white;
   border-top: 5px solid $orange;
@@ -588,7 +596,7 @@ body {
   }
 }
 
-.card-score{
+.wrap-card-score{
   background: $lightblack;
 
   .title{
@@ -598,8 +606,41 @@ body {
   .fullscreen{
     color: $lightgray;
   }
+
+  .group-icon{
+    $dimension: 30px;
+
+    width: $dimension;
+    height: $dimension;
+  }
 }
 
 /*
 * END CARDS
+*/
+
+/*
+* BUTTON
+*/
+
+.send-question{
+  position: relative;
+  width: 100%;
+  font-size: 24px;
+  background: $yellow url('../images/send-question.png') center 75% no-repeat;
+  border: none;
+  padding: 0;
+}
+
+.send-question-text{
+  display: block;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  outline: none;
+}
+
+/*
+* END BUTTONS
 */

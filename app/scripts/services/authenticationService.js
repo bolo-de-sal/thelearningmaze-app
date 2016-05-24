@@ -14,12 +14,14 @@ angular
 
         return authentication;
 
-        function Login(username, password, callback) {
+        function Login(username, password) {
             
-            $http.post(AppConfig.api.identifier + '/professors/login', { email: username, senhaText: password })
-            .success(function (response) {
-              callback(response);
+            var promise = $http.post(AppConfig.api.identifier + '/professors/login', { email: username, senhaText: password })
+            .then(function(response){
+              return response.data;
             });
+
+            return promise;
 
         }
 
@@ -28,8 +30,6 @@ angular
           //      .success(function (response) {
           //          callback(response);
           //      });
-          console.log("aqui");
-
           SessionService.removeUserData();
 
           $("body").addClass("bodyLogin");

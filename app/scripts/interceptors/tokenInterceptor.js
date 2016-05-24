@@ -8,9 +8,9 @@ angular
 	}])
 	.run(RunInterceptor);
 
-    TokenInterceptor.$inject = ['$q', '$location', '$injector', 'AppConfig', 'SessionService'];
+    TokenInterceptor.$inject = ['$q', '$location', '$injector', '$rootScope', 'AppConfig', 'SessionService', 'AlertService'];
 
-    function TokenInterceptor($q, $location, $injector, AppConfig, SessionService) {
+    function TokenInterceptor($q, $location, $injector, $rootScope, AppConfig, SessionService, AlertService) {
 	    var tokenInterceptor = {
 	        request: function(config) {
 	        	var token = SessionService.getTokenInfo() ? SessionService.getTokenInfo().userToken ? SessionService.getTokenInfo().userToken : SessionService.getTokenInfo().token : null;
@@ -26,7 +26,7 @@ angular
 	            var httpStatus = response.status;
 
 	            // Token expirado
-	            if(httpStatus === 419){
+	            if(httpStatus === 419){	            	
 	            	// Buscar novo token
 	            	console.log('##TOKEN.INTERCEPTOR.RESPONSEERROR## TOKEN EXPIROU');         	
 	                var $http = $injector.get('$http');

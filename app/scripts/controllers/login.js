@@ -20,12 +20,13 @@ angular.module('thelearningmaze')
         $("body").addClass("bodyLogin");
 
         function login() {
-            AlertService.Clear();
             
             // Exibe o loader
             $rootScope.dataLoading = true;
 
-            AuthenticationService.Login(loginCtrl.username, loginCtrl.password, function (response) {
+            AuthenticationService.Login(loginCtrl.username, loginCtrl.password).then(loginSuccess, loginError);
+
+            function loginSuccess(response){
                 // Verificar futuramente em caso de login do aluno
                 var user = response._professor;
                 var userToken = response.newToken;
@@ -39,6 +40,12 @@ angular.module('thelearningmaze')
                 $location.path('/');
 
                 $rootScope.dataLoading = false;
-            });
+            }
+
+            function loginError(error){
+                $rootScope.dataLoading = false;
+
+                AlertService.Add('danger', 'Usuários ou senha inválidos');
+            }
         };
     }

@@ -13,6 +13,7 @@ angular
         alertService.Clear = Clear;
 
         $rootScope.alerts = [];
+        $rootScope.hideAlertMessage = false;
 
         return alertService;
 
