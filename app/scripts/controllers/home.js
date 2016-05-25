@@ -11,15 +11,15 @@ angular
     .module('thelearningmaze')
     .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['AuthenticationService', 'SessionService', 'EventService', '$rootScope', '$location'];
+    HomeController.$inject = ['AuthenticationService', 'SessionService', 'EventService', '$rootScope', '$location', 'AlertService'];
 
-    function HomeController(AuthenticationService, SessionService, EventService, $rootScope, $location) {
+    function HomeController(AuthenticationService, SessionService, EventService, $rootScope, $location, AlertService) {
         var homeCtrl = this;
+
+        $rootScope.dataLoading = true;
 
         $("body").removeClass("bodyLogin");
         $(".header").show();
-
-        $rootScope.dataLoading = true;
 
         //Array para controle de páginas já carregadas
         var pageContentControl = [{ loaded: true }];
@@ -30,23 +30,59 @@ angular
         // EventService.closeEvent(); 
         // EventService.openEvent(); 
 
-        function setFunctionButton(){
-            $(".events").on("click", ".list-button", function(){
-                if($(this).hasClass("disabled")){
-                    console.log("Evento: " + $(this).parent().siblings().first().html() + " !hasClass('enabled')");
-                }
-                else{
-                    alert("Clique no botão do evento: " + $(this).parent().siblings().first().html());
-                    console.log("Clique no botão do evento: ", $(this).parent().siblings().first().html());
-                    var codEvento = $(this).parent().siblings().first().html();
-                    getEventGroups(codEvento);
-                }
+        EventService.getEvents(0).then(getEventsSuccess, getEventsError);
+
+        EventService.getActiveEvent().then(getActiveEventSuccess, getActiveEventError);
+
+        // Get Events
+
+        function getEventsSuccess(response){
+            // console.log("Eventos: ", response);
+            var eventos = response.Eventos;
+            angular.forEach(eventos, function(evento, key){
+                evento = homeCtrl.adaptEvent(evento);
             });
+            homeCtrl.events = eventos;
+
+            //Pagination controls
+            homeCtrl.viewby = 10;
+            homeCtrl.totalItems = response.TotalEventos;
+            homeCtrl.currentPage = 1;
+            homeCtrl.itemsPerPage = homeCtrl.viewby;
+            homeCtrl.maxSize = 5; //Number of pager buttons to show
+            homeCtrl.numPages = parseInt(homeCtrl.totalItems / homeCtrl.itemsPerPage);
+
+            // console.log("homeCtrl.totalItems ", homeCtrl.totalItems);
+            // console.log("homeCtrl.itemsPerPage: ", homeCtrl.itemsPerPage);
+            // console.log("homeCtrl.numPages: ", homeCtrl.numPages);
+
+            //Completa o tamanho do array com objetos em vazios
+            for(var i = homeCtrl.viewby - 1; i < homeCtrl.totalItems - 1; i++){
+                homeCtrl.events.push({});
+            }
+
+            //Iteração do array de com a quantidade total de páginas
+            for(var i = 1; i <= homeCtrl.numPages; i++){
+                pageContentControl.push({loaded: false});
+                // console.log("pageContentControl: ", pageContentControl);
+            }
+
+            setFunctionButton();
+
+            $rootScope.dataLoading = false;
         }
 
-        EventService.getActiveEvent(function(response){
-            console.log("Evento aberto: ", response);
-            if(response.message == undefined){
+        function getEventsError(error){
+            $rootScope.dataLoading = false;
+
+            AlertService.Add('danger', 'Não existe eventos disponíveis');
+        }
+
+        // Get Active Events
+
+        function getActiveEventSuccess(response){
+            // console.log("Evento aberto: ", response);
+            if(response){
                 homeCtrl.activeEvent = homeCtrl.adaptEvent(response);
                 homeCtrl.disableButtons = true;
             }
@@ -54,46 +90,24 @@ angular
                 homeCtrl.disableButtons = false;
             }
 
-            getEvents();
-        });
+            $rootScope.dataLoading = false;
+        }
 
-        function getEvents(){
-            EventService.getEvents(0, function(response){
-                console.log("Eventos: ", response);
-                var eventos = response.Eventos;
-                angular.forEach(eventos, function(evento, key){
-                    evento = homeCtrl.adaptEvent(evento);
-                    console.log("Evento: ", evento);
-                });
-                homeCtrl.events = eventos;
+        function getActiveEventError(error){
+        }
 
-                //Pagination controls
-                homeCtrl.viewby = 10;
-                homeCtrl.totalItems = response.TotalEventos;
-                homeCtrl.currentPage = 1;
-                homeCtrl.itemsPerPage = homeCtrl.viewby;
-                homeCtrl.maxSize = 5; //Number of pager buttons to show
-                homeCtrl.numPages = parseInt(homeCtrl.totalItems / homeCtrl.itemsPerPage);
-
-                console.log("homeCtrl.totalItems ", homeCtrl.totalItems);
-                console.log("homeCtrl.itemsPerPage: ", homeCtrl.itemsPerPage);
-                console.log("homeCtrl.numPages: ", homeCtrl.numPages);
-
-                //Completa o tamanho do array com objetos em vazios
-                for(var i = homeCtrl.viewby - 1; i < homeCtrl.totalItems - 1; i++){
-                    homeCtrl.events.push({});
+        function setFunctionButton(){
+            $(".events").on("click", ".list-button", function(){
+                if($(this).hasClass("disabled")){
+                    // console.log("Evento: " + $(this).parent().siblings().first().html() + " !hasClass('enabled')");
                 }
-
-                //Iteração do array de com a quantidade total de páginas
-                for(var i = 1; i <= homeCtrl.numPages; i++){
-                    pageContentControl.push({loaded: false});
-                    console.log("pageContentControl: ", pageContentControl);
+                else{
+                    alert("Clique no botão do evento: " + $(this).parent().siblings().first().html());
+                    // console.log("Clique no botão do evento: ", $(this).parent().siblings().first().html());
+                    var codEvento = $(this).parent().siblings().first().html();
+                    getEventGroups(codEvento);
                 }
-
-                setFunctionButton();
-                
-                $rootScope.dataLoading = false;
-            });            
+            });
         }
 
         homeCtrl.adaptEvent = function(evento){
@@ -128,14 +142,15 @@ angular
 
         homeCtrl.pageChanged = function() {
             $rootScope.dataLoading = true;
+
             var inicio = homeCtrl.itemsPerPage * (homeCtrl.currentPage - 1);
             if(pageContentControl[homeCtrl.currentPage - 1].loaded){
-                console.log("Dados já carregados!");
                 $rootScope.dataLoading = false;
+                // console.log("Dados já carregados!");
             }
             else{
                 // $('.event').hide();
-                EventService.getEvents(homeCtrl.currentPage - 1, function(response){
+                EventService.getEvents(homeCtrl.currentPage - 1).then(function(response){
                     var eventos = response.Eventos;
                     angular.forEach(eventos, function(evento, key){
                         evento = homeCtrl.adaptEvent(evento);
@@ -144,6 +159,7 @@ angular
                     pageContentControl[homeCtrl.currentPage - 1].loaded = true;
 
                     $rootScope.dataLoading = false;
+
                     // $('.event').show();
                 });
             }
@@ -164,11 +180,5 @@ angular
                 console.log("Grupos do evento: " + codEvento);
                 console.log(response);
             });
-        }
-
-        function Logout(){
-            AuthenticationService.Logout();
-            $("body").addClass("bodyLogin");
-            $(".header").hide();
         }
     }

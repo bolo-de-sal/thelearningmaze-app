@@ -4,9 +4,9 @@ angular
     .module('thelearningmaze')
     .factory('EventService', EventService);
 
-    EventService.$inject = ['$http', 'AppConfig'];
+    EventService.$inject = ['$http', '$rootScope', 'AppConfig'];
 
-    function EventService($http, AppConfig) {
+    function EventService($http, $rootScope, AppConfig) {
         var events = {};
 
         events.getEvents = getEvents;
@@ -17,20 +17,24 @@ angular
 
         return events;
 
-        function getEvents(page, callback) {
+        function getEvents(page) {
 
-            $http.get(AppConfig.api.identifier + '/Eventos/Paged/' + page + '/10')
-            .success(function (response) {
-              callback(response);
+            var promise = $http.get(AppConfig.api.identifier + '/Eventos/Paged/' + page + '/10')
+            .then(function(response){
+                return response.data;
             });
+
+            return promise;
         }
 
-        function getActiveEvent(callback) {
+        function getActiveEvent() {
 
-            $http.get(AppConfig.api.identifier + '/Eventos/Ativo')
-            .success(function (response) {
-              callback(response);
+            var promise = $http.get(AppConfig.api.identifier + '/Eventos/Ativo')
+            .then(function(response){
+                return response.data;
             });
+
+            return promise;
         }
 
         function openEvent(){

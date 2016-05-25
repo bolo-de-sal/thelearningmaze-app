@@ -14,7 +14,7 @@ angular
     LobbyController.$inject = ['AuthenticationService', 'SessionService', '$location', '$rootScope', 'GlobalMessageService'];
     function LobbyController(AuthenticationService, SessionService, $location, $rootScope, GlobalMessageService) {
 
-        console.log("--->LobbyController init");
+        // console.log("--->LobbyController init");
 
         $("body").removeClass("bodyLogin");
         $(".header").show();
