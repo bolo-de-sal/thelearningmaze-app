@@ -25,7 +25,10 @@ angular
         var pageContentControl = [{ loaded: true }];
 
         // Variável para desabilitar botões
-        homeCtrl.disableButtons = false;
+        homeCtrl.disableButtons;
+
+        // EventService.closeEvent(); 
+        // EventService.openEvent(); 
 
         function setFunctionButton(){
             $(".events").on("click", ".list-button", function(){
@@ -35,15 +38,20 @@ angular
                 else{
                     alert("Clique no botão do evento: " + $(this).parent().siblings().first().html());
                     console.log("Clique no botão do evento: ", $(this).parent().siblings().first().html());
+                    var codEvento = $(this).parent().siblings().first().html();
+                    getEventGroups(codEvento);
                 }
             });
         }
 
         EventService.getActiveEvent(function(response){
             console.log("Evento aberto: ", response);
-            if(response){
+            if(response.message == undefined){
                 homeCtrl.activeEvent = homeCtrl.adaptEvent(response);
                 homeCtrl.disableButtons = true;
+            }
+            else{
+                homeCtrl.disableButtons = false;
             }
 
             getEvents();
@@ -55,6 +63,7 @@ angular
                 var eventos = response.Eventos;
                 angular.forEach(eventos, function(evento, key){
                     evento = homeCtrl.adaptEvent(evento);
+                    console.log("Evento: ", evento);
                 });
                 homeCtrl.events = eventos;
 
@@ -94,8 +103,6 @@ angular
 
             return evento;
         };
-
-        // EventService.encerraEvento();
 
         homeCtrl.replaceStatus = function(letra){
             var response = "";
@@ -150,6 +157,13 @@ angular
         homeCtrl.setItemsPerPage = function(num) {
             homeCtrl.itemsPerPage = num;
             homeCtrl.currentPage = 1; //reset to first paghe
+        }
+
+        function getEventGroups(codEvento){
+            EventService.getEventGroups(codEvento, function(response){
+                console.log("Grupos do evento: " + codEvento);
+                console.log(response);
+            });
         }
 
         function Logout(){

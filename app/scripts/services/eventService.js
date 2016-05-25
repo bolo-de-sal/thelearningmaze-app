@@ -11,7 +11,9 @@ angular
 
         events.getEvents = getEvents;
         events.getActiveEvent = getActiveEvent;
-        events.encerraEvento = encerraEvento;
+        events.closeEvent = closeEvent;
+        events.openEvent = openEvent;
+        events.getEventGroups = getEventGroups;
 
         return events;
 
@@ -31,12 +33,27 @@ angular
             });
         }
 
-        function encerraEvento() {
-            $http.post(AppConfig.api.identifier + '/Eventos/Encerrar', { "codEvento": 166 } )
+        function openEvent(){
+            $http.post(AppConfig.api.identifier + '/Eventos/Iniciar', { "codEvento": 114 } )
+            .success(function (response) {
+                console.log("Response: ", response);
+              // callback(response);
+            }); 
+        }
+
+        function closeEvent() {
+            $http.post(AppConfig.api.identifier + '/Eventos/Encerrar', { "codEvento": 75 } )
             .success(function (response) {
                 console.log("Response: ", response);
               // callback(response);
             });            
+        }
+
+        function getEventGroups(codEvento, callback){
+            $http.get(AppConfig.api.identifier + '/Eventos/' + codEvento + '/GruposCompleto')
+            .success(function (response) {
+              callback(response);
+            });
         }
 
 
