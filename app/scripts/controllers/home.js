@@ -105,7 +105,7 @@ angular
                     alert("Clique no botão do evento: " + $(this).parent().siblings().first().html());
                     // console.log("Clique no botão do evento: ", $(this).parent().siblings().first().html());
                     var codEvento = $(this).parent().siblings().first().html();
-                    getEventGroups(codEvento);
+                    //getEventGroups(codEvento);
                 }
             });
         }
@@ -173,12 +173,5 @@ angular
         homeCtrl.setItemsPerPage = function(num) {
             homeCtrl.itemsPerPage = num;
             homeCtrl.currentPage = 1; //reset to first paghe
-        }
-
-        function getEventGroups(codEvento){
-            EventService.getEventGroups(codEvento, function(response){
-                console.log("Grupos do evento: " + codEvento);
-                console.log(response);
-            });
         }
     }

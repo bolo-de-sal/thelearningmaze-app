@@ -53,11 +53,14 @@ angular
             });            
         }
 
-        function getEventGroups(codEvento, callback){
-            $http.get(AppConfig.api.identifier + '/Eventos/' + codEvento + '/GruposCompleto')
-            .success(function (response) {
-              callback(response);
+        function getEventGroups(codEvento){
+            var promise = $http.get(AppConfig.api.identifier + '/Eventos/' + codEvento + '/GruposCompleto')
+            .then(function (response) {
+                return response.data;
+              // callback(response);
             });
+
+            return promise;
         }
 
 
