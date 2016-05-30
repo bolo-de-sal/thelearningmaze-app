@@ -8,31 +8,19 @@
 		</div>
 	</div>
 	<div class="groups">
-		<div class="col-md-4">
+		<div class="col-md-4" ng-repeat="group in lobby.groups">
 			<div class="card group">
 				<p>P</p>
-				<p>POWERFULL</p>
+				<p>{{group.Grupo.nmGrupo}}</p>
 				<p>Formação</p>
-				<p>students: 4</p>
+				<p>Alunos: {{group.ParticipantesGrupo.length}}</p>
 				<div class="students">
-					<div class="student">
+					<div class="student" ng-repeat="student in group.ParticipantesGrupo">
 						<img src="../images/pu.jpg" alt="Professor Utonio">
-						<p>aluno1</p>				
-					</div>
-					<div class="student">
-						<img src="../images/pu.jpg" alt="Professor Utonio">
-						<p>aluno2</p>				
-					</div>
-					<div class="student">
-						<img src="../images/pu.jpg" alt="Professor Utonio">
-						<p>aluno3</p>				
-					</div>
-					<div class="student">
-						<img src="../images/pu.jpg" alt="Professor Utonio">
-						<p>aluno4</p>				
+						<p>{{student.nmParticipante}}</p>				
 					</div>
 				</div>
-				<p>Assunto</p>
+				<p>{{group.Assunto.descricao}}</p>
 			</div>			
 		</div>
 	</div>
