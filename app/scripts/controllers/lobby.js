@@ -29,4 +29,24 @@ angular
         	// $('.groups').append(p1 + i + p2);
         }
 
+        // Habilita CORS
+        jQuery.support.cors = true;
+        
+        // Declara endereço do servidor
+        $.connection.hub.url = "http://tlm-api-dev.azurewebsites.net/signalr";
+        // chatHub é o nome do Hub definido no código do server
+        var evento = $.connection.eventoHub;
+        
+        $.connection.hub.logging = true;
+
+        // Abre conexão com o servidor
+        $.connection.hub.start().done(function () {
+            evento.server.joinEvento('id');
+
+            $('#sendmessage').click(function () {
+                // Chama método lancarPergunta no SERVIDOR
+                chat.server.lancarPergunta($('#message').val());
+                $('#message').val('').focus();
+            });
+        });
     }
