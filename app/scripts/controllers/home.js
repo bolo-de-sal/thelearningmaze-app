@@ -20,6 +20,7 @@ angular
 
         $("body").removeClass("bodyLogin");
         $(".header").show();
+        $(".content").css("top", "50px");
 
         //Array para controle de páginas já carregadas
         var pageContentControl = [{ loaded: true }];

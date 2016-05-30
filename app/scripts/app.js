@@ -63,6 +63,11 @@ angular
         controller: 'LobbyController',
         controllerAs: 'lobby'
       })
+      .when('/projector', {
+        templateUrl: 'views/projector.html',
+        controller: 'ProjectorController',
+        controllerAs: 'projecotr'
+      })
       .otherwise({
         redirectTo: '/404'
     });
