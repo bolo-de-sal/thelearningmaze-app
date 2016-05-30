@@ -15,6 +15,32 @@ angular
 
     function ControlPanelController() {
         var controlPanelCtrl = this;
+
+        controlPanelCtrl.closeOthers = false;
+
+		controlPanelCtrl.groups = [
+	        {
+	          'open': false
+	        },
+	        {
+	          'open': false
+	        },
+	        {
+	          'open': false
+	        },
+	        {
+	          'open': false
+	        },
+	        {
+	          'open': false
+	        },
+	        {
+	          'open': false
+	        },
+	        {
+	          'open': false
+	        }
+        ];
         
         $("body").removeClass("bodyLogin");
         $(".header").show();

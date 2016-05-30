@@ -6,8 +6,12 @@
         <div class="col-md-12 card wrap-card-question">
           <h3 class="title">Pergunta Atual</h3>
           <button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button>
-          <p class="question">Qual o ingrediente secreto presente no Elemento X?</p>
-          <p class="theme">Assunto: Quimica</p>
+          <div class="content-question-theme">
+            <div class="content-question">
+              <p class="question">Qual o ingrediente secreto presente no Elemento X?</p>
+            </div>
+            <p class="theme">Assunto: Quimica</p>
+          </div>
           <span class="group-icon">P</span>
           <span class="time">1:20</span>
         </div>
@@ -30,7 +34,7 @@
           <div class="col-md-12 card wrap-card-score">
             <h3 class="title">Pontuação</h3>
             <button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button>
-            <div class="group-box-score">
+            <div class="groups-box">
               <div class="group-box-name">
                 <div class="group-icon">T</div>
                 <div class="group-name">Teste</div>
@@ -63,9 +67,56 @@
                 <th>GRUPO</th>
                 <th>Q001</th>
                 <th>Q002</th>
+                <th>Q002</th>
+                <th>Q002</th>
+                <th>Q002</th>
+                <th>Q002</th>
+                <th>Q002</th>
+                <th>Q002</th>
+                <th>Q002</th>
+                <th>Q002</th>
+                <th>Q002</th>
+                <th>Q002</th>
+                <th>Q002</th>
+                <th>Q002</th>
               </tr>
             </thead>
             <tbody class="table-body-event-info">
+              <tr>
+                <td><div class="group-icon">P</div></td>
+                <td class="ok"><span class="glyphicon glyphicon-ok"></span></td>
+                <td class="wrong"><span class="glyphicon glyphicon-remove"></span></td>
+              </tr>
+              <tr>
+                <td><div class="group-icon">P</div></td>
+                <td class="ok"><span class="glyphicon glyphicon-ok"></span></td>
+                <td class="wrong"><span class="glyphicon glyphicon-remove"></span></td>
+              </tr>
+              <tr>
+                <td><div class="group-icon">P</div></td>
+                <td class="ok"><span class="glyphicon glyphicon-ok"></span></td>
+                <td class="wrong"><span class="glyphicon glyphicon-remove"></span></td>
+              </tr>
+              <tr>
+                <td><div class="group-icon">P</div></td>
+                <td class="ok"><span class="glyphicon glyphicon-ok"></span></td>
+                <td class="wrong"><span class="glyphicon glyphicon-remove"></span></td>
+              </tr>
+              <tr>
+                <td><div class="group-icon">P</div></td>
+                <td class="ok"><span class="glyphicon glyphicon-ok"></span></td>
+                <td class="wrong"><span class="glyphicon glyphicon-remove"></span></td>
+              </tr>
+              <tr>
+                <td><div class="group-icon">P</div></td>
+                <td class="ok"><span class="glyphicon glyphicon-ok"></span></td>
+                <td class="wrong"><span class="glyphicon glyphicon-remove"></span></td>
+              </tr>
+              <tr>
+                <td><div class="group-icon">P</div></td>
+                <td class="ok"><span class="glyphicon glyphicon-ok"></span></td>
+                <td class="wrong"><span class="glyphicon glyphicon-remove"></span></td>
+              </tr>
               <tr>
                 <td><div class="group-icon">P</div></td>
                 <td class="ok"><span class="glyphicon glyphicon-ok"></span></td>
@@ -79,7 +130,49 @@
     </div>
   </div>
   <div class="col-md-3">
-    <div class="col-md-12 card">
+    <div class="col-md-12 card wrap-card-timer">
+      16:19:25
+    </div>
+    <div class="col-md-12 card wrap-card-sound">
+      <button class="sound active">Volume</button>
+    </div>
+    <div class="col-md-12 card wrap-card-projector">
+      <button class="projector active hide-text">Projector</button>
+    </div>
+    <div class="col-md-12 card wrap-card-groups">
+      <script type="text/ng-template" id="group-template.html">
+        <div class="group-box">
+          <div class="group-box-name" class="accordion-toggle" ng-click="toggleOpen()" uib-accordion-transclude="heading">
+            <div uib-accordion-header>
+              {{heading}}
+            </div>
+          </div>
+          <div class="group-members" uib-collapse="!isOpen" ng-transclude>
+          </div>
+        </div>
+      </script>
+      <h3 class="title">Grupos</h3>
+      <button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button>
+      <div class="groups-box">
+        <uib-accordion close-others="controlPanel.closeOthers">
+          <uib-accordion-group ng-repeat="group in controlPanel.groups" is-open="group.open" template-url="group-template.html">
+            <uib-accordion-heading>
+              <div class="group-icon">T</div>
+              <div class="group-name">Teste</div>
+              <i class="pull-right glyphicon" ng-class="{'glyphicon-plus': !controlPanel.groups[$index].open, 'glyphicon-minus': controlPanel.groups[$index].open}"></i>
+            </uib-accordion-heading>
+            <div class="group-member-box">
+              <div class="group-member-icon"></div>
+              <div class="group-member-name">
+                Edgar Maia
+              </div>
+            </div>
+          </uib-accordion-group>
+        </uib-accordion>
+      </div>
+    </div>
+    <div class="col-md-12 card wrap-card-close-event">
+      <button class="close-event">Encerrar Evento</button>
     </div>
   </div>
 </div>

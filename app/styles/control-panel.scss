@@ -26,15 +26,15 @@
 }
 
 .wrap-card-score{
+	height: 335px;
 	padding: 10px 30px 35px 15px;
 
-	.group-box-score{
-		height: 205px;
-		overflow-y: auto;
+	.groups-box{
+		height: 215px;
 	}
 
 	.group-box-name{
-		margin-bottom: 15px;
+		margin-bottom: 20px;
 	}
 
 	.group-box-name:last-child{
@@ -53,14 +53,17 @@
 }
 
 .wrap-card-graphic{
+	margin-bottom: 15px;
 	background: $white url('../images/graphic.png') center center no-repeat;
 }
 
 .wrap-card-send-question{
+	margin-bottom: 15px;
 	padding: 0 0 0 15px;
 	background: transparent;
 
 	.card{
+		margin: 0;
 		padding: 0;
 		background: transparent;
 	}
@@ -74,35 +77,26 @@
 	}
 }
 
-.event-info{
-	overflow: auto;
+.wrap-card-sound, .wrap-card-projector, .wrap-card-close-event{
+  padding: 0;
+}
 
-	table{
+.wrap-card-groups{
+	height: 248px;
 
-	}
-	
-	td, th{
-		padding: 10px 15px;
-		text-align: center;
-	}
+	.groups-box{
+		height: 165px;
 
-	.table-head-event-info{
+		.group-box{
+			margin-bottom: 10px;
 
-		th{
-			background: $lightblue;
-			color: $white;
-			text-transform: uppercase;
-		}
-	}
-
-	.table-body-event-info{
-		td{
-			text-align: center;
-			&.ok{
-				color: $green;
+			.group-box-name{
+				cursor: pointer;
 			}
-			&.wrong{
-				color: $red;
+
+			.glyphicon{
+				float: right;
+				margin-right: 20px;
 			}
 		}
 	}

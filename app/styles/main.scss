@@ -2,7 +2,11 @@
 * IMPORT
 */
 
+// Sass
 @import "util\/variables.scss";
+
+// Helper
+@import "util\/helper.scss";
 
 /*
 * END IMPORT
@@ -13,7 +17,6 @@ html{
   width: 100%;
   overflow: hidden;
   cursor: default;
-
   -webkit-touch-callout: none;
   -webkit-user-select: none; 
   -khtml-user-select: none;
@@ -23,13 +26,19 @@ html{
 }
 
 body {
-    padding: 0;
-    background-image: url("../images/maze.png");
-    // background-repeat: no-repeat;
-    // background-size: cover;
-    background-attachment: fixed;
-    overflow-y: scroll;
-    height: 100%;
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  padding: 0;
+  background-image: url("../images/maze.png");
+  // background-repeat: no-repeat;
+  // background-size: cover;
+  background-attachment: fixed;
+  overflow-y: scroll;
+  height: 100%;
+}
+
+button{
+  outline-color: $lightblue;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -169,35 +178,6 @@ body {
     padding-top: 16px;
 }
 
-.card{
-    background: white;
-    box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.80);
-    padding: 16px;
-    margin-bottom: 16px;
-
-    .title{
-        margin-top: 0px;
-        font-size: 18px;
-    }
-
-    .title-columns{
-
-        height: 40px;
-        padding-top: 10px;
-        color: white;
-        font-weight: bold;
-
-        p:first-of-type{
-            width: 10%;
-        }
-
-        p{
-            float: left;
-            width: 18%;
-            text-align: center;
-        }
-    }
-}
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 320px) {
@@ -283,14 +263,26 @@ body {
   color: $white;
 }
 
-/* UTILS */
-.none{
-  display: none;
+/*
+* GLOBAL SCROLL
+*/
+
+::-webkit-scrollbar {
+    width: 8px;
 }
 
-.block{
-  display: block;
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 187, 212, 0.7);
+    // border-left: 1px dashed $darkblue;
 }
+
+::-webkit-scrollbar-track {
+    background: #385965;
+}
+
+/*
+* END GLOBAL SCROLL
+*/
 
 /*
 * BOOTSTRAP UI
@@ -500,23 +492,17 @@ body {
 * END GLOBAL LOADING
 */
 
-::-webkit-scrollbar {
-    width: 8px!important;
-}
-
-::-webkit-scrollbar-thumb {
-    background: rgba(0, 187, 212, 0.7);
-    // border-left: 1px dashed $darkblue;
-}
-
-::-webkit-scrollbar-track {
-    background: #385965 !important;
-    // border-left: 1px dashed $lightblue;
-}
-
 /*
 * GLOBAL GROUP
 */
+
+.groups-box{
+  overflow: auto;
+  &::-webkit-scrollbar{
+    width: 5px;
+    height: 5px;
+  }
+}
 
 .group-icon{
   $dimension: 35px;
@@ -538,6 +524,40 @@ body {
   text-transform: uppercase;
 }
 
+.group-box-name{
+  .group-icon{
+    $dimension: 30px;
+
+    width: $dimension;
+    height: $dimension;
+    line-height: $dimension;
+    margin-right: 15px;
+  }
+}
+
+.group-members{
+  $dimension: 20px;
+
+  .group-member-box{
+    width: auto;
+    height: $dimension;
+    margin-left: 45px;
+
+    .group-member-icon{
+      display: inline-block;
+      width: 20px;
+      height: $dimension;
+    }
+
+    .group-member-name{
+      display: inline-block;
+      font-size: 12px;
+      line-height: $dimension;
+      vertical-align: top;
+    }
+  }
+}
+
 /*
 * END GLOBAL GROUP
 */
@@ -549,18 +569,40 @@ body {
 .card{
   position: relative;
   padding: 10px 15px;
+  background: white;
+  box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.80);
+  padding: 16px;
+  margin-bottom: 16px;
+
+  .title-columns{
+
+      height: 40px;
+      padding-top: 10px;
+      color: white;
+      font-weight: bold;
+
+      p:first-of-type{
+          width: 10%;
+      }
+
+      p{
+          float: left;
+          width: 18%;
+          text-align: center;
+      }
+  }
 
   .title{
     font-size: 24px;
     color: $darkgray;
-    margin: 0 0 45px;
+    margin: 0 0 25px;
   }
 
   .fullscreen{
     position: absolute;
     top: 8px;
     right: 8px;
-    z-index: 10;
+    z-index: 1;
     border: none;
     background: transparent;
     font-weight: bold;
@@ -569,18 +611,34 @@ body {
 }
 
 .wrap-card-question{
+  height: 220px;
   padding: 10px 55px 10px 15px;
   background: $white;
   border-top: 5px solid $orange;
 
+  .content-question-theme{
+    height: 100px;
+    
+    .content-question{
+      height: 70px;
+      overflow: auto;
+      padding-right: 10px;
+      
+      &::-webkit-scrollbar{
+        width: 5px;
+        height: 5px;
+      }
+    }
+  }
+
   .question{
-    font-size: 20px;    
+    font-size: 16px;    
     text-align: right;
     margin: 0;
   }
 
   .theme{
-    font-size: 18px;
+    font-size: 14px;
     color: $orange;
     text-align: right;
   }
@@ -605,14 +663,14 @@ body {
 
   .fullscreen{
     color: $lightgray;
-  }
+  } 
+}
 
-  .group-icon{
-    $dimension: 30px;
-
-    width: $dimension;
-    height: $dimension;
-  }
+.wrap-card-timer{
+  padding: 10px 30px;
+  background: $yellow url('../images/timer.png') 85% center no-repeat;
+  font-size: 36px;
+  color: $lightblack;
 }
 
 /*
@@ -641,6 +699,101 @@ body {
   outline: none;
 }
 
+.sound{
+  width: 100%;
+  padding: 10px 45px;
+  border: 0;
+  font-size: 36px;
+  color: $white;
+  text-align: left;
+  &.active{
+    background: $lightblack url('../images/sound.png') 80% center no-repeat;
+    
+  }
+}
+
+.projector{
+  width: 100%;
+  padding: 55px 0;
+  border: 0;
+  font-size: 36px;
+  color: $white;
+  &.active{
+    background: $purple url('../images/projector.png') center center no-repeat;
+    
+  }
+}
+
+.close-event{
+  width: 100%;
+  padding: 15px 25px;
+  border: 0;
+  font-size: 24px;
+  font-weight: 300;
+  color: $white;
+  background: $red;
+}
+
 /*
 * END BUTTONS
+*/
+
+/*
+* GLOBAL TABLE
+*/
+
+.event-info{
+  width: 100%;
+  height: 250px;
+  overflow: auto;
+  &::-webkit-scrollbar{
+    width: 5px;
+    height: 5px;
+  }
+  
+  td, th{
+    padding: 0 15px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .group-icon{
+    $dimension: 30px;
+
+    width: $dimension;
+    height: $dimension;
+    line-height: $dimension;
+  }
+
+  .table-head-event-info{
+
+    th{
+      height: 40px;
+      background: $lightblue;
+      color: $white;
+      text-transform: uppercase;
+    }
+  }
+
+  .table-body-event-info{
+    tr{
+      &:nth-child(even){
+        background: #ededed;
+      }
+    }
+
+    td{
+      height: 50px;
+      &.ok{
+        color: $green;
+      }
+      &.wrong{
+        color: $red;
+      }
+    }
+  }
+}
+
+/*
+* END GLOBAL TABLE
 */
