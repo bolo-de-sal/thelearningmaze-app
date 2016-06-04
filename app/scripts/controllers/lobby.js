@@ -11,8 +11,8 @@ angular
     .module('thelearningmaze')
     .controller('LobbyController', LobbyController);
 
-    LobbyController.$inject = ['AuthenticationService', 'SessionService', '$location', '$rootScope', 'GlobalMessageService'];
-    function LobbyController(AuthenticationService, SessionService, $location, $rootScope, GlobalMessageService) {
+    LobbyController.$inject = ['AuthenticationService', 'SessionService', '$location', '$rootScope'];
+    function LobbyController(AuthenticationService, SessionService, $location, $rootScope) {
 
         // console.log("--->LobbyController init");
 

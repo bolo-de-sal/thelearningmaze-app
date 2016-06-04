@@ -14,13 +14,19 @@
 
 .wrap-card-question{
 
-	.group-icon{
-		background: $orange;
+	@for $i from 1 through length($group-colors) {
+		.group-box-name:nth-child(20n+#{$i}){
+			.group-icon{
+				background: nth($group-colors, $i) url('../images/groups/icons/#{$i}.png') center center no-repeat;
+				background-size: 60%;
+			}
+		}
 	}
 	
 	.time{
-		float: right;
-		margin-right: -40px;
+		position: absolute;
+		right: 20px;
+		bottom: 15px;
 		background: $orange;
 	}
 }
@@ -30,7 +36,8 @@
 	padding: 10px 30px 35px 15px;
 
 	.groups-box{
-		height: 215px;
+		height: 240px;
+		padding-right: 20px;
 	}
 
 	.group-box-name{
@@ -48,13 +55,9 @@
 	}
 }
 
-.wrap-card-graphic, .wrap-card-send-question .card, .wrap-card-send-question .send-question{
-	height: 100px;
-}
-
 .wrap-card-graphic{
+	padding: 0;
 	margin-bottom: 15px;
-	background: $white url('../images/graphic.png') center center no-repeat;
 }
 
 .wrap-card-send-question{
@@ -78,7 +81,7 @@
 }
 
 .wrap-card-sound, .wrap-card-projector, .wrap-card-close-event{
-  padding: 0;
+	padding: 0;
 }
 
 .wrap-card-groups{
@@ -89,6 +92,10 @@
 
 		.group-box{
 			margin-bottom: 10px;
+
+			.group-member-box{
+				margin-bottom: 10px;
+			}
 
 			.group-box-name{
 				cursor: pointer;

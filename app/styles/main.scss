@@ -38,6 +38,8 @@ body {
 }
 
 button{
+  border: 0;
+  padding: 0;
   outline-color: $lightblue;
 }
 
@@ -522,6 +524,7 @@ button{
   font-size: 18px;
   line-height: 30px;
   text-transform: uppercase;
+  vertical-align: top;
 }
 
 .group-box-name{
@@ -532,6 +535,20 @@ button{
     height: $dimension;
     line-height: $dimension;
     margin-right: 15px;
+  }
+}
+
+@for $i from 1 through length($group-colors) {
+  .group-box:nth-child(20n+#{$i}){
+    .group-box-name{
+      .group-icon{
+        background: nth($group-colors, $i) url('../images/groups/icons/#{$i}.png') center center no-repeat;
+        background-size: 60%;
+      }
+      .group-name{
+        color: nth($group-colors, $i);
+      }
+    }
   }
 }
 
@@ -547,6 +564,9 @@ button{
       display: inline-block;
       width: 20px;
       height: $dimension;
+      background: url('../images/pu.jpg');
+      background-size: 20px;
+      border-radius: 50%;
     }
 
     .group-member-name{
@@ -643,6 +663,37 @@ button{
     text-align: right;
   }
 
+  .groups-box{
+    $dimension: 35px;
+
+    position: relative;
+    width: 100%;
+    height: $dimension;
+    overflow: hidden;
+
+    .group-box-name{
+      position: absolute;
+      left: 0;
+      top: $dimension;
+      transition: all .3s ease-in-out;
+      z-index: 9;
+
+      &.current{
+        top: 0;
+        z-index: 10;
+      }
+
+      .group-icon{
+        width: $dimension;
+        height: $dimension;
+      }
+
+      .group-name{
+        line-height: $dimension;
+      }
+    }
+  }
+
   .time{
     display: inline-block;
     width: 45px;
@@ -666,11 +717,17 @@ button{
   } 
 }
 
-.wrap-card-timer{
-  padding: 10px 30px;
-  background: $yellow url('../images/timer.png') 85% center no-repeat;
+.wrap-card-time-event{
+  padding: 10px 35px;
+  background: $yellow;
   font-size: 36px;
   color: $lightblack;
+
+  .time-event-text{
+    display: inline-block;
+    width: 100%;
+    background: url('../images/timer.png') right center no-repeat;
+  }
 }
 
 /*
@@ -681,46 +738,76 @@ button{
 * BUTTON
 */
 
+.btn-graphic{
+  position: relative;
+  width: 100%;
+  padding: 50px;
+  background: $white url('../images/graphic.png') center center no-repeat;
+
+  .btn-graphic-text{
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    font-size: 24px;
+    color: $darkgray;
+  }
+}
+
 .send-question{
   position: relative;
   width: 100%;
+  padding: 50px;
   font-size: 24px;
   background: $yellow url('../images/send-question.png') center 75% no-repeat;
-  border: none;
-  padding: 0;
-}
 
-.send-question-text{
-  display: block;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  text-align: center;
-  outline: none;
+  .send-question-text{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
 }
 
 .sound{
   width: 100%;
   padding: 10px 45px;
-  border: 0;
   font-size: 36px;
   color: $white;
   text-align: left;
-  &.active{
-    background: $lightblack url('../images/sound.png') 80% center no-repeat;
-    
-  }
+  background: $lightblack;
+
+  .sound-text{
+    display: inline-block;
+    width: 100%;
+    background-position: right center;
+    background-image: url('../images/sound.png');
+    background-repeat: no-repeat;
+  } 
+
+  &.disabled{
+    .sound-text{
+      background-image: url('../images/sound.png');
+    }
+  } 
+
 }
 
 .projector{
+  position: relative;
   width: 100%;
-  padding: 55px 0;
-  border: 0;
+  padding: 81px 0;
   font-size: 36px;
   color: $white;
   &.active{
-    background: $purple url('../images/projector.png') center center no-repeat;
+    background: $purple url('../images/projector.png') center 15% no-repeat;
     
+  }
+
+  .projector-text{
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
   }
 }
 
@@ -776,6 +863,15 @@ button{
   }
 
   .table-body-event-info{
+    @for $i from 1 through length($group-colors) {
+      tr:nth-child(20n+#{$i}){
+        .group-icon{
+          background: nth($group-colors, $i) url('../images/groups/icons/#{$i}.png') center center no-repeat;
+          background-size: 60%;
+        }
+      }
+    }
+
     tr{
       &:nth-child(even){
         background: #ededed;
