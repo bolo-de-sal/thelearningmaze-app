@@ -20,6 +20,16 @@
             width: 22.5%;
         }
     }
+
+    .none-event{
+        /*padding-top: 12px;*/
+
+        >p{
+            text-align: center;
+            font-size: 16px;
+            margin: 0px !important;
+        }
+    }
 }
 
 .all-events{
@@ -88,7 +98,15 @@
 
             .enabled{
                 opacity: 1;
-                cursor: default;
+                cursor: pointer;
+            }
+
+            .list-button.enabled:hover{
+                opacity: .8;
+            }
+
+            .list-button.enabled:active{
+                color: black;
             }
         }
 

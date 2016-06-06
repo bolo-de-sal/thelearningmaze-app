@@ -25,7 +25,10 @@ angular
         var pageContentControl = [{ loaded: true }];
 
         // Variável para desabilitar botões
-        homeCtrl.disableButtons = false;
+        homeCtrl.disableButtons;
+
+        // EventService.closeEvent(); 
+        // EventService.openEvent(); 
 
         EventService.getEvents(0).then(getEventsSuccess, getEventsError);
 
@@ -83,6 +86,9 @@ angular
                 homeCtrl.activeEvent = homeCtrl.adaptEvent(response);
                 homeCtrl.disableButtons = true;
             }
+            else{
+                homeCtrl.disableButtons = false;
+            }
 
             $rootScope.dataLoading = false;
         }
@@ -98,6 +104,8 @@ angular
                 else{
                     alert("Clique no botão do evento: " + $(this).parent().siblings().first().html());
                     // console.log("Clique no botão do evento: ", $(this).parent().siblings().first().html());
+                    var codEvento = $(this).parent().siblings().first().html();
+                    //getEventGroups(codEvento);
                 }
             });
         }

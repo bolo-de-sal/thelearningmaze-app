@@ -1,26 +1,33 @@
 <div class="card open-events">
 	<h3 class="title">Evento Atual</h3>
-	<div class="title-columns">
-		<p>CÓDIGO</p>
-		<p>DATA</p>
-		<p>INICIO</p>
-		<p>STATUS</p>
-		<!-- <p>QTD GRUPOS</p> -->
-		<p>DETALHES</p>
+
+	<div ng-show="home.disableButtons == true">
+		<div class="title-columns">
+			<p>CÓDIGO</p>
+			<p>DATA</p>
+			<p>INICIO</p>
+			<p>STATUS</p>
+			<!-- <p>QTD GRUPOS</p> -->
+			<p>DETALHES</p>
+		</div>
+
+		<div class="events">
+			<div class="event">
+				<p>{{home.activeEvent.codEvento}}</p>
+				<p>{{home.activeEvent.data}}</p>
+				<p>{{home.activeEvent.inicio}}</p>
+				<p>{{home.activeEvent.codStatus}}</p>
+				<div class="btns">
+					<!-- <p class="list-button green" ng-show="activeEvent.codStatus == 'ABERTO'" ng-class="{'disabled': home.disableButtons == true , 'enabled': home.disableButtons == false}">Iniciar</p> -->
+					<p class="list-button green enabled" ng-show="home.activeEvent.codStatus == 'ABERTO'">Iniciar</p>
+					<p class="list-button green enabled" ng-show="home.activeEvent.codStatus == 'EXECUTANDO'">Ver</p>
+				</div>
+			</div>
+		</div>		
 	</div>
 
-	<div class="events">
-		<div class="event">
-			<p>{{home.activeEvent.codEvento}}</p>
-			<p>{{home.activeEvent.data}}</p>
-			<p>{{home.activeEvent.inicio}}</p>
-			<p>{{home.activeEvent.codStatus}}</p>
-			<div class="btns">
-				<!-- <p class="list-button green" ng-show="activeEvent.codStatus == 'ABERTO'" ng-class="{'disabled': home.disableButtons == true , 'enabled': home.disableButtons == false}">Iniciar</p> -->
-				<p class="list-button green" ng-show="home.activeEvent.codStatus == 'ABERTO'" class="enabled">Iniciar</p>
-				<p class="list-button green" ng-show="home.activeEvent.codStatus == 'EXECUTANDO'" class="enabled">Ver</p>
-			</div>
-		</div>
+	<div class="none-event" ng-show="home.disableButtons == false">
+		<p>Nenhum evento aberto ou em andamento</p>
 	</div>
 </div>
 
@@ -46,7 +53,7 @@
 				<p class="list-button green" ng-show="event.codStatus == 'ABERTO'" ng-class="{'disabled': home.disableButtons == true , 'enabled': home.disableButtons == false}">Iniciar</p>
 				<p class="list-button green" ng-show="event.codStatus == 'EXECUTANDO'" ng-class="{'disabled': home.disableButtons == true , 'enabled': home.disableButtons == false}">Ver</p>
 				<p class="list-button green" ng-show="event.codStatus == 'CRIADO'" ng-class="{'disabled': home.disableButtons == true , 'enabled': home.disableButtons == false}">Abrir</p>
-				<p class="list-button gray" ng-show="event.codStatus == 'FECHADO'">Ver</p>
+				<p class="list-button gray enabled" ng-show="event.codStatus == 'FECHADO'">Ver</p>
 			</div>
 		</div>
 	</div>

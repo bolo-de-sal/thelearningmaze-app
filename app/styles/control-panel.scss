@@ -74,6 +74,11 @@
 
 .wrap-card-event-info{
 	padding: 0 0 0 15px;
+
+	.event-info{
+		height: 250px;
+	  overflow: auto;
+	}
 	
 	.title{
 		margin-bottom: 20px;
@@ -107,6 +112,83 @@
 			}
 		}
 	}
+}
+
+.modal-questions-body{
+	label{
+		font-weight: normal;
+	}
+
+	.questions-filters{	
+		.questions-filter{
+			float: left;
+			width: 50%;
+			padding: 10px 0;
+			font-size: 10px;
+			text-align: center;
+
+			input[type=checkbox]{
+				display: none;
+			}
+
+			label{
+				$dimension: 36px;
+				
+				display: inline-block;
+				width: $dimension;
+				height: $dimension;
+				line-height: $dimension;
+				margin-right: 30px;
+				background-color: $lightgray;
+				border-radius: 50%;
+				cursor: pointer;
+				transition: all .2s ease-in-out;
+
+				&:last-child{
+					margin-right: 0;
+				}
+
+				&:hover, &.current{
+					color: $white;
+					background-color: $lightorange;
+				}
+			}
+		}
+
+		.difficulty{
+			
+		}
+	}
+
+	.event-info{
+		height: 400px;
+		overflow: auto;
+	}
+
+	.table-info{
+		width: 100%;
+
+		.table-head-info{
+			th{
+				font-size: 20px;
+				font-weight: normal;
+				text-transform: none;
+			}
+		}
+
+		.table-body-info{
+			td{
+				text-align: left;
+				&:last-child{
+					text-align: center;
+				}
+			}
+		}
+	}
+}
+
+.modal-questions-footer{
+	text-align: center;
 }
 
 /*

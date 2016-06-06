@@ -2,7 +2,7 @@
     <!-- <p>L</p> -->
 
     <img src="../images/logoLogin.png" alt="Logo Senac">
-    <form name="form" ng-submit="login.login()" role="form">
+    <form ng-submit="login.login()" role="form">
         <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
             <!-- <label for="username">USUÁRIO</label> -->
             <input type="text" name="username" id="username" placeholder="USUÁRIO" class="" ng-model="login.username" required autofocus />
