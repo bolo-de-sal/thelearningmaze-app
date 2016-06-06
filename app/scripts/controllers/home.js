@@ -67,8 +67,6 @@ angular
                 // console.log("pageContentControl: ", pageContentControl);
             }
 
-            setFunctionButton();
-
             $rootScope.dataLoading = false;
         }
 
@@ -94,20 +92,6 @@ angular
         }
 
         function getActiveEventError(error){
-        }
-
-        function setFunctionButton(){
-            $(".events").on("click", ".list-button", function(){
-                if($(this).hasClass("disabled")){
-                    // console.log("Evento: " + $(this).parent().siblings().first().html() + " !hasClass('enabled')");
-                }
-                else{
-                    alert("Clique no botão do evento: " + $(this).parent().siblings().first().html());
-                    // console.log("Clique no botão do evento: ", $(this).parent().siblings().first().html());
-                    var codEvento = $(this).parent().siblings().first().html();
-                    //getEventGroups(codEvento);
-                }
-            });
         }
 
         homeCtrl.adaptEvent = function(evento){
