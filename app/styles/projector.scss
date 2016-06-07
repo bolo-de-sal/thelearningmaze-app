@@ -241,6 +241,27 @@
     margin-left: 10px;
 }
 
+.four-red{
+    position: absolute;
+    margin-top: 10px;
+    right: 0;
+    margin-right: 10px;
+}
+
+.four-green{
+    position: absolute;
+    margin-top: 70px;
+    left: 0;
+    margin-left: 10px;
+}
+
+.four-yellow{
+    position: absolute;
+    margin-top: 70px;
+    right: 0;
+    margin-right: 10px;
+}
+
 .ppg-first{
 	position: fixed;
     width: 522px;
@@ -298,27 +319,35 @@
 }
 
 .parent-group-first{
-	background: rgba(0, 0, 0, 0.5);
+	/*background: rgba(0, 0, 0, 0.5);*/
+	border: 2px solid black;
     width: 521px;
     height: 521px;
+    border-radius: 50%;
 }
 
 .parent-group-second{
-	background: rgba(255, 0, 0, 0.5);
+	/*background: rgba(255, 0, 0, 0.5);*/
+	border: 2px solid red;
     width: 429px;
     height: 429px;
+    border-radius: 50%;
 }
 
 .parent-group-third{
-	background: rgba(0, 255, 0, 0.5);
+	/*background: rgba(0, 255, 0, 0.5);*/
+	border: 2px solid green;
     width: 300px;
-    height: 300px;	
+    height: 300px;
+    border-radius: 50%;
 }
 
 .parent-group-fourth{
-	background: rgba(0, 0, 255, 0.5);
+	/*background: rgba(0, 0, 255, 0.5);*/
+	border: 2px solid blue;
     width: 102px;
     height: 102px;
+    border-radius: 50%;
 }
 
 .parent-group-first:hover{
