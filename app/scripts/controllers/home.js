@@ -67,8 +67,6 @@ angular
                 // console.log("pageContentControl: ", pageContentControl);
             }
 
-            setFunctionButton();
-
             $rootScope.dataLoading = false;
         }
 

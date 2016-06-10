@@ -2,7 +2,11 @@
 * IMPORT
 */
 
+// Sass
 @import "util\/variables.scss";
+
+// Helper
+@import "util\/helper.scss";
 
 /*
 * END IMPORT
@@ -13,7 +17,6 @@ html{
   width: 100%;
   overflow: hidden;
   cursor: default;
-
   -webkit-touch-callout: none;
   -webkit-user-select: none; 
   -khtml-user-select: none;
@@ -23,13 +26,21 @@ html{
 }
 
 body {
-    padding: 0;
-    background-image: url("../images/maze.png");
-    // background-repeat: no-repeat;
-    // background-size: cover;
-    background-attachment: fixed;
-    overflow-y: scroll;
-    height: 100%;
+  font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  padding: 0;
+  background-image: url("../images/maze.png");
+  // background-repeat: no-repeat;
+  // background-size: cover;
+  background-attachment: fixed;
+  overflow-y: scroll;
+  height: 100%;
+}
+
+button{
+  border: 0;
+  padding: 0;
+  outline-color: $lightblue;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -169,35 +180,6 @@ body {
     padding-top: 16px;
 }
 
-.card{
-    background: white;
-    box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.80);
-    padding: 16px;
-    margin-bottom: 16px;
-
-    .title{
-        margin-top: 0px;
-        font-size: 18px;
-    }
-
-    .title-columns{
-
-        height: 40px;
-        padding-top: 10px;
-        color: white;
-        font-weight: bold;
-
-        p:first-of-type{
-            width: 10%;
-        }
-
-        p{
-            float: left;
-            width: 18%;
-            text-align: center;
-        }
-    }
-}
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 320px) {
@@ -283,14 +265,26 @@ body {
   color: $white;
 }
 
-/* UTILS */
-.none{
-  display: none;
+/*
+* GLOBAL SCROLL
+*/
+
+::-webkit-scrollbar {
+    width: 8px;
 }
 
-.block{
-  display: block;
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 187, 212, 0.7);
+    // border-left: 1px dashed $darkblue;
 }
+
+::-webkit-scrollbar-track {
+    background: #385965;
+}
+
+/*
+* END GLOBAL SCROLL
+*/
 
 /*
 * BOOTSTRAP UI
@@ -349,7 +343,7 @@ body {
   width: 100%;
   height: 100%;
   background: rgba($darkblue, .7);
-  z-index: 3;
+  z-index: 9999;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -500,23 +494,17 @@ body {
 * END GLOBAL LOADING
 */
 
-::-webkit-scrollbar {
-    width: 8px!important;
-}
-
-::-webkit-scrollbar-thumb {
-    background: rgba(0, 187, 212, 0.7);
-    // border-left: 1px dashed $darkblue;
-}
-
-::-webkit-scrollbar-track {
-    background: #385965 !important;
-    // border-left: 1px dashed $lightblue;
-}
-
 /*
 * GLOBAL GROUP
 */
+
+.groups-box{
+  overflow: auto;
+  &::-webkit-scrollbar{
+    width: 5px;
+    height: 5px;
+  }
+}
 
 .group-icon{
   $dimension: 35px;
@@ -536,6 +524,62 @@ body {
   font-size: 18px;
   line-height: 30px;
   text-transform: uppercase;
+  vertical-align: top;
+}
+
+.group-leader{
+  color: $orange;
+}
+
+.group-box-name{
+  .group-icon{
+    $dimension: 30px;
+
+    width: $dimension;
+    height: $dimension;
+    line-height: $dimension;
+    margin-right: 15px;
+  }
+}
+
+@for $i from 1 through length($group-colors) {
+  .group-box:nth-child(20n+#{$i}){
+    .group-box-name{
+      .group-icon{
+        background: nth($group-colors, $i) url('../images/groups/icons/#{$i}.png') center center no-repeat;
+        background-size: 60%;
+      }
+      .group-name{
+        color: nth($group-colors, $i);
+      }
+    }
+  }
+}
+
+.group-members{
+  $dimension: 20px;
+
+  .group-member-box{
+    width: auto;
+    height: $dimension;
+    margin-left: 45px;
+
+    .group-member-icon{
+      display: inline-block;
+      width: 20px;
+      height: $dimension;
+      background: url('../images/pu.jpg');
+      background-size: 20px;
+      border-radius: 50%;
+    }
+
+    .group-member-name{
+      display: inline-block;
+      font-size: 12px;
+      line-height: $dimension;
+      vertical-align: top;
+    }
+  }
 }
 
 /*
@@ -549,18 +593,40 @@ body {
 .card{
   position: relative;
   padding: 10px 15px;
+  background: white;
+  box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.80);
+  padding: 16px;
+  margin-bottom: 16px;
+
+  .title-columns{
+
+      height: 40px;
+      padding-top: 10px;
+      color: white;
+      font-weight: bold;
+
+      p:first-of-type{
+          width: 10%;
+      }
+
+      p{
+          float: left;
+          width: 18%;
+          text-align: center;
+      }
+  }
 
   .title{
     font-size: 24px;
     color: $darkgray;
-    margin: 0 0 45px;
+    margin: 0 0 25px;
   }
 
   .fullscreen{
     position: absolute;
     top: 8px;
     right: 8px;
-    z-index: 10;
+    z-index: 1;
     border: none;
     background: transparent;
     font-weight: bold;
@@ -569,20 +635,67 @@ body {
 }
 
 .wrap-card-question{
+  height: 220px;
   padding: 10px 55px 10px 15px;
   background: $white;
   border-top: 5px solid $orange;
 
+  .content-question-theme{
+    height: 100px;
+    
+    .content-question{
+      height: 70px;
+      overflow: auto;
+      padding-right: 10px;
+      
+      &::-webkit-scrollbar{
+        width: 5px;
+        height: 5px;
+      }
+    }
+  }
+
   .question{
-    font-size: 20px;    
+    font-size: 16px;    
     text-align: right;
     margin: 0;
   }
 
   .theme{
-    font-size: 18px;
+    font-size: 14px;
     color: $orange;
     text-align: right;
+  }
+
+  .groups-box{
+    $dimension: 35px;
+
+    position: relative;
+    width: 100%;
+    height: $dimension;
+    overflow: hidden;
+
+    .group-box-name{
+      position: absolute;
+      left: 0;
+      top: $dimension;
+      transition: all .3s ease-in-out;
+      z-index: 9;
+
+      &.current{
+        top: 0;
+        z-index: 10;
+      }
+
+      .group-icon{
+        width: $dimension;
+        height: $dimension;
+      }
+
+      .group-name{
+        line-height: $dimension;
+      }
+    }
   }
 
   .time{
@@ -605,13 +718,19 @@ body {
 
   .fullscreen{
     color: $lightgray;
-  }
+  } 
+}
 
-  .group-icon{
-    $dimension: 30px;
+.wrap-card-time-event{
+  padding: 10px 35px;
+  background: $yellow;
+  font-size: 36px;
+  color: $lightblack;
 
-    width: $dimension;
-    height: $dimension;
+  .time-event-text{
+    display: inline-block;
+    width: 100%;
+    background: url('../images/timer.png') right center no-repeat;
   }
 }
 
@@ -623,24 +742,193 @@ body {
 * BUTTON
 */
 
+.btn-graphic{
+  position: relative;
+  width: 100%;
+  padding: 50px;
+  background: $white url('../images/graphic.png') center center no-repeat;
+
+  .btn-graphic-text{
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    font-size: 24px;
+    color: $darkgray;
+  }
+}
+
 .send-question{
   position: relative;
   width: 100%;
+  padding: 50px;
   font-size: 24px;
   background: $yellow url('../images/send-question.png') center 75% no-repeat;
-  border: none;
-  padding: 0;
+
+  .send-question-text{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
 }
 
-.send-question-text{
-  display: block;
-  position: absolute;
-  top: 0;
+.sound{
   width: 100%;
-  text-align: center;
-  outline: none;
+  padding: 10px 45px;
+  font-size: 36px;
+  color: $white;
+  text-align: left;
+  background: $lightblack;
+
+  .sound-text{
+    display: inline-block;
+    width: 100%;
+    background-position: right center;
+    background-image: url('../images/sound.png');
+    background-repeat: no-repeat;
+  } 
+
+  &.disabled{
+    .sound-text{
+      background-image: url('../images/sound.png');
+    }
+  } 
+
+}
+
+.projector{
+  position: relative;
+  width: 100%;
+  padding: 81px 0;
+  font-size: 36px;
+  color: $white;
+  &.active{
+    background: $purple url('../images/projector.png') center 15% no-repeat;
+    
+  }
+
+  .projector-text{
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+  }
+}
+
+.close-event{
+  width: 100%;
+  padding: 15px 25px;
+  border: 0;
+  font-size: 24px;
+  font-weight: 300;
+  color: $white;
+  background: $red;
+}
+
+.btn-send-selected-question{
+  border-color: $orange;
+  background-color: $orange;
+  &:hover, &:active, &:active:hover, &:focus, &:visited{
+    border-color: $orange;
+    background-color: darken($orange, 12%); 
+  }
+}
+
+.btn-send-random-question{
+  border-color: $darkgray;
+  background-color: $darkgray;
+  &:hover, &:active, &:active:hover, &:focus, &:visited{
+    border-color: $darkgray;
+    background-color: darken($darkgray, 12%); 
+  }
+}
+
+.btn-question-picture{
+  background: none;
+  outline: none; 
 }
 
 /*
 * END BUTTONS
+*/
+
+/*
+* GLOBAL MODAL
+*/
+
+.modal-title{
+  color: $darkgray;
+}
+
+/*
+* END GLOBAL MODAL
+*/
+
+/*
+* GLOBAL TABLE
+*/
+
+.event-info{
+  width: 100%;
+  &::-webkit-scrollbar{
+    width: 5px;
+    height: 5px;
+  }  
+}
+
+.table-info{
+  td, th{
+    padding: 0 15px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .group-icon{
+    $dimension: 30px;
+
+    width: $dimension;
+    height: $dimension;
+    line-height: $dimension;
+  }
+
+  .table-head-info{
+
+    th{
+      height: 40px;
+      background: $lightblue;
+      color: $white;
+      text-transform: uppercase;
+    }
+  }
+
+  .table-body-info{
+    @for $i from 1 through length($group-colors) {
+      tr:nth-child(20n+#{$i}){
+        .group-icon{
+          background: nth($group-colors, $i) url('../images/groups/icons/#{$i}.png') center center no-repeat;
+          background-size: 60%;
+        }
+      }
+    }
+
+    tr{
+      &:nth-child(even){
+        background: #ededed;
+      }
+    }
+
+    td{
+      height: 50px;
+      &.ok{
+        color: $green;
+      }
+      &.wrong{
+        color: $red;
+      }
+    }
+  }
+}
+
+/*
+* END GLOBAL TABLE
 */

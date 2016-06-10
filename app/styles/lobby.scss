@@ -129,11 +129,6 @@
 					    	text-align: left;
 					    }
 
-					    ::nth-word(2){
-					    	color: red;
-					    }
-
-
 					}
 
 					.student:last-child{
@@ -158,131 +153,31 @@
 
 			}
 		}
-		.col-md-4:nth-child(6n+1){
-			 .group{
-				border-color: red;
+		
 
-				> p:first-child{
-					background: red;
-				}
+		@for $i from 1 through length($group-colors) {
+			.col-md-4:nth-child(20n+#{$i}){
+				.group{
+					border-color: nth($group-colors, $i);
 
-				> p:nth-child(2){
-				    color: red;
-				}
+					> p:first-child{
+						background: nth($group-colors, $i) url('../images/groups/icons/#{$i}.png') center center no-repeat;
+				        background-size: 60%;
+					}
 
-				> p:last-of-type{
-				    background: red;
-				}
+					> p:nth-child(2){
+						color: nth($group-colors, $i);
+					}
 
-				div.students::-webkit-scrollbar-thumb{
-					background-color: red;
+					> p:last-of-type{
+						background: nth($group-colors, $i);
+					}
+
+					div.students::-webkit-scrollbar-thumb{
+						background-color: nth($group-colors, $i);
+					}
 				}
 			}
-		}
-		.col-md-4:nth-child(6n+2){
-			.group{
-				border-color: blue;
-
-				> p:first-child{
-					background: blue;
-				}
-
-				> p:nth-child(2){
-				    color: blue;
-				}
-
-				> p:last-of-type{
-				    background: blue;
-				}
-
-				div.students::-webkit-scrollbar-thumb{
-					background-color: blue;
-				}	
-			}			
-		}
-		.col-md-4:nth-child(6n+3){
-			.group{
-				border-color: green;
-
-				> p:first-child{
-					background: green;
-				}
-
-				> p:nth-child(2){
-				    color: green;
-				}
-
-				> p:last-of-type{
-				    background: green;
-				}	
-
-				div.students::-webkit-scrollbar-thumb{
-					background-color: green;
-				}
-			}			
-		}
-		.col-md-4:nth-child(6n+4){
-			.group{
-				border-color: pink;
-
-				> p:first-child{
-					background: pink;
-				}
-
-				> p:nth-child(2){
-				    color: pink;
-				}
-
-				> p:last-of-type{
-				    background: pink;
-				}	
-
-				div.students::-webkit-scrollbar-thumb{
-					background-color: pink;
-				}
-			}			
-		}
-		.col-md-4:nth-child(6n+5){
-			.group{
-				border-color: darkviolet;
-
-				> p:first-child{
-					background: darkviolet;
-				}
-
-				> p:nth-child(2){
-				    color: darkviolet;
-				}
-
-				> p:last-of-type{
-				    background: darkviolet;
-				}	
-
-				div.students::-webkit-scrollbar-thumb{
-					background-color: darkviolet;
-				}
-			}			
-		}
-		.col-md-4:nth-child(6n+6){
-			.group{
-				border-color: cyan;
-
-				> p:first-child{
-					background: cyan;
-				}
-
-				> p:nth-child(2){
-				    color: cyan;
-				}
-
-				> p:last-of-type{
-				    background: cyan;
-				}	
-
-				div.students::-webkit-scrollbar-thumb{
-					background-color: cyan;
-				}
-			}			
 		}
 	}
 }

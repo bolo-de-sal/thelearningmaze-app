@@ -14,27 +14,34 @@
 
 .wrap-card-question{
 
-	.group-icon{
-		background: $orange;
+	@for $i from 1 through length($group-colors) {
+		.group-box-name:nth-child(20n+#{$i}){
+			.group-icon{
+				background: nth($group-colors, $i) url('../images/groups/icons/#{$i}.png') center center no-repeat;
+				background-size: 60%;
+			}
+		}
 	}
 	
 	.time{
-		float: right;
-		margin-right: -40px;
+		position: absolute;
+		right: 20px;
+		bottom: 15px;
 		background: $orange;
 	}
 }
 
 .wrap-card-score{
+	height: 335px;
 	padding: 10px 30px 35px 15px;
 
-	.group-box-score{
-		height: 205px;
-		overflow-y: auto;
+	.groups-box{
+		height: 240px;
+		padding-right: 20px;
 	}
 
 	.group-box-name{
-		margin-bottom: 15px;
+		margin-bottom: 20px;
 	}
 
 	.group-box-name:last-child{
@@ -48,19 +55,18 @@
 	}
 }
 
-.wrap-card-graphic, .wrap-card-send-question .card, .wrap-card-send-question .send-question{
-	height: 100px;
-}
-
 .wrap-card-graphic{
-	background: $white url('../images/graphic.png') center center no-repeat;
+	padding: 0;
+	margin-bottom: 15px;
 }
 
 .wrap-card-send-question{
+	margin-bottom: 15px;
 	padding: 0 0 0 15px;
 	background: transparent;
 
 	.card{
+		margin: 0;
 		padding: 0;
 		background: transparent;
 	}
@@ -68,44 +74,121 @@
 
 .wrap-card-event-info{
 	padding: 0 0 0 15px;
+
+	.event-info{
+		height: 250px;
+	  overflow: auto;
+	}
 	
 	.title{
 		margin-bottom: 20px;
 	}
 }
 
-.event-info{
-	overflow: auto;
+.wrap-card-sound, .wrap-card-projector, .wrap-card-close-event{
+	padding: 0;
+}
 
-	table{
+.wrap-card-groups{
+	height: 248px;
 
-	}
-	
-	td, th{
-		padding: 10px 15px;
-		text-align: center;
-	}
+	.groups-box{
+		height: 165px;
 
-	.table-head-event-info{
+		.group-box{
+			margin-bottom: 10px;
 
-		th{
-			background: $lightblue;
-			color: $white;
-			text-transform: uppercase;
+			.group-member-box{
+				margin-bottom: 10px;
+			}
+
+			.group-box-name{
+				cursor: pointer;
+			}
+
+			.glyphicon{
+				float: right;
+				margin-right: 20px;
+			}
 		}
 	}
+}
 
-	.table-body-event-info{
-		td{
+.modal-questions-body{
+	label{
+		font-weight: normal;
+	}
+
+	.questions-filters{	
+		.questions-filter{
+			float: left;
+			width: 50%;
+			padding: 10px 0;
+			font-size: 10px;
 			text-align: center;
-			&.ok{
-				color: $green;
+
+			input[type=checkbox]{
+				display: none;
 			}
-			&.wrong{
-				color: $red;
+
+			label{
+				$dimension: 36px;
+				
+				display: inline-block;
+				width: $dimension;
+				height: $dimension;
+				line-height: $dimension;
+				margin-right: 30px;
+				background-color: $lightgray;
+				border-radius: 50%;
+				cursor: pointer;
+				transition: all .2s ease-in-out;
+
+				&:last-child{
+					margin-right: 0;
+				}
+
+				&:hover, &.current{
+					color: $white;
+					background-color: $lightorange;
+				}
+			}
+		}
+
+		.difficulty{
+			
+		}
+	}
+
+	.event-info{
+		height: 300px;
+		overflow: auto;
+	}
+
+	.table-info{
+		width: 100%;
+
+		.table-head-info{
+			th{
+				font-size: 20px;
+				font-weight: normal;
+				text-transform: none;
+			}
+		}
+
+		.table-body-info{
+			td{
+				text-align: left;
+				&:last-child{
+					text-align: center;
+				}
 			}
 		}
 	}
+}
+
+.modal-questions-footer{
+	text-align: center;
 }
 
 /*

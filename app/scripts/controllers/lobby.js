@@ -13,7 +13,6 @@ angular
 
     LobbyController.$inject = ['AuthenticationService', 'SessionService', '$location', '$rootScope', "EventService"];
     function LobbyController(AuthenticationService, SessionService, $location, $rootScope, EventService) {
-
     	var lobbyCtrl = this;
 
         // console.log("--->LobbyController init");

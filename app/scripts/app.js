@@ -53,7 +53,7 @@ angular
         controller: 'AboutCtrl',
         controllerAs: 'about'
       })
-      .when('/control-panel', {
+      .when('/control-panel/:eventId', {
         templateUrl: 'views/control-panel.html',
         controller: 'ControlPanelController',
         controllerAs: 'controlPanel'
