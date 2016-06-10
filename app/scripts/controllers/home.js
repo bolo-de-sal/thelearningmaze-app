@@ -105,6 +105,11 @@ angular
                     alert("Clique no botão do evento: " + $(this).parent().siblings().first().html());
                     // console.log("Clique no botão do evento: ", $(this).parent().siblings().first().html());
                     var codEvento = $(this).parent().siblings().first().html();
+
+                    if ($(this).parent().siblings(":nth-child(4)").html() == '') 
+                    {
+                        alert('OI');
+                    }
                     //getEventGroups(codEvento);
                 }
             });

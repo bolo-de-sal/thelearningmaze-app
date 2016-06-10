@@ -63,6 +63,11 @@ angular
         controller: 'LobbyController',
         controllerAs: 'lobby'
       })
+      .when('/aluno', {
+        templateUrl: 'views/aluno.html',
+        controller: 'AlunoController',
+        controllerAs: 'aluno'
+      })
       .otherwise({
         redirectTo: '/404'
     });
