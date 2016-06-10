@@ -343,7 +343,7 @@ button{
   width: 100%;
   height: 100%;
   background: rgba($darkblue, .7);
-  z-index: 3;
+  z-index: 9999;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -873,8 +873,10 @@ button{
   &::-webkit-scrollbar{
     width: 5px;
     height: 5px;
-  }
-  
+  }  
+}
+
+.table-info{
   td, th{
     padding: 0 15px;
     font-size: 14px;

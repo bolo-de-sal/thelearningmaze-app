@@ -16,7 +16,7 @@ angular
 
         function getQuestionsByEvent(eventId) {
 
-            var promise = $http.get(AppConfig.api.identifier + '/Questaos/' + eventId)
+            var promise = $http.get(AppConfig.api.identifier + '/Eventos/' + eventId + '/Questoes')
             .then(function(response){
                 return response.data;
             });
@@ -26,7 +26,7 @@ angular
 
         function getCurrentQuestionByEventId(eventId) {
 
-            var promise = $http.get(AppConfig.api.identifier + '/Questaos/' + eventId + '/QuestaoAtual')
+            var promise = $http.get(AppConfig.api.identifier + '/Eventos/' + eventId + '/QuestaoAtual')
             .then(function(response){
                 return response.data;
             });
