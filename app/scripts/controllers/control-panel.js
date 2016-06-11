@@ -18,6 +18,7 @@ angular
         $(".header").show();
 
         var controlPanelCtrl = this;
+        controlPanelCtrl.questions = {};
 
         $rootScope.dataLoading = true;
 
@@ -26,14 +27,13 @@ angular
         // All requests
         $q.all([
 		   EventService.getEventById(eventId),
-		   // QuestionService.getCurrentQuestionByEventId(eventId),
+		   QuestionService.getCurrentQuestionByEventId(eventId),
 		   GroupService.getGroupsByEventId(eventId)
 		]).then(function(response){
 			console.log(response);
 			controlPanelCtrl.event = response[0];
-			// controlPanelCtrl.questions.current = response[1];
-			// controlPanelCtrl.groups = response[2];
-			controlPanelCtrl.groupsInfo = response[1];
+			controlPanelCtrl.questions.current = response[1];
+			controlPanelCtrl.groupsInfo = response[2];
 		}).finally(function(){
 			// Close dataLoading after all requests are finished
 			$rootScope.dataLoading = false;
@@ -67,36 +67,24 @@ angular
     .module('thelearningmaze')
     .controller('QuestionsModalController', QuestionsModalController);
 
-    QuestionsModalController.$inject = ['$uibModalInstance', 'EventService'];
+    QuestionsModalController.$inject = ['$routeParams', '$rootScope', '$q', '$uibModalInstance', 'QuestionService', 'ThemeService'];
 
-    function QuestionsModalController($uibModalInstance, EventService){
+    function QuestionsModalController($routeParams, $rootScope, $q, $uibModalInstance, QuestionService, ThemeService){
     	var questionsModalCtrl = this;
 
-    	// questionsModalCtrl.questions = EventService.getEvents(1).then(function(response){return response.Eventos;}, function(){});
+    	$rootScope.dataLoading = true;
 
-    	questionsModalCtrl.questions = [
-												{
-													"codQuestao": 1,
-													"textoQuestao": "sample string 2",
-													"codAssunto": 3,
-													"codImagem": 4,
-													"codTipoQuestao": "sample string 5",
-													"codProfessor": 6,
-													"ativo": true,
-													"dificuldade": "F"
-												},
-												{
-													"codQuestao": 2,
-													"textoQuestao": "sample string 2",
-													"codAssunto": 3,
-													"codImagem": 4,
-													"codTipoQuestao": "sample string 5",
-													"codProfessor": 6,
-													"ativo": true,
-													"dificuldade": "M"
-											  }
-											];
+    	var eventId = $routeParams.eventId;
 
+    	$q.all([
+		   QuestionService.getQuestionsByEvent(eventId)
+		   // ThemeService.getThemesByEvent(eventId)
+		]).then(function(response){
+			questionsModalCtrl.questionsItems = response[0];
+			// questionsModalCtrl.themes = response[1];
+		}).finally(function(){
+			$rootScope.dataLoading = false;
+		});	
 
 		questionsModalCtrl.difficultyIncludes = [];
 
@@ -109,12 +97,12 @@ angular
 	        }
 		}
 
-		questionsModalCtrl.difficultyFilter = function(question){
-			if(questionsModalCtrl.difficultyIncludes.length > 0 && $.inArray(question.dificuldade, questionsModalCtrl.difficultyIncludes) < 0){
+		questionsModalCtrl.difficultyFilter = function(questionItem){
+			if(questionsModalCtrl.difficultyIncludes.length > 0 && $.inArray(questionItem.Questao.dificuldade, questionsModalCtrl.difficultyIncludes) < 0){
 				return;
 			}
 
-			return question;
+			return questionItem;
 		}
 
 		questionsModalCtrl.themeIncludes = [];
@@ -128,13 +116,39 @@ angular
 	        }
 		}
 
-		questionsModalCtrl.themeFilter = function(question){
-			if(questionsModalCtrl.themeIncludes.length > 0 && $.inArray(question.assunto, questionsModalCtrl.themeIncludes) < 0){
+		questionsModalCtrl.themeFilter = function(questionItem){
+			if(questionsModalCtrl.themeIncludes.length > 0 && $.inArray(questionItem.Assunto.descricao, questionsModalCtrl.themeIncludes) < 0){
 				return;
 			}
 
-			return question;
+			return questionItem;
 		}
+
+		questionsModalCtrl.themes = 
+		[
+			{
+				codAssunto: 1,
+				descricao: 'Logica'
+			},
+			{
+				codAssunto: 2,
+				descricao: 'Teste'
+			}
+		];
+
+		questionsModalCtrl.selectionThemes = [];
+
+		questionsModalCtrl.toggleSelectionTheme = function(theme) {
+			var idx = questionsModalCtrl.selectionThemes.indexOf(theme);
+
+			// is currently selected
+			if (idx > -1) {
+			  questionsModalCtrl.selectionThemes.splice(idx, 1);
+			}
+			else {
+			  questionsModalCtrl.selectionThemes.push(theme);
+			}
+		};
 
 		questionsModalCtrl.sendQuestion = function(question){
 			console.log(question);

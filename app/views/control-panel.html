@@ -134,46 +134,47 @@
     <h3 class="modal-title">Perguntas</h3>
   </div>
   <div class="modal-body modal-questions-body">
-    <div class="event-info">
-      <form novalidate>
-        <div class="questions-filters">
-          <div class="questions-filter questions-difficulty-filter">
-            <label class="difficulty difficulty-easy" ng-class="{current: questionsModal.filters.difficulty.easy}">Fácil<input type="checkbox" value="F" name="difficulty" ng-model="questionsModal.filters.difficulty.easy" ng-click="questionsModal.includeDifficulty('F')"></label>
-            <label class="difficulty difficulty-medium" ng-class="{current: questionsModal.filters.difficulty.medium}">Médio<input type="checkbox" value="M" name="difficulty" ng-model="questionsModal.filters.difficulty.medium" ng-click="questionsModal.includeDifficulty('M')"></label>
-            <label class="difficulty difficulty-hard" ng-class="{current: questionsModal.filters.difficulty.hard}">Difícil<input type="checkbox" value="D" name="difficulty" ng-model="questionsModal.filters.difficulty.hard" ng-click="questionsModal.includeDifficulty('D')"></label>
-          </div>
-          <div class="questions-filter questions-theme-filter">
-            <label class="theme theme-1" ng-class="{current: questionsModal.filters.theme}">Ass1<input type="checkbox" value="Assunto 1" name="theme" ng-model="questionsModal.filters.theme" ng-click="questionsModal.includeTheme('Assunto 1')"></label>
-            <label class="theme theme-2" ng-class="{current: questionsModal.filters.theme}">Ass1<input type="checkbox" value="Assunto 2" name="theme" ng-model="questionsModal.filters.theme" ng-click="questionsModal.includeTheme('Assunto 2')"></label>
-            <label class="theme theme-3" ng-class="{current: questionsModal.filters.theme}">Ass1<input type="checkbox" value="Assunto 3" name="theme" ng-model="questionsModal.filters.theme" ng-click="questionsModal.includeTheme('Assunto 3')"></label>
-            <label class="theme theme-4" ng-class="{current: questionsModal.filters.theme}">Ass1<input type="checkbox" value="Assunto 4" name="theme" ng-model="questionsModal.filters.theme" ng-click="questionsModal.includeTheme('Assunto 4')"></label>
-          </div>
+    <form novalidate>
+      <div class="questions-filters">
+        <div class="questions-filter questions-difficulty-filter">
+          <label class="difficulty difficulty-easy" ng-class="{current: questionsModal.filters.difficulty.easy}">Fácil<input type="checkbox" value="F" name="difficulty" ng-model="questionsModal.filters.difficulty.easy" ng-click="questionsModal.includeDifficulty('F')"></label>
+          <label class="difficulty difficulty-medium" ng-class="{current: questionsModal.filters.difficulty.medium}">Médio<input type="checkbox" value="M" name="difficulty" ng-model="questionsModal.filters.difficulty.medium" ng-click="questionsModal.includeDifficulty('M')"></label>
+          <label class="difficulty difficulty-hard" ng-class="{current: questionsModal.filters.difficulty.hard}">Difícil<input type="checkbox" value="D" name="difficulty" ng-model="questionsModal.filters.difficulty.hard" ng-click="questionsModal.includeDifficulty('D')"></label>
         </div>
+        <div class="questions-filter questions-theme-filter">
+          <label class="theme theme-1" ng-repeat="theme in questionsModal.themes" ng-class="{current: questionsModal.selectionThemes.indexOf(theme.descricao) > -1}">
+            {{ theme.descricao.substring(0, 5) }} <input type="checkbox" value="{{ theme.descricao }}" name="questionsModal.selectedThemes[]" ng-click="questionsModal.toggleSelectionTheme(theme.descricao); questionsModal.includeTheme(theme.descricao)">
+          </label>
+        </div>
+      </div>
+      <table class="table-info">
+        <thead class="table-head-info">
+          <tr>
+            <th colspan="2">Perguntas</th>
+          </tr>
+        </thead>
+      </table>
+      <div class="event-info">
         <table class="table-info">
-          <thead class="table-head-info">
-            <tr>
-              <th colspan="2">Perguntas</th>
-            </tr>
-          </thead>
           <tbody class="table-body-info">
-            <tr ng-repeat="question in questionsModal.questions | filter:questionsModal.difficultyFilter">
+            <tr ng-repeat="questionItem in questionsModal.questionsItems | filter:questionsModal.difficultyFilter | filter:questionsModal.themeFilter">
               <td>
                 <div class="radio">
                   <label>
-                    <input type="radio" value="{{ question.codQuestao }}" name="question" ng-model="questionsModal.selectedQuestion"> {{ question.codQuestao }} Qual é a pergunta que temos que fazer?
+                    <input type="radio" value="{{ questionItem.Questao.codQuestao }}" name="question" ng-model="questionsModal.selectedQuestion"> {{ questionItem.Questao.textoQuestao }}
                   </label>
                 </div>
               </td>
               <td>
-                <button class="btn-question-picture">
+                <button class="btn-question-picture" ng-show="questionItem.Questao.codImagem">
                   <span class="glyphicon glyphicon-picture"></span>
                 </button>
               </td>
             </tr>
           </tbody>
         </table>  
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
   <div class="modal-footer modal-questions-footer">
     <button type="button" class="btn btn-primary btn-lg btn-send-selected-question" ng-click="questionsModal.sendQuestion(questionsModal.selectedQuestion)">Lançar</button>
