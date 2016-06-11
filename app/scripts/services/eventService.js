@@ -9,6 +9,7 @@ angular
     function EventService($http, $rootScope, AppConfig) {
         var events = {};
 
+        events.getEventById = getEventById;
         events.getEvents = getEvents;
         events.getActiveEvent = getActiveEvent;
         events.closeEvent = closeEvent;
@@ -16,6 +17,16 @@ angular
         events.getEventGroups = getEventGroups;
 
         return events;
+
+        function getEventById(eventId) {
+
+            var promise = $http.get(AppConfig.api.identifier + '/Eventos/' + eventId)
+            .then(function(response){
+                return response.data;
+            });
+
+            return promise;
+        }
 
         function getEvents(page) {
 

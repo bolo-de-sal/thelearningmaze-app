@@ -150,6 +150,10 @@
     }
 }
 
+.pino{
+	height: 22px;
+}
+
 .one-yellow{
     position: absolute;
     left: 0;
@@ -320,7 +324,7 @@
 
 .parent-group-first{
 	/*background: rgba(0, 0, 0, 0.5);*/
-	border: 2px solid black;
+	/*border: 2px solid black;*/
     width: 521px;
     height: 521px;
     border-radius: 50%;
@@ -328,7 +332,7 @@
 
 .parent-group-second{
 	/*background: rgba(255, 0, 0, 0.5);*/
-	border: 2px solid red;
+	/*border: 2px solid red;*/
     width: 429px;
     height: 429px;
     border-radius: 50%;
@@ -336,7 +340,7 @@
 
 .parent-group-third{
 	/*background: rgba(0, 255, 0, 0.5);*/
-	border: 2px solid green;
+	/*border: 2px solid green;*/
     width: 300px;
     height: 300px;
     border-radius: 50%;
@@ -344,10 +348,18 @@
 
 .parent-group-fourth{
 	/*background: rgba(0, 0, 255, 0.5);*/
-	border: 2px solid blue;
+	/*border: 2px solid blue;*/
     width: 102px;
     height: 102px;
     border-radius: 50%;
+}
+
+.parent-group-fourth > img{
+    height: 36px;
+    margin-top: 32px;
+    display: inline;
+    float: left;
+    margin-left: 32px;
 }
 
 .parent-group-first:hover{

@@ -16,12 +16,12 @@ angular
 
         function Login(username, password) {
             
-            var promise = $http.post(AppConfig.api.identifier + '/professors/login', { email: username, senhaText: password })
-            .then(function(response){
-              return response.data;
-            });
+          var promise = $http.post(AppConfig.api.identifier + '/professors/login', { email: username, senhaText: password })
+          .then(function(response){
+            return response.data;
+          });
 
-            return promise;
+          return promise;
 
         }
 

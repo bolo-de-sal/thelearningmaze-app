@@ -1,4 +1,4 @@
-<h1 class="title-section">Evento X</h1>
+<h1 class="title-section">{{ controlPanel.event.descricao }}</h1>
 <div class="row">
   <div class="col-md-9">
     <div class="row">
@@ -6,20 +6,28 @@
         <div class="col-md-12 card wrap-card-question">
           <h3 class="title">Pergunta Atual</h3>
           <button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button>
-          <p class="question">Qual o ingrediente secreto presente no Elemento X?</p>
-          <p class="theme">Assunto: Quimica</p>
-          <span class="group-icon">P</span>
+          <div class="content-question-theme">
+            <div class="content-question">
+              <p class="question">{{ controlPanel.questions.current.textoQuestao }}</p>
+            </div>
+            <p class="theme">Assunto: {{ controlPanel.questions.current.codAssunto }}</p>
+          </div>
+          <div class="groups-box">
+            <div class="group-box-name" ng-repeat="groupInfo in controlPanel.groupsInfo">
+              <span class="group-icon"></span>
+              <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
+            </div>
+          </div>
           <span class="time">1:20</span>
         </div>
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-7 card wrap-card-graphic">
-              <h3 class="title">Gráficos</h3>
-              <button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button>
-            </div>
+              <button class="btn-graphic"><span class="btn-graphic-text">Gráficos</span></button>
+            </div>            
             <div class="col-md-5 wrap-card-send-question">
               <div class="col-md-12 card">
-                <button class="send-question"><span class="send-question-text">Lançar Pergunta</span></button>
+                <button class="send-question" ng-click="controlPanel.questionsModal.open('lg')"><span class="send-question-text">Lançar Pergunta</span></button>
               </div>
             </div>
           </div>
@@ -29,22 +37,14 @@
         <div class="row">
           <div class="col-md-12 card wrap-card-score">
             <h3 class="title">Pontuação</h3>
-            <button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button>
-            <div class="group-box-score">
-              <div class="group-box-name">
-                <div class="group-icon">T</div>
-                <div class="group-name">Teste</div>
-                <div class="group-score">8pts.</div>
-              </div>
-              <div class="group-box-name">
-                <div class="group-icon">T</div>
-                <div class="group-name">Teste</div>
-                <div class="group-score">8pts.</div>
-              </div>
-              <div class="group-box-name">
-                <div class="group-icon">T</div>
-                <div class="group-name">Teste</div>
-                <div class="group-score">8pts.</div>
+            <!-- <button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button> -->
+            <div class="groups-box">
+              <div class="group-box" ng-repeat="groupInfo in controlPanel.groupsInfo">
+                <div class="group-box-name">
+                  <span class="group-icon"></span>
+                  <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
+                  <div class="group-score">8pts.</div>
+                </div>
               </div>
             </div>
           </div>
@@ -55,19 +55,19 @@
     <div class="col-md-12 wrap-card-event-info">
       <div class="col-md-12 card">
         <h3 class="title">Informações do Evento</h3>
-        <button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button>
+        <!-- <button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button> -->
         <div class="event-info">
-          <table class="table-event-info">
-            <thead class="table-head-event-info">
+          <table class="table-info">
+            <thead class="table-head-info">
               <tr>
                 <th>GRUPO</th>
                 <th>Q001</th>
                 <th>Q002</th>
               </tr>
             </thead>
-            <tbody class="table-body-event-info">
+            <tbody class="table-body-info">
               <tr>
-                <td><div class="group-icon">P</div></td>
+                <td><span class="group-icon"></span></td>
                 <td class="ok"><span class="glyphicon glyphicon-ok"></span></td>
                 <td class="wrong"><span class="glyphicon glyphicon-remove"></span></td>
               </tr>
@@ -79,7 +79,105 @@
     </div>
   </div>
   <div class="col-md-3">
-    <div class="col-md-12 card">
+    <div class="col-md-12 card wrap-card-time-event">
+      <span class="time-event-text">16:19:25</span>
+    </div>
+    <div class="col-md-12 card wrap-card-sound">
+      <button class="sound active"><span class="sound-text">Volume</span></button>
+    </div>
+    <div class="col-md-12 card wrap-card-projector">
+      <button class="projector active"><span class="projector-text">Projetor</span></button>
+    </div>
+    <div class="col-md-12 card wrap-card-groups">
+      <h3 class="title">Grupos</h3>
+      <!-- <button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button> -->
+      <div class="groups-box">
+        <uib-accordion close-others="controlPanel.closeOthers">
+          <uib-accordion-group ng-repeat="groupInfo in controlPanel.groupsInfo" template-url="group-template.html">
+            <uib-accordion-heading>
+              <span class="group-icon"></span>
+              <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
+              <i class="pull-right glyphicon" ng-class="{'glyphicon-plus': !controlPanel.groups[$index].open, 'glyphicon-minus': controlPanel.groups[$index].open}"></i>
+            </uib-accordion-heading>
+            <div class="group-member-box" ng-repeat="member in groupInfo.ParticipantesGrupo">
+              <div class="group-member-icon"></div>
+              <div class="group-member-name">
+                {{ member.nmParticipante }} <span class="group-leader" ng-show="{{ groupInfo.Grupo.codLider == member.codParticipante }}">Líder</span>
+              </div>
+            </div>
+          </uib-accordion-group>
+        </uib-accordion>
+      </div>
+    </div>
+    <div class="col-md-12 card wrap-card-close-event">
+      <button class="close-event">Encerrar Evento</button>
     </div>
   </div>
 </div>
+
+<!--TEMPLATES-->
+<script type="text/ng-template" id="group-template.html">
+  <div class="group-box">
+    <div class="group-box-name" class="accordion-toggle" ng-click="toggleOpen()" uib-accordion-transclude="heading">
+      <div uib-accordion-header>
+        {{heading}}
+      </div>
+    </div>
+    <div class="group-members" uib-collapse="!isOpen" ng-transclude>
+    </div>
+  </div>
+</script>
+
+<script type="text/ng-template" id="questions-modal.html">
+  <div class="modal-header modal-questions-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="questionsModal.close()"><span aria-hidden="true">×</span></button>
+    <h3 class="modal-title">Perguntas</h3>
+  </div>
+  <div class="modal-body modal-questions-body">
+    <div class="event-info">
+      <form novalidate>
+        <div class="questions-filters">
+          <div class="questions-filter questions-difficulty-filter">
+            <label class="difficulty difficulty-easy" ng-class="{current: questionsModal.filters.difficulty.easy}">Fácil<input type="checkbox" value="F" name="difficulty" ng-model="questionsModal.filters.difficulty.easy" ng-click="questionsModal.includeDifficulty('F')"></label>
+            <label class="difficulty difficulty-medium" ng-class="{current: questionsModal.filters.difficulty.medium}">Médio<input type="checkbox" value="M" name="difficulty" ng-model="questionsModal.filters.difficulty.medium" ng-click="questionsModal.includeDifficulty('M')"></label>
+            <label class="difficulty difficulty-hard" ng-class="{current: questionsModal.filters.difficulty.hard}">Difícil<input type="checkbox" value="D" name="difficulty" ng-model="questionsModal.filters.difficulty.hard" ng-click="questionsModal.includeDifficulty('D')"></label>
+          </div>
+          <div class="questions-filter questions-theme-filter">
+            <label class="theme theme-1" ng-class="{current: questionsModal.filters.theme}">Ass1<input type="checkbox" value="Assunto 1" name="theme" ng-model="questionsModal.filters.theme" ng-click="questionsModal.includeTheme('Assunto 1')"></label>
+            <label class="theme theme-2" ng-class="{current: questionsModal.filters.theme}">Ass1<input type="checkbox" value="Assunto 2" name="theme" ng-model="questionsModal.filters.theme" ng-click="questionsModal.includeTheme('Assunto 2')"></label>
+            <label class="theme theme-3" ng-class="{current: questionsModal.filters.theme}">Ass1<input type="checkbox" value="Assunto 3" name="theme" ng-model="questionsModal.filters.theme" ng-click="questionsModal.includeTheme('Assunto 3')"></label>
+            <label class="theme theme-4" ng-class="{current: questionsModal.filters.theme}">Ass1<input type="checkbox" value="Assunto 4" name="theme" ng-model="questionsModal.filters.theme" ng-click="questionsModal.includeTheme('Assunto 4')"></label>
+          </div>
+        </div>
+        <table class="table-info">
+          <thead class="table-head-info">
+            <tr>
+              <th colspan="2">Perguntas</th>
+            </tr>
+          </thead>
+          <tbody class="table-body-info">
+            <tr ng-repeat="question in questionsModal.questions | filter:questionsModal.difficultyFilter">
+              <td>
+                <div class="radio">
+                  <label>
+                    <input type="radio" value="{{ question.codQuestao }}" name="question" ng-model="questionsModal.selectedQuestion"> {{ question.codQuestao }} Qual é a pergunta que temos que fazer?
+                  </label>
+                </div>
+              </td>
+              <td>
+                <button class="btn-question-picture">
+                  <span class="glyphicon glyphicon-picture"></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>  
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer modal-questions-footer">
+    <button type="button" class="btn btn-primary btn-lg btn-send-selected-question" ng-click="questionsModal.sendQuestion(questionsModal.selectedQuestion)">Lançar</button>
+    <button type="button" class="btn btn-warning btn-lg btn-send-random-question" ng-click="questionsModal.sendQuestion()">Sortear</button>
+  </div>
+</script>
+<!--END TEMPLATES-->
