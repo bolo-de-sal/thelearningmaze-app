@@ -38,6 +38,11 @@ angular
           controller: 'HomeController',
           controllerAs: 'home'
       })
+      // .when('/', {
+      //     templateUrl: 'views/under-construction.html',
+      //     controller: 'UnderConstructionController',
+      //     controllerAs: 'underConstruction'
+      // })
       .when('/login', {
           templateUrl: 'views/login.html',
           controller: 'LoginController',
@@ -84,7 +89,7 @@ angular
       $rootScope.$on('$locationChangeStart', function (event, next, current) {
           AlertService.Clear();
 
-          // redirect to login page if not logged in and trying to access a restricted page
+          // // redirect to login page if not logged in and trying to access a restricted page
           var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
 
           var loggedIn = SessionService.getUser();
@@ -98,6 +103,8 @@ angular
             $(".header").show();
             $("body").removeClass("bodyLogin");
           }
+
+          // $location.path('/');
 
       });
 

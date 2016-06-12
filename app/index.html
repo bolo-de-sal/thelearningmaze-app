@@ -21,10 +21,12 @@
     <link rel="stylesheet" href="styles/control-panel.css">
     <link rel="stylesheet" href="styles/lobby.css">
     <link rel="stylesheet" href="styles/projector.css">
+    <link rel="stylesheet" href="styles/under-construction.css">
     <!-- endbuild -->
   </head>
 
-  <body class="bodyLogin">
+  <body class="" style="overflow: hidden">
+  <!-- <body class="bodyLogin"> -->
 
     <uib-alert class="global-alert" ng-repeat="alert in alerts" type="{{ alert.type }}" close="CloseAlert($index)">{{ alert.msg }}</uib-alert>
 
@@ -41,7 +43,7 @@
               <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand" href="#/"><img src="../images/Logo.png" alt="Learning Maze"></a>
+            <a class="navbar-brand" href="#/"><img src="images/Logo.png" alt="Learning Maze"></a>
           </div>
 
           <div class="collapse navbar-collapse" id="js-navbar-collapse">
@@ -55,8 +57,8 @@
 
             <ul class="nav navbar-nav">
               <li class="active"><p>{{user.nome}}</p></li>
-              <li><img src="../images/pu.jpg" alt="Professor Utonio"></li>
-              <li ng-click="Logout()"><img src="../images/logout.jpg" alt="Logout"></li>
+              <li><img src="images/pu.jpg" alt="Professor Utonio"></li>
+              <li ng-click="Logout()"><img src="images/logout.jpg" alt="Logout"></li>
               <!-- <li><a ng-href="#/">Contact</a></li> -->
             </ul>
 
@@ -114,6 +116,7 @@
         <script src="scripts/controllers/control-panel.js"></script>
         <script src="scripts/controllers/lobby.js"></script>
         <script src="scripts/controllers/projector.js"></script>
+        <script src="scripts/controllers/under-construction.js"></script>
 
         <script src="scripts/services/authenticationService.js"></script>
         <script src="scripts/services/sessionService.js"></script>
