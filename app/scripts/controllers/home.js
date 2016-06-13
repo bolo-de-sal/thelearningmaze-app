@@ -11,9 +11,9 @@ angular
     .module('thelearningmaze')
     .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['AuthenticationService', 'SessionService', 'EventService', '$rootScope', '$location', 'AlertService'];
+    HomeController.$inject = ['$q', 'AuthenticationService', 'SessionService', 'EventService', '$rootScope', '$location', 'AlertService'];
 
-    function HomeController(AuthenticationService, SessionService, EventService, $rootScope, $location, AlertService) {
+    function HomeController($q, AuthenticationService, SessionService, EventService, $rootScope, $location, AlertService) {
         var homeCtrl = this;
 
         $rootScope.dataLoading = true;
@@ -31,9 +31,21 @@ angular
         // EventService.closeEvent(); 
         // EventService.openEvent(); 
 
-        EventService.getEvents(0).then(getEventsSuccess, getEventsError);
+        // All requests
+        $q.all([
+            EventService.getEvents(0).then(getEventsSuccess, getEventsError),
+            EventService.getActiveEvent().then(getActiveEventSuccess, getActiveEventError)
+        ]).then(function(response){
+            console.log(response);
+            // controlPanelCtrl.event = response[0];
+            // controlPanelCtrl.questions.current = response[1];
+            // controlPanelCtrl.groupsInfo = response[2];
+        }).finally(function(){
+            // Close dataLoading after all requests are finished
+            $rootScope.dataLoading = false;
+        });
 
-        EventService.getActiveEvent().then(getActiveEventSuccess, getActiveEventError);
+        
 
         // Get Events
 
@@ -68,7 +80,7 @@ angular
                 // console.log("pageContentControl: ", pageContentControl);
             }
 
-            $rootScope.dataLoading = false;
+            // $rootScope.dataLoading = false;
         }
 
         function getEventsError(error){
@@ -89,7 +101,7 @@ angular
                 homeCtrl.disableButtons = false;
             }
 
-            $rootScope.dataLoading = false;
+            // $rootScope.dataLoading = false;
         }
 
         function getActiveEventError(error){

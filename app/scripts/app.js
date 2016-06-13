@@ -63,7 +63,7 @@ angular
         controller: 'ControlPanelController',
         controllerAs: 'controlPanel'
       })
-      .when('/lobby', {
+      .when('/lobby/:eventId', {
         templateUrl: 'views/lobby.html',
         controller: 'LobbyController',
         controllerAs: 'lobby'
@@ -71,7 +71,7 @@ angular
       .when('/projector', {
         templateUrl: 'views/projector.html',
         controller: 'ProjectorController',
-        controllerAs: 'projecotr'
+        controllerAs: 'projector'
       })
       .otherwise({
         redirectTo: '/404'

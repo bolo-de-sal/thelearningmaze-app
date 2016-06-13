@@ -15,6 +15,7 @@ angular
         events.closeEvent = closeEvent;
         events.openEvent = openEvent;
         events.getEventGroups = getEventGroups;
+        events.getEventSubjects = getEventSubjects;
 
         return events;
 
@@ -66,6 +67,16 @@ angular
 
         function getEventGroups(codEvento){
             var promise = $http.get(AppConfig.api.identifier + '/Eventos/' + codEvento + '/GruposCompleto')
+            .then(function (response) {
+                return response.data;
+              // callback(response);
+            });
+
+            return promise;
+        }
+
+        function getEventSubjects(codEvento){
+            var promise = $http.get(AppConfig.api.identifier + '/Eventos/' + codEvento + '/Assuntos')
             .then(function (response) {
                 return response.data;
               // callback(response);

@@ -18,7 +18,7 @@
 				<p>{{home.activeEvent.inicio}}</p>
 				<p>{{home.activeEvent.codStatus}}</p>
 				<div class="btns">
-					<a href="#" class="list-button green enabled" ng-if="home.activeEvent.codStatus == 'ABERTO'">Iniciar</a>
+					<a href="#/lobby/{{home.activeEvent.codEvento}}" class="list-button green enabled" ng-if="home.activeEvent.codStatus == 'ABERTO'">Iniciar</a>
 					<a href="#/control-panel/{{home.activeEvent.codEvento}}" class="list-button green enabled" ng-if="home.activeEvent.codStatus == 'EXECUTANDO'">Ver</a>
 				</div>
 			</div>
@@ -57,7 +57,7 @@
 		</div>
 	</div>
 
-	<div class="pag">
+	<div class="pag" ng-show="home.numPages.length > 0">
 		<uib-pagination total-items="home.totalItems"
 					ng-model="home.currentPage"
 					ng-change="home.pageChanged()"

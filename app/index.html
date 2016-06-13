@@ -25,8 +25,8 @@
     <!-- endbuild -->
   </head>
 
-  <body class="" style="overflow: hidden">
-  <!-- <body class="bodyLogin"> -->
+  <!-- <body class="" style="overflow: hidden"> -->
+  <body class="bodyLogin">
 
     <uib-alert class="global-alert" ng-repeat="alert in alerts" type="{{ alert.type }}" close="CloseAlert($index)">{{ alert.msg }}</uib-alert>
 
@@ -51,14 +51,14 @@
             <ul class="nav navbar-nav">
               <li class="active"><a href="#/">Eventos</a></li>
               <li><a ng-href="#/about">Evento Atual</a></li>
-              <li><a ng-href="#/control-panel">Painel de Controle</a></li>
+              <!-- <li><a ng-href="#/control-panel">Painel de Controle</a></li> -->
               <!-- <li><a ng-href="#/">Contact</a></li> -->
             </ul>
 
             <ul class="nav navbar-nav">
               <li class="active"><p>{{user.nome}}</p></li>
               <li><img src="images/pu.jpg" alt="Professor Utonio"></li>
-              <li ng-click="Logout()"><img src="images/logout.jpg" alt="Logout"></li>
+              <li ng-click="Logout()"><img src="images/logoutBranco.png" alt="Logout" title="Sair"></li>
               <!-- <li><a ng-href="#/">Contact</a></li> -->
             </ul>
 
@@ -97,6 +97,8 @@
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/ngstorage/ngStorage.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
+
     <!-- endbower -->
     <!-- endbuild -->
 

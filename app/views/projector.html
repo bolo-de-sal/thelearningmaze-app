@@ -64,7 +64,7 @@
 		</g>
 	</svg>	
 
-	<div class="ppg-first">		
+	<!-- <div class="ppg-first">		
 		<div class="parent-group-first">
 			<div class="one-yellow">
 				<img class="pino" src="images/pino.png" alt="Pino">
@@ -131,6 +131,12 @@
 				<img class="pino" src="images/pino.png" alt="Pino">
 			</div>
 		</div>	
+	</div> -->
+
+	<div class="controls">
+		<div ng-repeat="group in projector.groups" ng-click="projector.acertar(group.Grupo.codGrupo)">
+			<p>Acertar grupo {{group.Grupo.codGrupo}}</p>
+		</div>
 	</div>
 
 </div>

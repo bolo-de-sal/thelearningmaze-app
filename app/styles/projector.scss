@@ -252,14 +252,14 @@
     margin-right: 10px;
 }
 
-.four-green{
+.four-yellow{
     position: absolute;
     margin-top: 70px;
     left: 0;
     margin-left: 10px;
 }
 
-.four-yellow{
+.four-green{
     position: absolute;
     margin-top: 70px;
     right: 0;
@@ -362,22 +362,34 @@
     margin-left: 32px;
 }
 
-.parent-group-first:hover{
+/*.active-first,
+.parent-group-first:hover{*/
+.active-first{
 	animation-name: rot;
     animation-duration: 4s;
     /* Things added */
     /*animation-iteration-count: 1;*/
     transform-origin: 50% 50%;
     display: block;
+    -webkit-animation-fill-mode:forwards; /*Chrome 16+, Safari 4+*/
+   -moz-animation-fill-mode:forwards; /*FF 5+*/
+   -o-animation-fill-mode:forwards; /*Not implemented yet*/
+   -ms-animation-fill-mode:forwards; /*IE 10+*/
+   animation-fill-mode:forwards;
 }
 
-.parent-group-second:hover{
+.active-second{
 	animation-name: rotant;
     animation-duration: 4s;
     /* Things added */
     /*animation-iteration-count: 1;*/
     transform-origin: 50% 50%;
     display: block;
+    -webkit-animation-fill-mode:forwards; /*Chrome 16+, Safari 4+*/
+   -moz-animation-fill-mode:forwards; /*FF 5+*/
+   -o-animation-fill-mode:forwards; /*Not implemented yet*/
+   -ms-animation-fill-mode:forwards; /*IE 10+*/
+   animation-fill-mode:forwards;
 }
 
 @keyframes rot{
@@ -398,13 +410,46 @@
     }
 }
 
-.parent-group-third:hover{
+.active-third{
 	animation-name: rot-third;
     animation-duration: 4s;
     /* Things added */
     /*animation-iteration-count: 1;*/
     transform-origin: 50% 50%;
     display: block;
+    -webkit-animation-fill-mode:forwards; /*Chrome 16+, Safari 4+*/
+   -moz-animation-fill-mode:forwards; /*FF 5+*/
+   -o-animation-fill-mode:forwards; /*Not implemented yet*/
+   -ms-animation-fill-mode:forwards; /*IE 10+*/
+   animation-fill-mode:forwards;
+}
+
+.active-third-two{
+	animation-name: rot-third-two;
+    animation-duration: 4s;
+    /* Things added */
+    /*animation-iteration-count: 1;*/
+    transform-origin: 50% 50%;
+    display: block;
+    -webkit-animation-fill-mode:forwards; /*Chrome 16+, Safari 4+*/
+   -moz-animation-fill-mode:forwards; /*FF 5+*/
+   -o-animation-fill-mode:forwards; /*Not implemented yet*/
+   -ms-animation-fill-mode:forwards; /*IE 10+*/
+   animation-fill-mode:forwards;
+}
+
+.active-third-three{
+	animation-name: rot-third-three;
+    animation-duration: 4s;
+    /* Things added */
+    /*animation-iteration-count: 1;*/
+    transform-origin: 50% 50%;
+    display: block;
+    -webkit-animation-fill-mode:forwards; /*Chrome 16+, Safari 4+*/
+   -moz-animation-fill-mode:forwards; /*FF 5+*/
+   -o-animation-fill-mode:forwards; /*Not implemented yet*/
+   -ms-animation-fill-mode:forwards; /*IE 10+*/
+   animation-fill-mode:forwards;
 }
 
 @keyframes rot-third{
@@ -414,4 +459,40 @@
     100% {
         transform: rotate(90deg);
     }
+}
+
+@keyframes rot-third-two{
+	0% {
+        transform: rotate(90deg);
+    }
+    100% {
+        transform: rotate(180deg);
+    }
+}
+
+@keyframes rot-third-three{
+	0% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(270deg);
+    }
+}
+
+.controls{
+    position: absolute;
+    left: 0;
+    bottom: 40px;
+
+    div{
+    	background: $lightblack;
+    	color: white;
+    }
+}
+
+.easy{
+	/*-webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;*/
+    /*transition: all 4s linear;*/
 }
