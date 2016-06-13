@@ -13,7 +13,7 @@ angular
 		var apiInterceptor = {
 			request: function(config) {
 				if(config.url.startsWith(AppConfig.api.identifier)){
-					config.url = AppConfig.app.production ? AppConfig.api.endpoint.production + config.url : AppConfig.api.endpoint.staging + config.url;
+					config.url = AppConfig.api.endpoint + config.url;
 				}
 				
 				return config;

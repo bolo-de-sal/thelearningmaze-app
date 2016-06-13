@@ -30,7 +30,6 @@ angular
 		   QuestionService.getCurrentQuestionByEventId(eventId),
 		   GroupService.getGroupsByEventId(eventId)
 		]).then(function(response){
-			console.log(response);
 			controlPanelCtrl.event = response[0];
 			controlPanelCtrl.questions.current = response[1];
 			controlPanelCtrl.groupsInfo = response[2];
@@ -77,12 +76,16 @@ angular
     	var eventId = $routeParams.eventId;
 
     	$q.all([
-		   QuestionService.getQuestionsByEvent(eventId)
-		   // ThemeService.getThemesByEvent(eventId)
+		   QuestionService.getQuestionsByEvent(eventId),
+		   ThemeService.getThemesByEvent(eventId)
 		]).then(function(response){
 			questionsModalCtrl.questionsItems = response[0];
-			// questionsModalCtrl.themes = response[1];
+			questionsModalCtrl.themes = response[1];
 		}).finally(function(){
+			angular.forEach(questionsModalCtrl.questionsItems, function(value, key){
+				console.log(value);
+				value.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + value.Questao.codImagem
+			});
 			$rootScope.dataLoading = false;
 		});	
 
@@ -123,18 +126,6 @@ angular
 
 			return questionItem;
 		}
-
-		questionsModalCtrl.themes = 
-		[
-			{
-				codAssunto: 1,
-				descricao: 'Logica'
-			},
-			{
-				codAssunto: 2,
-				descricao: 'Teste'
-			}
-		];
 
 		questionsModalCtrl.selectionThemes = [];
 
