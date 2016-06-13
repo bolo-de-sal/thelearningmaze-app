@@ -30,7 +30,6 @@ angular
 		   QuestionService.getCurrentQuestionByEventId(eventId),
 		   GroupService.getGroupsByEventId(eventId)
 		]).then(function(response){
-			console.log(response);
 			controlPanelCtrl.event = response[0];
 			controlPanelCtrl.questions.current = response[1];
 			controlPanelCtrl.groupsInfo = response[2];
@@ -67,9 +66,9 @@ angular
     .module('thelearningmaze')
     .controller('QuestionsModalController', QuestionsModalController);
 
-    QuestionsModalController.$inject = ['$routeParams', '$rootScope', '$q', '$uibModalInstance', 'QuestionService', 'ThemeService'];
+    QuestionsModalController.$inject = ['$routeParams', '$rootScope', '$q', '$uibModalInstance', 'AlertService', 'QuestionService', 'ThemeService'];
 
-    function QuestionsModalController($routeParams, $rootScope, $q, $uibModalInstance, QuestionService, ThemeService){
+    function QuestionsModalController($routeParams, $rootScope, $q, $uibModalInstance, AlertService, QuestionService, ThemeService){
     	var questionsModalCtrl = this;
 
     	$rootScope.dataLoading = true;
@@ -77,12 +76,16 @@ angular
     	var eventId = $routeParams.eventId;
 
     	$q.all([
-		   QuestionService.getQuestionsByEvent(eventId)
-		   // ThemeService.getThemesByEvent(eventId)
+		   QuestionService.getQuestionsByEvent(eventId),
+		   ThemeService.getThemesByEvent(eventId)
 		]).then(function(response){
 			questionsModalCtrl.questionsItems = response[0];
-			// questionsModalCtrl.themes = response[1];
+			questionsModalCtrl.themes = response[1];
 		}).finally(function(){
+			angular.forEach(questionsModalCtrl.questionsItems, function(value, key){
+				console.log(value);
+				value.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + value.Questao.codImagem
+			});
 			$rootScope.dataLoading = false;
 		});	
 
@@ -109,7 +112,7 @@ angular
 
 		questionsModalCtrl.includeTheme = function(theme){
 			var i = $.inArray(theme, questionsModalCtrl.themeIncludes);
-	        if (i > -1) {
+	        if (i > -1){
 	            questionsModalCtrl.themeIncludes.splice(i, 1);
 	        } else {
 	            questionsModalCtrl.themeIncludes.push(theme);
@@ -124,34 +127,46 @@ angular
 			return questionItem;
 		}
 
-		questionsModalCtrl.themes = 
-		[
-			{
-				codAssunto: 1,
-				descricao: 'Logica'
-			},
-			{
-				codAssunto: 2,
-				descricao: 'Teste'
-			}
-		];
-
 		questionsModalCtrl.selectionThemes = [];
 
 		questionsModalCtrl.toggleSelectionTheme = function(theme) {
 			var idx = questionsModalCtrl.selectionThemes.indexOf(theme);
 
 			// is currently selected
-			if (idx > -1) {
+			if (idx > -1){
 			  questionsModalCtrl.selectionThemes.splice(idx, 1);
-			}
-			else {
+			}else{
 			  questionsModalCtrl.selectionThemes.push(theme);
 			}
 		};
 
-		questionsModalCtrl.sendQuestion = function(question){
-			console.log(question);
+		questionsModalCtrl.sendQuestion = function(questionId){
+			var selectedQuestionId = questionId;
+
+			$rootScope.dataLoading = true;
+
+			if(!selectedQuestionId){
+				var random = Math.floor((Math.random() * questionsModalCtrl.questionsItems.length) + 1);
+				selectedQuestionId = questionsModalCtrl.questionsItems[random].Questao.codQuestao;
+				var questionsRadio = $('[value="'+ selectedQuestionId +'"]');
+				questionsRadio.prop('checked', true);
+			}
+
+			QuestionService.sendQuestion(selectedQuestionId).then(function(response){
+				AlertService.Add('success', 'Pergunta lançada com sucesso.');
+			}, function(error){
+				console.log(error);
+				AlertService.Add('danger', 'Ops! Não foi possível lançar a questão: ' + error.data.message + '.');
+			}).finally(function(){
+				angular.forEach(questionsModalCtrl.questionsItems, function(value, key){
+					if(questionsModalCtrl.questionsItems[key].Questao.codQuestao === questionId){
+						questionsModalCtrl.questionsItems.slice(key, 1);
+					}
+				});
+
+				$rootScope.dataLoading = false;
+			});
+
 		}
 
     	questionsModalCtrl.close = function(){
