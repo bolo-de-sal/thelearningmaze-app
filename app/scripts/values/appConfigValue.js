@@ -8,7 +8,7 @@ angular.module('thelearningmaze')
 		api: {
 			identifier: '/api',
 			endpoint: {
-				staging: 'http://http://localhost:50806/',
+				staging: 'http://tlm-api-dev.azurewebsites.net',
 				production: ''
 			}
 		} 
