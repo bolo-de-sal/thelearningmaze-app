@@ -828,7 +828,7 @@ button{
 .btn-send-selected-question{
   border-color: $orange;
   background-color: $orange;
-  &:hover, &:active, &:active:hover, &:focus, &:visited{
+  &:hover, &:active, &:active:hover, &:focus, &:visited, &[disabled]:hover{
     border-color: $orange;
     background-color: darken($orange, 12%); 
   }
@@ -837,7 +837,7 @@ button{
 .btn-send-random-question{
   border-color: $darkgray;
   background-color: $darkgray;
-  &:hover, &:active, &:active:hover, &:focus, &:visited{
+  &:hover, &:active, &:active:hover, &:focus, &:visited, &[disabled]:hover{
     border-color: $darkgray;
     background-color: darken($darkgray, 12%); 
   }

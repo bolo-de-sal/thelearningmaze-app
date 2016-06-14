@@ -135,15 +135,15 @@
   </div>
   <div class="modal-body modal-questions-body">
     <form novalidate>
-      <div class="questions-filters">
+      <div class="questions-filters" ng-show="questionsModal.filtersLoaded">
         <div class="questions-filter questions-difficulty-filter">
-          <label class="difficulty difficulty-easy" ng-class="{current: questionsModal.filters.difficulty.easy}">Fácil<input type="checkbox" value="F" name="difficulty" ng-model="questionsModal.filters.difficulty.easy" ng-click="questionsModal.includeDifficulty('F')"></label>
-          <label class="difficulty difficulty-medium" ng-class="{current: questionsModal.filters.difficulty.medium}">Médio<input type="checkbox" value="M" name="difficulty" ng-model="questionsModal.filters.difficulty.medium" ng-click="questionsModal.includeDifficulty('M')"></label>
-          <label class="difficulty difficulty-hard" ng-class="{current: questionsModal.filters.difficulty.hard}">Difícil<input type="checkbox" value="D" name="difficulty" ng-model="questionsModal.filters.difficulty.hard" ng-click="questionsModal.includeDifficulty('D')"></label>
+          <label class="difficulty" ng-repeat="difficultyItem in questionsModal.difficultiesItems" ng-class="{current: questionsModal.selectionDifficulties.indexOf(difficultyItem.dificuldade) > -1 || difficultyItem.dificuldade == questionsModal.currentGroupInfo.Grupo.questao.dificuldade}">
+            {{ difficultyItem.descricao }}<input type="checkbox" value="{{difficultyItem.descricao}}" name="questionsModal.selectedDifficulties[]" ng-click="questionsModal.toggleSelectionDifficulty(difficultyItem.dificuldade); questionsModal.includeDifficulty(difficultyItem.dificuldade)" ng-checked="difficultyItem.dificuldade == questionsModal.currentGroupInfo.Grupo.questao.dificuldade">
+          </label>
         </div>
         <div class="questions-filter questions-theme-filter">
-          <label class="theme theme-1" ng-repeat="theme in questionsModal.themes" ng-class="{current: questionsModal.selectionThemes.indexOf(theme.descricao) > -1}">
-            {{ theme.descricao.substring(0, 5) }} <input type="checkbox" value="{{ theme.descricao }}" name="questionsModal.selectedThemes[]" ng-click="questionsModal.toggleSelectionTheme(theme.descricao); questionsModal.includeTheme(theme.descricao)">
+          <label class="theme" ng-repeat="theme in questionsModal.themes" ng-class="{current: questionsModal.selectionThemes.indexOf(theme.descricao) > -1 || theme.codAssunto == questionsModal.currentGroupInfo.Grupo.assunto.codAssunto}">
+            {{ theme.descricao.substring(0, 5) }} <input type="checkbox" value="{{theme.descricao}}" name="questionsModal.selectedThemes[]" ng-click="questionsModal.toggleSelectionTheme(theme.descricao); questionsModal.includeTheme(theme.descricao)" ng-checked="theme.codAssunto == questionsModal.currentGroupInfo.Grupo.assunto.codAssunto">
           </label>
         </div>
       </div>
@@ -161,7 +161,7 @@
               <td>
                 <div class="radio">
                   <label>
-                    <input type="radio" value="{{ questionItem.Questao.codQuestao }}" name="question" ng-model="questionsModal.selectedQuestion"> {{ questionItem.Questao.textoQuestao }}
+                    <input type="radio" value="{{ questionItem.Questao.codQuestao }}" name="question" ng-model="questionsModal.selectedQuestion" ng-disabled="questionItem.Questao.dificuldade != questionsModal.currentGroupInfo.Grupo.questao.dificuldade || questionItem.Assunto.codAssunto != questionsModal.currentGroupInfo.Grupo.assunto.codAssunto"> {{ questionItem.Questao.textoQuestao }}
                   </label>
                 </div>
               </td>
@@ -177,8 +177,8 @@
     </form>
   </div>
   <div class="modal-footer modal-questions-footer">
-    <button type="button" class="btn btn-primary btn-lg btn-send-selected-question" ng-click="questionsModal.sendQuestion(questionsModal.selectedQuestion)">Lançar</button>
-    <button type="button" class="btn btn-warning btn-lg btn-send-random-question" ng-click="questionsModal.sendQuestion()">Sortear</button>
+    <button type="button" class="btn btn-primary btn-lg btn-send-selected-question" ng-click="questionsModal.sendQuestion(questionsModal.selectedQuestion)" ng-disabled="questionsModal.questionsEnabled">Lançar</button>
+    <button type="button" class="btn btn-warning btn-lg btn-send-random-question" ng-click="questionsModal.sendQuestion()" ng-disabled="questionsModal.questionsEnabled">Sortear</button>
   </div>
 </script>
 <!--END TEMPLATES-->

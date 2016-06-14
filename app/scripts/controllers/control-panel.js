@@ -66,38 +66,65 @@ angular
     .module('thelearningmaze')
     .controller('QuestionsModalController', QuestionsModalController);
 
-    QuestionsModalController.$inject = ['$routeParams', '$rootScope', '$q', '$uibModalInstance', 'AlertService', 'QuestionService', 'ThemeService'];
+    QuestionsModalController.$inject = ['$routeParams', '$rootScope', '$q', '$uibModalInstance', 'AlertService', 'QuestionService', 'ThemeService', 'GroupService'];
 
-    function QuestionsModalController($routeParams, $rootScope, $q, $uibModalInstance, AlertService, QuestionService, ThemeService){
-    	var questionsModalCtrl = this;
+    function QuestionsModalController($routeParams, $rootScope, $q, $uibModalInstance, AlertService, QuestionService, ThemeService, GroupService){
+    	var questionsModalCtrl = this;    	
 
     	$rootScope.dataLoading = true;
 
     	var eventId = $routeParams.eventId;
 
     	$q.all([
+		   GroupService.getCurrentGroupInfo(eventId),
 		   QuestionService.getQuestionsByEvent(eventId),
 		   ThemeService.getThemesByEvent(eventId)
 		]).then(function(response){
-			questionsModalCtrl.questionsItems = response[0];
-			questionsModalCtrl.themes = response[1];
+			questionsModalCtrl.currentGroupInfo = response[0];
+			questionsModalCtrl.questionsItems = response[1];
+			questionsModalCtrl.themes = response[2];
+			questionsModalCtrl.difficultiesItems = [
+				{
+					descricao: 'Fácil',
+					dificuldade: 'F'	
+				},
+				{
+					descricao: 'Médio',
+					dificuldade: 'M'	
+				},
+				{
+					descricao: 'Difícil',
+					dificuldade: 'D'	
+				}
+			];
 		}).finally(function(){
 			angular.forEach(questionsModalCtrl.questionsItems, function(value, key){
-				console.log(value);
 				value.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + value.Questao.codImagem
 			});
+
+			questionsModalCtrl.difficultyIncludes.push(questionsModalCtrl.currentGroupInfo.Grupo.questao.dificuldade);
+
+			questionsModalCtrl.themeIncludes.push(questionsModalCtrl.currentGroupInfo.Grupo.assunto.descricao);
+
+			questionsModalCtrl.questionsEnabled = !($('.radio input[type=radio]:enabled').length > 0);
+
+			questionsModalCtrl.filtersLoaded = true;
 			$rootScope.dataLoading = false;
-		});	
+		});		
 
 		questionsModalCtrl.difficultyIncludes = [];
 
 		questionsModalCtrl.includeDifficulty = function(difficulty){
-			var i = $.inArray(difficulty, questionsModalCtrl.difficultyIncludes);
-	        if (i > -1) {
-	            questionsModalCtrl.difficultyIncludes.splice(i, 1);
-	        } else {
-	            questionsModalCtrl.difficultyIncludes.push(difficulty);
-	        }
+			if(difficulty != questionsModalCtrl.currentGroupInfo.Grupo.questao.dificuldade){
+				var i = $.inArray(difficulty, questionsModalCtrl.difficultyIncludes);
+		        if (i > -1) {
+		            questionsModalCtrl.difficultyIncludes.splice(i, 1);
+		        } else {
+		            questionsModalCtrl.difficultyIncludes.push(difficulty);
+		        }
+			}else{
+				AlertService.Add('danger', 'A questão e dificuldade do grupo atual deve estar sempre selecionada.');
+			}		
 		}
 
 		questionsModalCtrl.difficultyFilter = function(questionItem){
@@ -108,15 +135,33 @@ angular
 			return questionItem;
 		}
 
+		questionsModalCtrl.selectionDifficulties = [];
+
+		questionsModalCtrl.toggleSelectionDifficulty = function(difficulty) {
+			var idx = questionsModalCtrl.selectionDifficulties.indexOf(difficulty);
+
+			// is currently selected
+			if (idx > -1){
+			  questionsModalCtrl.selectionDifficulties.splice(idx, 1);
+			}else{
+			  questionsModalCtrl.selectionDifficulties.push(difficulty);
+			}
+		};
+
 		questionsModalCtrl.themeIncludes = [];
 
 		questionsModalCtrl.includeTheme = function(theme){
-			var i = $.inArray(theme, questionsModalCtrl.themeIncludes);
-	        if (i > -1){
-	            questionsModalCtrl.themeIncludes.splice(i, 1);
-	        } else {
-	            questionsModalCtrl.themeIncludes.push(theme);
-	        }
+			if(theme != questionsModalCtrl.currentGroupInfo.Grupo.assunto.descricao)
+			{
+				var i = $.inArray(theme, questionsModalCtrl.themeIncludes);
+		        if (i > -1){
+		            questionsModalCtrl.themeIncludes.splice(i, 1);
+		        } else {
+		            questionsModalCtrl.themeIncludes.push(theme);
+		        }
+			}else{
+				AlertService.Add('danger', 'A questão e dificuldade do grupo atual deve estar sempre selecionada.');
+			}			
 		}
 
 		questionsModalCtrl.themeFilter = function(questionItem){
@@ -142,30 +187,44 @@ angular
 
 		questionsModalCtrl.sendQuestion = function(questionId){
 			var selectedQuestionId = questionId;
+			var questionsEnabled = $('.radio input[type=radio]:enabled');
 
-			$rootScope.dataLoading = true;
+			if(questionsEnabled.length > 0){
+				$rootScope.dataLoading = true;
 
-			if(!selectedQuestionId){
-				var random = Math.floor((Math.random() * questionsModalCtrl.questionsItems.length) + 1);
-				selectedQuestionId = questionsModalCtrl.questionsItems[random].Questao.codQuestao;
-				var questionsRadio = $('[value="'+ selectedQuestionId +'"]');
-				questionsRadio.prop('checked', true);
-			}
+				if(!selectedQuestionId){				
+					var random = Math.floor((Math.random() * questionsEnabled.length));
+					var questionRandom = questionsEnabled.eq(random);
+					var questionIdRandom = questionRandom.val();
 
-			QuestionService.sendQuestion(selectedQuestionId).then(function(response){
-				AlertService.Add('success', 'Pergunta lançada com sucesso.');
-			}, function(error){
-				console.log(error);
-				AlertService.Add('danger', 'Ops! Não foi possível lançar a questão: ' + error.data.message + '.');
-			}).finally(function(){
-				angular.forEach(questionsModalCtrl.questionsItems, function(value, key){
-					if(questionsModalCtrl.questionsItems[key].Questao.codQuestao === questionId){
-						questionsModalCtrl.questionsItems.slice(key, 1);
-					}
+					angular.forEach(questionsModalCtrl.questionsItems, function(questionItem, key){
+						if(questionItem.Questao.codQuestao == questionIdRandom){
+							selectedQuestionId = questionItem.Questao.codQuestao
+						}
+					});
+					questionRandom.prop('checked', true);
+				}
+
+				QuestionService.sendQuestion(selectedQuestionId).then(function(response){
+					AlertService.Add('success', 'Pergunta lançada com sucesso.');
+				}, function(error){
+					console.log(error);
+					AlertService.Add('danger', 'Ops! Não foi possível lançar a questão: ' + error.data.message + '.');
+				}).finally(function(){
+					angular.forEach(questionsModalCtrl.questionsItems, function(value, key){
+						if(questionsModalCtrl.questionsItems[key].Questao.codQuestao === questionId){
+							questionsModalCtrl.questionsItems.slice(key, 1);
+						}
+					});
+
+					$rootScope.dataLoading = false;
 				});
 
-				$rootScope.dataLoading = false;
-			});
+				questionsModalCtrl.close();
+			}else{
+				AlertService.Clear();
+				AlertService.Add('danger', 'Nenhuma questão disponível para o assunto e nível do grupo atual.');
+			}
 
 		}
 
