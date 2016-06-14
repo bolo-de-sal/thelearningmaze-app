@@ -72,7 +72,7 @@ angular
         redirectTo: '/404'
     });
   })
-  .run(function ($rootScope, $location, AuthenticationService, SessionService, AlertService) {
+  .run(function ($rootScope, $location, AppConfig, AuthenticationService, SessionService, AlertService) {
 
       $(".navbar-nav:first li").each(function(){
           $(this).click(function(){
@@ -105,4 +105,5 @@ angular
       $rootScope.user = SessionService.getUser();
       $rootScope.Logout = AuthenticationService.Logout;
       $rootScope.CloseAlert = AlertService.CloseAlert;
+      $rootScope.imagesUrl = AppConfig.api.endpoint + AppConfig.api.identifier + '/Images';
   });

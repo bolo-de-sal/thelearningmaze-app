@@ -39,11 +39,11 @@
             <h3 class="title">Pontuação</h3>
             <!-- <button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button> -->
             <div class="groups-box">
-              <div class="group-box" ng-repeat="groupInfo in controlPanel.groupsInfo">
+              <div class="group-box" ng-repeat="groupInfo in controlPanel.groupsInfo | orderBy: 'groupinfo.Acertos'">
                 <div class="group-box-name">
                   <span class="group-icon"></span>
                   <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
-                  <div class="group-score">8pts.</div>
+                  <div class="group-score">{{ groupInfo.Acertos }}pts.</div>
                 </div>
               </div>
             </div>
@@ -83,7 +83,7 @@
       <span class="time-event-text">16:19:25</span>
     </div>
     <div class="col-md-12 card wrap-card-sound">
-      <button class="sound active"><span class="sound-text">Volume</span></button>
+      <button class="sound active"><span class="sound-text">Som</span></button>
     </div>
     <div class="col-md-12 card wrap-card-projector">
       <button class="projector active"><span class="projector-text">Projetor</span></button>
@@ -166,9 +166,9 @@
                 </div>
               </td>
               <td>
-                <button class="btn-question-picture" ng-show="questionItem.Questao.codImagem">
+                <a href="{{questionItem.Questao.caminhoImagem}}" data-lightbox="{{questionItem.Questao.codImagem}}" class="btn-question-picture" ng-click="$event.preventDefault()" ng-show="questionItem.Questao.codImagem">
                   <span class="glyphicon glyphicon-picture"></span>
-                </button>
+                </a>
               </td>
             </tr>
           </tbody>

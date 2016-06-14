@@ -6,15 +6,16 @@ angular
 
     QuestionService.$inject = ['$http', 'AppConfig'];
 
-    function QuestionService($http, AppConfig) {
+    function QuestionService($http, AppConfig){
         var questions = {};
 
         questions.getQuestionsByEvent = getQuestionsByEvent;
         questions.getCurrentQuestionByEventId = getCurrentQuestionByEventId;
+        questions.sendQuestion = sendQuestion;
 
         return questions;
 
-        function getQuestionsByEvent(eventId) {
+        function getQuestionsByEvent(eventId){
 
             var promise = $http.get(AppConfig.api.identifier + '/Eventos/' + eventId + '/Questoes')
             .then(function(response){
@@ -24,7 +25,7 @@ angular
             return promise;
         }
 
-        function getCurrentQuestionByEventId(eventId) {
+        function getCurrentQuestionByEventId(eventId){
 
             var promise = $http.get(AppConfig.api.identifier + '/Eventos/' + eventId + '/QuestaoAtual')
             .then(function(response){
@@ -32,6 +33,15 @@ angular
             });
 
             return promise;
+        }
+
+        function sendQuestion(questionId){
+            var promisse = $http.post(AppConfig.api.identifier + '/Eventos/LancarPergunta', {codQuestao: questionId})
+            .then(function(response){
+                return response.data;
+            });
+
+            return promisse;
         }
 
     }
