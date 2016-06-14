@@ -69,6 +69,12 @@ angular
   })
   .run(function ($rootScope, $location, AppConfig, AuthenticationService, SessionService, AlertService) {
 
+      angular.element(document).ready(function () {
+        lightbox.option({
+          'albumLabel': '%1 de %2'
+        })
+      });
+
       $(".navbar-nav:first li").each(function(){
           $(this).click(function(){
               $(this).siblings().removeClass("active");
@@ -100,5 +106,5 @@ angular
       $rootScope.user = SessionService.getUser();
       $rootScope.Logout = AuthenticationService.Logout;
       $rootScope.CloseAlert = AlertService.CloseAlert;
-      $rootScope.imagesUrl = AppConfig.api.endpoint + AppConfig.api.identifier + '/Images';
+      $rootScope.imagesUrl = AppConfig.api.endpoint + AppConfig.api.identifier + '/Imagens';
   });
