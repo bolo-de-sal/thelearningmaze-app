@@ -32,6 +32,9 @@ module.exports = function(config) {
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'bower_components/bootstrap/dist/js/bootstrap.js',
       'bower_components/lightbox2/dist/js/lightbox.js',
+      'bower_components/moment/moment.js',
+      'bower_components/humanize-duration/humanize-duration.js',
+      'bower_components/angular-timer/dist/angular-timer.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

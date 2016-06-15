@@ -18,7 +18,8 @@ angular
     'ngSanitize',
     'ngTouch',
     'ngStorage',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'timer'
   ])
   .config(function ($routeProvider) {
     $routeProvider
