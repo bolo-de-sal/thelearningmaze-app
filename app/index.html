@@ -32,7 +32,7 @@
     <uib-alert class="global-alert" ng-repeat="alert in alerts" type="{{ alert.type }}" close="CloseAlert($index)">{{ alert.msg }}</uib-alert>
 
     <!-- Add your site or application content here -->
-    <div class="header" style="display: none;">
+    <div class="header">
       <div class="navbar navbar-default" role="navigation">
         <div class="container">
           <div class="navbar-header">
@@ -99,6 +99,9 @@
     <script src="bower_components/ngstorage/ngStorage.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/lightbox2/dist/js/lightbox.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/humanize-duration/humanize-duration.js"></script>
+    <script src="bower_components/angular-timer/dist/angular-timer.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

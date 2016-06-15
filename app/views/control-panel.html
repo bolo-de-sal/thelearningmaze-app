@@ -5,16 +5,21 @@
       <div class="col-md-8">
         <div class="col-md-12 card wrap-card-question">
           <h3 class="title">Pergunta Atual</h3>
-          <button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button>
+          <!-- <button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button> -->
           <div class="content-question-theme">
             <div class="content-question">
-              <p class="question">{{ controlPanel.questions.current.textoQuestao }}</p>
+              <p class="question">
+                {{ controlPanel.questions.current.Questao.textoQuestao }}
+                <a href="{{controlPanel.questions.current.Questao.caminhoImagem}}" data-lightbox="{{controlPanel.questions.current.Questao.codImagem}}" class="btn-question-picture" ng-click="$event.preventDefault()" ng-show="controlPanel.questions.current.Questao.codImagem">
+                  <span class="glyphicon glyphicon-picture"></span>
+                </a>
+              </p>              
             </div>
-            <p class="theme">Assunto: {{ controlPanel.questions.current.codAssunto }}</p>
+            <p class="theme">Assunto: {{ controlPanel.questions.current.Questao.assunto.descricao }}</p>
           </div>
           <div class="groups-box">
-            <div class="group-box-name" ng-repeat="groupInfo in controlPanel.groupsInfo">
-              <span class="group-icon"></span>
+            <div class="group-box-name" ng-repeat="groupInfo in controlPanel.groupsInfo" ng-class="{current: controlPanel.questions.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
+              <span class="group-icon"></span>                                 
               <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
             </div>
           </div>
@@ -39,7 +44,7 @@
             <h3 class="title">Pontuação</h3>
             <!-- <button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button> -->
             <div class="groups-box">
-              <div class="group-box" ng-repeat="groupInfo in controlPanel.groupsInfo | orderBy: 'groupinfo.Acertos'">
+              <div class="group-box" ng-repeat="groupInfo in controlPanel.groupsInfo">
                 <div class="group-box-name">
                   <span class="group-icon"></span>
                   <span class="group-name" title="{{ groupInfo.Grupo.nmGrupo }}">{{ groupInfo.Grupo.nmGrupo }}</span>
@@ -61,15 +66,13 @@
             <thead class="table-head-info">
               <tr>
                 <th>GRUPO</th>
-                <th>Q001</th>
-                <th>Q002</th>
+                <th ng-repeat="i in controlPanel.getMaxQtdQuestions(controlPanel.maxQtdQuestions) track by $index">Q{{ ('000'+($index + 1)).substr(-3,3) }}</th>
               </tr>
             </thead>
             <tbody class="table-body-info">
-              <tr>
+              <tr ng-repeat="groupQuestions in controlPanel.groupsQuestions">
                 <td><span class="group-icon"></span></td>
-                <td class="ok"><span class="glyphicon glyphicon-ok"></span></td>
-                <td class="wrong"><span class="glyphicon glyphicon-remove"></span></td>
+                <td ng-repeat="question in groupQuestions.Questoes" ng-class="{ok: question.correta, wrong: !question.correta}"><span ng-class="{'glyphicon-ok': question.correta, 'glyphicon-remove': !question.correta}" class="glyphicon"></span></td>
               </tr>
             </tbody>
           </table>
@@ -80,7 +83,7 @@
   </div>
   <div class="col-md-3">
     <div class="col-md-12 card wrap-card-time-event">
-      <span class="time-event-text">16:19:25</span>
+      <timer start-time="controlPanel.event.dataFormatada" class="time-event-text">{{hhours}}:{{mminutes}}:{{sseconds}}</timer>
     </div>
     <div class="col-md-12 card wrap-card-sound">
       <button class="sound active"><span class="sound-text">Som</span></button>
@@ -110,7 +113,7 @@
       </div>
     </div>
     <div class="col-md-12 card wrap-card-close-event">
-      <button class="close-event">Encerrar Evento</button>
+      <button class="close-event" ng-click="controlPanel.closeEvent()">Encerrar Evento</button>
     </div>
   </div>
 </div>
@@ -135,15 +138,15 @@
   </div>
   <div class="modal-body modal-questions-body">
     <form novalidate>
-      <div class="questions-filters">
+      <div class="questions-filters" ng-show="questionsModal.filtersLoaded">
         <div class="questions-filter questions-difficulty-filter">
-          <label class="difficulty difficulty-easy" ng-class="{current: questionsModal.filters.difficulty.easy}">Fácil<input type="checkbox" value="F" name="difficulty" ng-model="questionsModal.filters.difficulty.easy" ng-click="questionsModal.includeDifficulty('F')"></label>
-          <label class="difficulty difficulty-medium" ng-class="{current: questionsModal.filters.difficulty.medium}">Médio<input type="checkbox" value="M" name="difficulty" ng-model="questionsModal.filters.difficulty.medium" ng-click="questionsModal.includeDifficulty('M')"></label>
-          <label class="difficulty difficulty-hard" ng-class="{current: questionsModal.filters.difficulty.hard}">Difícil<input type="checkbox" value="D" name="difficulty" ng-model="questionsModal.filters.difficulty.hard" ng-click="questionsModal.includeDifficulty('D')"></label>
+          <label class="difficulty" ng-repeat="difficultyItem in questionsModal.difficultiesItems" ng-class="{current: questionsModal.selectionDifficulties.indexOf(difficultyItem.dificuldade) > -1 || difficultyItem.dificuldade == questionsModal.currentGroupInfo.Grupo.questao.dificuldade}">
+            {{ difficultyItem.descricao }}<input type="checkbox" value="{{difficultyItem.descricao}}" name="questionsModal.selectedDifficulties[]" ng-click="questionsModal.toggleSelectionDifficulty(difficultyItem.dificuldade); questionsModal.includeDifficulty(difficultyItem.dificuldade)" ng-checked="difficultyItem.dificuldade == questionsModal.currentGroupInfo.Grupo.questao.dificuldade">
+          </label>
         </div>
         <div class="questions-filter questions-theme-filter">
-          <label class="theme theme-1" ng-repeat="theme in questionsModal.themes" ng-class="{current: questionsModal.selectionThemes.indexOf(theme.descricao) > -1}">
-            {{ theme.descricao.substring(0, 5) }} <input type="checkbox" value="{{ theme.descricao }}" name="questionsModal.selectedThemes[]" ng-click="questionsModal.toggleSelectionTheme(theme.descricao); questionsModal.includeTheme(theme.descricao)">
+          <label class="theme" ng-repeat="theme in questionsModal.themes" ng-class="{current: questionsModal.selectionThemes.indexOf(theme.descricao) > -1 || theme.codAssunto == questionsModal.currentGroupInfo.Grupo.assunto.codAssunto}">
+            {{ theme.descricao.substring(0, 5) }} <input type="checkbox" value="{{theme.descricao}}" name="questionsModal.selectedThemes[]" ng-click="questionsModal.toggleSelectionTheme(theme.descricao); questionsModal.includeTheme(theme.descricao)" ng-checked="theme.codAssunto == questionsModal.currentGroupInfo.Grupo.assunto.codAssunto">
           </label>
         </div>
       </div>
@@ -161,7 +164,7 @@
               <td>
                 <div class="radio">
                   <label>
-                    <input type="radio" value="{{ questionItem.Questao.codQuestao }}" name="question" ng-model="questionsModal.selectedQuestion"> {{ questionItem.Questao.textoQuestao }}
+                    <input type="radio" value="{{ questionItem.Questao.codQuestao }}" name="question" ng-model="questionsModal.selectedQuestion" ng-disabled="questionItem.Questao.dificuldade != questionsModal.currentGroupInfo.Grupo.questao.dificuldade || questionItem.Assunto.codAssunto != questionsModal.currentGroupInfo.Grupo.assunto.codAssunto"> {{ questionItem.Questao.textoQuestao }}
                   </label>
                 </div>
               </td>
@@ -177,8 +180,8 @@
     </form>
   </div>
   <div class="modal-footer modal-questions-footer">
-    <button type="button" class="btn btn-primary btn-lg btn-send-selected-question" ng-click="questionsModal.sendQuestion(questionsModal.selectedQuestion)">Lançar</button>
-    <button type="button" class="btn btn-warning btn-lg btn-send-random-question" ng-click="questionsModal.sendQuestion()">Sortear</button>
+    <button type="button" class="btn btn-primary btn-lg btn-send-selected-question" ng-click="questionsModal.sendQuestion(questionsModal.selectedQuestion)" ng-disabled="!questionsModal.selectedQuestion">Lançar</button>{{questionsModal.questionsEnabled}}
+    <button type="button" class="btn btn-warning btn-lg btn-send-random-question" ng-click="questionsModal.sendQuestion()" ng-disabled="!questionsModal.selectedQuestion">Sortear</button>
   </div>
 </script>
 <!--END TEMPLATES-->
