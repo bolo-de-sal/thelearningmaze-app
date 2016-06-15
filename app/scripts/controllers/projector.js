@@ -11,8 +11,8 @@ angular
     .module('thelearningmaze')
     .controller('ProjectorController', ProjectorController);
 
-    ProjectorController.$inject = ['$q', '$filter', /*'AuthenticationService', 'SessionService',*/ '$location', '$rootScope', "EventService"];
-    function ProjectorController($q, $filter, /*AuthenticationService, SessionService,*/ $location, $rootScope, EventService) {
+    ProjectorController.$inject = ['$routeParams', '$q', '$filter', /*'AuthenticationService', 'SessionService',*/ '$location', '$rootScope', "EventService"];
+    function ProjectorController($routeParams, $q, $filter, /*AuthenticationService, SessionService,*/ $location, $rootScope, EventService) {
 
     	var projectorCtrl = this;
 
@@ -24,148 +24,154 @@ angular
         $(".header").hide();
         $("body").css("overflow-y", "hidden");
         $(".content").css("top", "0px");
+        $(".content").css("padding", "0px");
+
+        //Adaptando tamanho dos elementos do tabuleiro
+
+        $(window).resize(function(){
+            setZoom();
+        });
+
+        function setZoom(){
+            var svg = $(".svg svg").css("width");
+
+            var qtdZoom = svg.replace("px", "") / 600;
+
+            console.log(svg);
+            console.log(qtdZoom);
+            // console.log(qtdZoom);
+
+            $(".ppg-first, .ppg-second, .ppg-third, .ppg-fourth").css("zoom", qtdZoom);
+        }
+
+        //End Adaptando tamanho dos elementos do tabuleiro
+
+        //Toggle question content
+
+        $(".bar").click(function(){
+            if($(".question").hasClass("question-open")){
+                $(".question").removeClass("question-open");
+                $(".question").addClass("question-close");
+            }
+            else{
+                $(".question").removeClass("question-close");
+                $(".question").addClass("question-open");
+            }
+        });
+
+        //End Toggle question content
 
         projectorCtrl.classes = [
             [
                 {
                     ppg: "ppg-first",
                     parent: "parent-group-first",
-                    pin: "one-yellow"
+                    pin: "one-yellow",
+                    pos: "first-one"
                 },
                 {
                     ppg: "ppg-first",
                     parent: "parent-group-first active-first",
-                    pin: "one-yellow"
+                    pin: "one-yellow",
+                    pos: "first-two"
                 },
                 {
                     ppg: "ppg-second",
-                    parent: "parent-group-second",
-                    pin: "two-yellow"
+                    parent: "parent-group-second move",
+                    pin: "two-yellow",
+                    pos: "second-two"
                 },
                 {
                     ppg: "ppg-second",
                     parent: "parent-group-second active-second",
-                    pin: "two-yellow"
+                    pin: "two-yellow",
+                    pos: "second-one"
                 },
                 {
                     ppg: "ppg-third",
                     parent: "parent-group-third",
-                    pin: "three-blue"
+                    pin: "three-blue",
+                    pos: "third-one"
                 },
                 {
                     ppg: "ppg-third",
                     parent: "parent-group-third active-third",
-                    pin: "three-blue"
+                    pin: "three-blue",
+                    pos: "third-two"
                 },
                 {
                     ppg: "ppg-third",
                     parent: "parent-group-third active-third-two",
-                    pin: "three-blue"
+                    pin: "three-blue",
+                    pos: "third-three"
                 },
                 {
                     ppg: "ppg-third",
                     parent: "parent-group-third active-third-three",
-                    pin: "three-blue"
+                    pin: "three-blue",
+                    pos: "third-four"
                 },
                 {
                     ppg: "ppg-fourth",
                     parent: "parent-group-fourth",
-                    pin: "four-yellow"
+                    pin: "four-yellow",
+                    pos: "fourth-four"
                 }
             ],
             [
                 {
                     ppg: "ppg-first",
                     parent: "parent-group-first",
-                    pin: "one-blue"
+                    pin: "one-blue",
+                    pos: "first-three"
                 },
                 {
                     ppg: "ppg-first",
                     parent: "parent-group-first active-first",
-                    pin: "one-blue"
+                    pin: "one-blue",
+                    pos: "first-four"
                 },
                 {
                     ppg: "ppg-second",
-                    parent: "parent-group-second",
-                    pin: "two-blue"
-                },
-                {
-                    ppg: "ppg-second",
-                    parent: "parent-group-second active-second",
-                    pin: "two-blue"
-                },
-                {
-                    ppg: "ppg-third",
-                    parent: "parent-group-third",
-                    pin: "three-red"
-                },
-                {
-                    ppg: "ppg-third",
-                    parent: "parent-group-third active-third",
-                    pin: "three-red"
-                },
-                {
-                    ppg: "ppg-third",
-                    parent: "parent-group-third active-third-two",
-                    pin: "three-red"
-                },
-                {
-                    ppg: "ppg-third",
-                    parent: "parent-group-third active-third-three",
-                    pin: "three-red"
-                },
-                {
-                    ppg: "ppg-fourth",
-                    parent: "parent-group-fourth",
-                    pin: "four-blue"
-                }
-
-            ],
-            [
-                {
-                    ppg: "ppg-first",
-                    parent: "parent-group-first",
-                    pin: "one-red"
-                },
-                {
-                    ppg: "ppg-first",
-                    parent: "parent-group-first active-first",
-                    pin: "one-red"
-                },
-                {
-                    ppg: "ppg-second",
-                    parent: "parent-group-second",
-                    pin: "two-red"
+                    parent: "parent-group-second move",
+                    pin: "two-blue",
+                    pos: "second-four"
                 },
                 {
                     ppg: "ppg-second",
                     parent: "parent-group-second active-second",
-                    pin: "two-red"
+                    pin: "two-blue",
+                    pos: "second-three"
                 },
                 {
                     ppg: "ppg-third",
                     parent: "parent-group-third",
-                    pin: "three-green"
+                    pin: "three-red",
+                    pos: "third-two"
                 },
                 {
                     ppg: "ppg-third",
                     parent: "parent-group-third active-third",
-                    pin: "three-green"
+                    pin: "three-red",
+                    pos: "third-three"
                 },
                 {
                     ppg: "ppg-third",
                     parent: "parent-group-third active-third-two",
-                    pin: "three-green"
+                    pin: "three-red",
+                    pos: "third-four"
                 },
                 {
                     ppg: "ppg-third",
                     parent: "parent-group-third active-third-three",
-                    pin: "three-green"
+                    pin: "three-red",
+                    pos: "third-one"
                 },
                 {
                     ppg: "ppg-fourth",
                     parent: "parent-group-fourth",
-                    pin: "four-red"
+                    pin: "four-blue",
+                    pos: "fourth-one"
                 }
 
             ],
@@ -173,91 +179,161 @@ angular
                 {
                     ppg: "ppg-first",
                     parent: "parent-group-first",
-                    pin: "one-green"
+                    pin: "one-red",
+                    pos: "first-five"
                 },
                 {
                     ppg: "ppg-first",
                     parent: "parent-group-first active-first",
-                    pin: "one-green"
+                    pin: "one-red",
+                    pos: "first-six"
                 },
                 {
                     ppg: "ppg-second",
                     parent: "parent-group-second",
-                    pin: "two-green"
+                    pin: "two-red",
+                    pos: "second-six"
                 },
                 {
                     ppg: "ppg-second",
                     parent: "parent-group-second active-second",
-                    pin: "two-green"
+                    pin: "two-red",
+                    pos: "second-five"
                 },
                 {
                     ppg: "ppg-third",
                     parent: "parent-group-third",
-                    pin: "three-yellow"
+                    pin: "three-green",
+                    pos: "third-three"
                 },
                 {
                     ppg: "ppg-third",
                     parent: "parent-group-third active-third",
-                    pin: "three-yellow"
+                    pin: "three-green",
+                    pos: "third-four"
                 },
                 {
                     ppg: "ppg-third",
                     parent: "parent-group-third active-third-two",
-                    pin: "three-yellow"
+                    pin: "three-green",
+                    pos: "third-one"
                 },
                 {
                     ppg: "ppg-third",
                     parent: "parent-group-third active-third-three",
-                    pin: "three-yellow"
+                    pin: "three-green",
+                    pos: "third-two"
                 },
                 {
                     ppg: "ppg-fourth",
                     parent: "parent-group-fourth",
-                    pin: "four-green"
+                    pin: "four-red",
+                    pos: "fourth-two"
+                }
+
+            ],
+            [
+                {
+                    ppg: "ppg-first",
+                    parent: "parent-group-first",
+                    pin: "one-green",
+                    pos: "first-seven"
+                },
+                {
+                    ppg: "ppg-first",
+                    parent: "parent-group-first active-first",
+                    pin: "one-green",
+                    pos: "first-eight"
+                },
+                {
+                    ppg: "ppg-second",
+                    parent: "parent-group-second",
+                    pin: "two-green",
+                    pos: "second-eight"
+                },
+                {
+                    ppg: "ppg-second",
+                    parent: "parent-group-second active-second",
+                    pin: "two-green",
+                    pos: "second-seven"
+                },
+                {
+                    ppg: "ppg-third",
+                    parent: "parent-group-third",
+                    pin: "three-yellow",
+                    pos: "third-four"
+                },
+                {
+                    ppg: "ppg-third",
+                    parent: "parent-group-third active-third",
+                    pin: "three-yellow",
+                    pos: "third-one"
+                },
+                {
+                    ppg: "ppg-third",
+                    parent: "parent-group-third active-third-two",
+                    pin: "three-yellow",
+                    pos: "third-two"
+                },
+                {
+                    ppg: "ppg-third",
+                    parent: "parent-group-third active-third-three",
+                    pin: "three-yellow",
+                    pos: "third-three"
+                },
+                {
+                    ppg: "ppg-fourth",
+                    parent: "parent-group-fourth",
+                    pin: "four-green",
+                    pos: "fourth-three"
                 }
 
             ]
         ];
 
-        var boardMap = [];
+        projectorCtrl.boardMap = [];
 
-        var codEvento = 10;
+        // var codEvento = 10;
+        var eventId = $routeParams.eventId;
 
         $rootScope.dataLoading = true;
 
         $q.all([
-            EventService.getEventGroups(codEvento).then(getEventGroupsSuccess, getEventGroupsFailure),
-            EventService.getEventSubjects(codEvento).then(getEventSubjectsSuccess, getEventSubjectsFailure)
+            EventService.getEventGroups(eventId).then(getEventGroupsSuccess, getEventGroupsFailure),
+            EventService.getEventThemes(eventId).then(getEventSubjectsSuccess, getEventSubjectsFailure),
+            EventService.getEventCurrentGroupInfo(eventId).then(getEventCurrentGroupInfoSuccess, getEventCurrentGroupInfoFailure)            
         ]).then(function(response){
             console.log(response);
         }).finally(function(){
             // Close dataLoading after all requests are finished
             $rootScope.dataLoading = false;
+            animateBoard();
+            // focusCurrentElement();
         });
 
         function getEventGroupsSuccess(response){
-            console.log("Grupos do evento: " + codEvento);
+            console.log("Grupos do evento: " + eventId);
             console.log(response);
 
-            angular.forEach(response, function(group, key){
-                group.Grupo.codAssunto = group.Assunto.codAssunto;
-                group.Grupo.hit = key + 1;
+            // angular.forEach(response, function(group, key){
+            //     group.Grupo.codAssunto = group.Assunto.codAssunto;
+            //     // group.Acertos = key + 1;
 
-                positionGroup(group);
-                // if(key == 0){
-                // }
-            });
+            //     positionGroup(group);
+            //     // if(key == 0){
+            //     // }
+            // });
 
             projectorCtrl.groups = response;
         }
 
         function getEventGroupsFailure(response){
-            console.log("Grupos do evento: " + codEvento);
+            console.log("Grupos do evento: " + eventId);
             console.log(response);
         }
 
         function getEventSubjectsSuccess(response){
-            console.log("Assuntos do evento: " + codEvento);
+            console.log("Assuntos do evento: " + eventId);
             console.log(response);
 
             //Ordenação dos assuntos pelo id
@@ -266,40 +342,61 @@ angular
             console.log("Assuntos ordenados:", projectorCtrl.subjects);
 
             angular.forEach(projectorCtrl.subjects, function(subject, key){
-                boardMap[subject.codAssunto.toString()] = projectorCtrl.classes[key];
+                projectorCtrl.boardMap[subject.codAssunto.toString()] = projectorCtrl.classes[key];
             });
 
-            console.log(boardMap);
+            console.log(projectorCtrl.boardMap);
 
             // projectorCtrl.groups = response;
         }
 
         function getEventSubjectsFailure(response){
-            console.log("Assuntos do evento: " + codEvento);
+            console.log("Assuntos do evento: " + eventId);
             console.log(response);
         }
 
-        function positionGroup(group){
+        function getEventCurrentGroupInfoSuccess(response){
+            console.log("Info grupo atual do evento: " + eventId);
+            console.log(response);
+            projectorCtrl.currentGroupInfo = response;
+        }
 
-            // console.log("Tentativa: ", boardMap[group.Grupo.codAssunto.toString()][group.Grupo.hit].ppg);
+        function getEventCurrentGroupInfoFailure(response){
+            console.log("Info grupo atual do evento: " + eventId);
+            console.log(response);
+        }
 
-            var group = '<div id="ppg-group' + group.Grupo.codGrupo + '" class="easy '+ boardMap[group.Grupo.codAssunto.toString()][group.Grupo.hit].ppg +'">' +
-                            '<div id="parent-group' + group.Grupo.codGrupo + '" class="easy '+ boardMap[group.Grupo.codAssunto.toString()][group.Grupo.hit].parent +'">' +
-                                '<div id="pin-group' + group.Grupo.codGrupo + '" class="easy '+ boardMap[group.Grupo.codAssunto.toString()][group.Grupo.hit].pin +'">' +
-                                    '<img class="pino" src="images/pino.png" alt="Pino">' +
-                                ' </div>' +
-                            ' </div>' +
-                        ' </div>';
+        function positionGroups(){
 
-            $(".svg").append(group);
+            angular.forEach(projectorCtrl.groups, function(group, key){
+                group.Grupo.codAssunto = group.Assunto.codAssunto;
+
+                    // console.log("Tentativa: ", projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].ppg);
+
+                    group.pos = projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pos;
+
+                    var group = '<div id="ppg-group' + group.Grupo.codGrupo + '" class="easy '+ projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].ppg +'">' +
+                                    '<div id="parent-group' + group.Grupo.codGrupo + '" class="easy '+ projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].parent +'">' +
+                                        '<div id="pin-group' + group.Grupo.codGrupo + '" class="easy '+ projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pin +'">' +
+                                            '<img class="pino" src="images/pino.png" alt="Pino">' +
+                                        ' </div>' +
+                                    ' </div>' +
+                                ' </div>';
+
+                    $(".svg").append(group);                
+                
+            });
+
+            setZoom();
+
         }
 
         function acertar(codGrupo){
             angular.forEach(projectorCtrl.groups, function(group, key){
                if (group.Grupo.codGrupo == codGrupo){
                     console.log("Clicou para acertar no grupo: ", group.Grupo.codGrupo);
-                    if(group.Grupo.hit < 8){
-                        group.Grupo.hit++;
+                    if(group.Acertos < 8){
+                        group.Acertos++;
                         positionGroupOnHit(codGrupo);                        
                     }
                } 
@@ -309,19 +406,65 @@ angular
         function positionGroupOnHit(codGrupo){
             angular.forEach(projectorCtrl.groups, function(group, key){
                if (group.Grupo.codGrupo == codGrupo){
-                    $("#ppg-group" + codGrupo).removeClass(boardMap[group.Grupo.codAssunto.toString()][group.Grupo.hit - 1].ppg);
-                    $("#parent-group" + codGrupo).removeClass(boardMap[group.Grupo.codAssunto.toString()][group.Grupo.hit - 1].parent);
-                    $("#pin-group" + codGrupo).removeClass(boardMap[group.Grupo.codAssunto.toString()][group.Grupo.hit - 1].pin);
+                    var qtdInPos = 1;
 
-                    $("#ppg-group" + codGrupo).addClass(boardMap[group.Grupo.codAssunto.toString()][group.Grupo.hit].ppg);
-                    $("#parent-group" + codGrupo).addClass(boardMap[group.Grupo.codAssunto.toString()][group.Grupo.hit].parent);
-                    $("#pin-group" + codGrupo).addClass(boardMap[group.Grupo.codAssunto.toString()][group.Grupo.hit].pin);
+                    group.pos = projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pos;
 
-                    // // $("#ppg-group" + codGrupo).toggleClass(boardMap[group.Grupo.codAssunto.toString()][group.Grupo.hit - 1].ppg, 4000, "easeOutSine");
-                    // // $("#parent-group" + codGrupo).toggleClass(boardMap[group.Grupo.codAssunto.toString()][group.Grupo.hit - 1].parent, 4000, "easeOutSine");
-                    // $("#pin-group" + codGrupo).toggleClass(boardMap[group.Grupo.codAssunto.toString()][group.Grupo.hit - 1].pin, 4000, "easeOutSine");
+                    $("#ppg-group" + codGrupo).removeClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos - 1].ppg);
+                    $("#parent-group" + codGrupo).removeClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos - 1].parent);
+                    $("#pin-group" + codGrupo).removeClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos - 1].pin);
+
+                    $("#ppg-group" + codGrupo).addClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].ppg);
+                    $("#parent-group" + codGrupo).addClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].parent);
+                    $("#pin-group" + codGrupo).addClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pin);
+
+                    angular.forEach(projectorCtrl.groups, function(group2, key2){
+                        if(group.Grupo.codGrupo != group2.Grupo.codGrupo){
+                            if(group.pos == group2.pos){
+                                qtdInPos++;
+                                console.log("qtdInPos: ", qtdInPos);
+                            }                            
+                        }
+                    });
+
+                    if(qtdInPos > 1){
+                        alert(qtdInPos + " grupos na posição: " + projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pos);                        
+                    }
+
+                    // // $("#ppg-group" + codGrupo).toggleClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos - 1].ppg, 4000, "easeOutSine");
+                    // // $("#parent-group" + codGrupo).toggleClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos - 1].parent, 4000, "easeOutSine");
+                    // $("#pin-group" + codGrupo).toggleClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos - 1].pin, 4000, "easeOutSine");
                } 
             });            
+        }
+
+        function focusCurrentElement(){
+            var codCurrentGroup = projectorCtrl.currentGroupInfo.Grupo.codGrupo;
+
+            angular.forEach(projectorCtrl.groups, function(group, key){
+                if(group.Grupo.codGrupo == codCurrentGroup){
+
+                    var pos = projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pos;
+
+                    $(".svg .color").removeClass("active");
+                    $("." + pos).addClass("active");
+
+                    console.log("Entrou if currentElement");
+                    console.log("Posição: ", pos);
+                }
+            });
+        }
+
+        function animateBoard(){
+            $("#first-layer").addClass("first-layer");
+            $("#second-layer").addClass("second-layer");
+            $("#third-layer").addClass("third-layer");
+            $("#fourth-layer").addClass("fourth-layer");
+
+            $("#first-layer").bind("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", function(){
+                focusCurrentElement();
+                positionGroups();
+            });
         }
 
     }

@@ -68,7 +68,7 @@ angular
         controller: 'LobbyController',
         controllerAs: 'lobby'
       })
-      .when('/projector', {
+      .when('/projector/:eventId', {
         templateUrl: 'views/projector.html',
         controller: 'ProjectorController',
         controllerAs: 'projector'

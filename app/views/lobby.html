@@ -11,16 +11,16 @@
 		<div class="col-md-4" ng-repeat="group in lobby.groups">
 			<div class="card group">
 				<p></p>
-				<p>{{group.Grupo.nmGrupo}}</p>
+				<p title="{{group.Grupo.nmGrupo}}">{{group.Grupo.nmGrupo}}</p>
 				<p>Formação</p>
 				<p>Alunos: {{group.ParticipantesGrupo.length}}</p>
 				<div class="students">
 					<div class="student" ng-repeat="student in group.ParticipantesGrupo">
 						<img src="images/pu.jpg" alt="Professor Utonio">
-						<p>{{student.nmParticipante}}</p>				
+						<p title="{{student.nmParticipante}}">{{student.nmParticipante}}</p>				
 					</div>
 				</div>
-				<p>{{group.Assunto.descricao}}</p>
+				<p title="{{group.Assunto.descricao}}">{{group.Assunto.descricao}}</p>
 			</div>			
 		</div>
 	</div>

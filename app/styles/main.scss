@@ -249,6 +249,10 @@ button{
   .lobby .groups .col-md-4 .group > p:nth-child(2){
     font-size: 30px !important;
   }*/
+
+  .bds{
+    display: block !important;
+  }
 }
 
 @media (min-width: 1200px){
@@ -257,6 +261,10 @@ button{
   }
   .lobby .groups .col-md-4 .group > p:nth-child(2){
     font-size: 24px !important;
+  }
+
+  .groups-to-play{
+    display: block !important;
   }
 }
 
@@ -525,6 +533,10 @@ button{
   line-height: 30px;
   text-transform: uppercase;
   vertical-align: top;
+  width: 140px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .group-leader{

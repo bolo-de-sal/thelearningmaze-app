@@ -42,7 +42,7 @@
               <div class="group-box" ng-repeat="groupInfo in controlPanel.groupsInfo | orderBy: 'groupinfo.Acertos'">
                 <div class="group-box-name">
                   <span class="group-icon"></span>
-                  <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
+                  <span class="group-name" title="{{ groupInfo.Grupo.nmGrupo }}">{{ groupInfo.Grupo.nmGrupo }}</span>
                   <div class="group-score">{{ groupInfo.Acertos }}pts.</div>
                 </div>
               </div>

@@ -11,110 +11,167 @@
 .svg{
 	width: 100%;
 	text-align: center;
+	height: 100%;
+	display: flex;
+	align-items: center;
 
 	> svg{
 		width: 600px;
 		height: 600px;
+		margin: 0 auto;
 	}
 
 	#first-layer{
 
 		background: red;
 
-
-		.color:hover{
+		/*.color:not(.active){
+			filter: url(#no-filter);
+			transition: all 4s linear;
+		    stroke: rgba(0, 0, 0, 0);
+    		stroke-width: 0px;
+		}*/
+	
+		.color.active{
 		  fill: $board-yellow;
 		  filter: url(#blur-filter);
 		  stroke: white;
+		  /*stroke: black;*/
 		  stroke-width: 10px;
+		  /*stroke-width: 40px;*/
+
+		  transition: all 4s linear;
 		}
 		
-		.color:nth-child(6):hover,
-		.color:nth-child(8):hover{
+		.color:nth-child(6).active,
+		.color:nth-child(8).active{
 		  fill: $board-blue;
 		}
 
-		.color:nth-child(10):hover,
-		.color:nth-child(12):hover{
+		.color:nth-child(10).active,
+		.color:nth-child(12).active{
 		  fill: $board-red;
 		}
 
-		.color:nth-child(14):hover,
-		.color:nth-child(16):hover{
+		.color:nth-child(14).active,
+		.color:nth-child(16).active{
 		  fill: $board-green;
 		}
 	}
 
 	#second-layer{
-		.color:hover{
+
+		/*.color:not(.active){
+			filter: url(#no-filter);
+			transition: all 4s linear;
+		    stroke: rgba(0, 0, 0, 0);
+    		stroke-width: 0px;
+		}*/
+
+		.color.active{
 		  fill: $board-yellow;
 		  filter: url(#blur-filter);
 		  stroke: white;
 		  stroke-width: 10px;
+
+		  transition: all 4s linear;
 		}
 		
-		.color:nth-child(6):hover,
-		.color:nth-child(8):hover{
+		.color:nth-child(6).active,
+		.color:nth-child(8).active{
 		  fill: $board-blue;
 		}
 
-		.color:nth-child(10):hover,
-		.color:nth-child(12):hover{
+		.color:nth-child(10).active,
+		.color:nth-child(12).active{
 		  fill: $board-red;
 		}
 
-		.color:nth-child(14):hover,
-		.color:nth-child(16):hover{
+		.color:nth-child(14).active,
+		.color:nth-child(16).active{
 		  fill: $board-green;
 		}
 	}
 
 	#third-layer{
-		.color:hover{
+
+		/*.color:not(.active){
+			filter: url(#no-filter);
+			transition: all 4s linear;
+		    stroke: rgba(0, 0, 0, 0);
+    		stroke-width: 0px;
+		}*/
+
+		.color.active{
 		  fill: $board-blue;
 		  filter: url(#blur-filter);
 		  stroke: white;
 		  stroke-width: 10px;
+
+		  transition: all 4s linear;
 		}
 		
-		.color:nth-child(4):hover{
+		.color:nth-child(4).active{
 		  fill: $board-red;
 		}
 
-		.color:nth-child(6):hover{
+		.color:nth-child(6).active{
 		  fill: $board-green;
 		}
 
-		.color:nth-child(8):hover{
+		.color:nth-child(8).active{
 		  fill: $board-yellow;
 		}
 	}
 
 	#fourth-layer{
-		.color:hover{
+
+		/*.color:not(.active){
+			filter: url(#no-filter);
+			transition: all 4s linear;
+		    stroke: rgba(0, 0, 0, 0);
+    		stroke-width: 0px;
+		}*/
+
+		.color.active{
 		  fill: $board-blue;
 		  filter: url(#blur-filter);
 		  stroke: white;
 		  stroke-width: 10px;
+
+		  transition: all 4s linear;
 		}
 		
-		.color:nth-child(4):hover{
+		.color:nth-child(4).active{
 		  fill: $board-red;
 		}
 
-		.color:nth-child(6):hover{
+		.color:nth-child(6).active{
 		  fill: $board-green;
 		}
 
-		.color:nth-child(8):hover{
+		.color:nth-child(8).active{
 		  fill: $board-yellow;
 		}
+	}
+
+	.wrap-card-score{
+	    min-height: 340px;
+    	max-height: 600px;
+    	height: inherit;
+    	text-align: left;
+
+    	.groups-box{
+		    min-height: 240px;
+		    max-height: 500px;
+		    height: inherit;
+    	}
 	}
 }
 
 /* ANIMATIONS - check compatibility */
 
-#first-layer, #third-layer{
+.first-layer, .third-layer{
     animation-name: sh;
     animation-duration: 10s;
     /* Things added */
@@ -124,7 +181,7 @@
     /* <--- */
 }
 
-#second-layer, #fourth-layer{
+.second-layer, .fourth-layer{
     animation-name: sah;
     animation-duration: 10s;
     /* Things added */
@@ -133,6 +190,7 @@
     display: inline-block;
     /* <--- */
 }
+
 @keyframes sh {
     0% {
         transform: rotate(0deg);
@@ -272,12 +330,15 @@
     height: 100%;
     margin-left: auto;
     margin-right: auto;
-    bottom: 16px;
-    padding-top: 22px;
+    /*bottom: 16px;*/
+    /*padding-top: 22px;*/
     left: 0;
     right: 0;
     display: flex;
     align-items: center;
+    top: 0px;
+    /*max-height: 606px;*/
+    /*transition: all .3s linear;*/
 }
 
 .ppg-second{
@@ -290,8 +351,11 @@
     height: 100%;
     display: flex;
     align-items: center;
-    bottom: 16px;
-    padding-top: 22px;
+    /*bottom: 16px;*/
+    /*padding-top: 22px;*/
+    top: 0px;
+    /*max-height: 606px;*/
+    /*transition: all .3s linear;*/
 }
 
 .ppg-third{
@@ -304,8 +368,11 @@
     height: 100%;
     display: flex;
     align-items: center;
-    bottom: 16px;
-    padding-top: 22px;
+    /*bottom: 16px;*/
+    /*padding-top: 22px;*/
+    top: 0px;
+    /*max-height: 606px;*/
+    /*transition: all .3s linear;*/
 }
 
 .ppg-fourth{
@@ -318,8 +385,11 @@
     height: 100%;
     display: flex;
     align-items: center;
-    bottom: 16px;
-    padding-top: 22px;
+    /*bottom: 16px;*/
+    /*padding-top: 22px;*/
+    top: 0px;
+    /*max-height: 606px;*/
+    /*transition: all .3s linear;*/
 }
 
 .parent-group-first{
@@ -328,6 +398,8 @@
     width: 521px;
     height: 521px;
     border-radius: 50%;
+    /*transition: all .3s linear;
+    animation-fill-mode:forwards;*/
 }
 
 .parent-group-second{
@@ -336,6 +408,8 @@
     width: 429px;
     height: 429px;
     border-radius: 50%;
+    /*transition: all .3s linear;
+    animation-fill-mode:forwards;*/
 }
 
 .parent-group-third{
@@ -344,6 +418,8 @@
     width: 300px;
     height: 300px;
     border-radius: 50%;
+    /*transition: all .3s linear;
+    animation-fill-mode:forwards;*/
 }
 
 .parent-group-fourth{
@@ -352,6 +428,8 @@
     width: 102px;
     height: 102px;
     border-radius: 50%;
+    /*transition: all .3s linear;
+    animation-fill-mode:forwards;*/
 }
 
 .parent-group-fourth > img{
@@ -363,7 +441,7 @@
 }
 
 /*.active-first,
-.parent-group-first:hover{*/
+.parent-group-first.active{*/
 .active-first{
 	animation-name: rot;
     animation-duration: 4s;
@@ -479,13 +557,14 @@
     }
 }
 
-.controls{
+.groups-to-play{
     position: absolute;
     left: 0;
-    bottom: 40px;
+    bottom: 0px;
+    display: none;
 
-    div{
-    	background: $lightblack;
+    > div{
+    	/*background: $lightblack;*/
     	color: white;
     }
 }
@@ -496,3 +575,69 @@
     -o-transition: all 0.5s ease;*/
     /*transition: all 4s linear;*/
 }
+
+.move{
+	/*animation: move 4s ease;
+	-webkit-animation-fill-mode:forwards; /*Chrome 16+, Safari 4+*/
+}
+
+@keyframes move {
+  50% {
+     transform: translate(20px, 20px);
+  }
+}
+
+.content{
+	height: 100%;
+}
+
+.bds{
+	display: none;
+}
+
+.question{
+
+	.bar{
+		height: 100%;
+		width: 50px;
+		position: absolute;
+		left: 0;
+		background: orange;
+	}
+}
+
+.question-open{
+	height: 100%;
+	width: 800px;
+	position: fixed;
+	background: white;
+	background-image: url("../images/maze.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+	z-index: 2;
+	right: 0;
+	transition: right .5s ease;
+}
+
+.question-close{
+	height: 100%;
+	width: 800px;
+	position: fixed;
+	background: white;
+	background-image: url("../images/maze.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+	z-index: 2;
+	right: -750px;
+	transition: right .5s ease;
+}
+
+/* 
+20px
+
+cyan
+chartreuse
+yellow
+vermelho tem que definir melhor a cor
+
+*/

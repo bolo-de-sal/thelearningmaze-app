@@ -15,7 +15,8 @@ angular
         events.closeEvent = closeEvent;
         events.openEvent = openEvent;
         events.getEventGroups = getEventGroups;
-        events.getEventSubjects = getEventSubjects;
+        events.getEventThemes = getEventThemes;
+        events.getEventCurrentGroupInfo = getEventCurrentGroupInfo;
 
         return events;
 
@@ -75,8 +76,18 @@ angular
             return promise;
         }
 
-        function getEventSubjects(codEvento){
+        function getEventThemes(codEvento){
             var promise = $http.get(AppConfig.api.identifier + '/Eventos/' + codEvento + '/Assuntos')
+            .then(function (response) {
+                return response.data;
+              // callback(response);
+            });
+
+            return promise;
+        }
+
+        function getEventCurrentGroupInfo(codEvento){
+            var promise = $http.get(AppConfig.api.identifier + '/Eventos/' + codEvento + '/InfoGrupoAtual')
             .then(function (response) {
                 return response.data;
               // callback(response);
