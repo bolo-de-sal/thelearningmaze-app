@@ -49,13 +49,13 @@ angular
         //Toggle question content
 
         $(".bar").click(function(){
-            if($(".question").hasClass("question-open")){
-                $(".question").removeClass("question-open");
-                $(".question").addClass("question-close");
+            if($(".question-content").hasClass("question-open")){
+                $(".question-content").removeClass("question-open");
+                $(".question-content").addClass("question-close");
             }
             else{
-                $(".question").removeClass("question-close");
-                $(".question").addClass("question-open");
+                $(".question-content").removeClass("question-close");
+                $(".question-content").addClass("question-open");
             }
         });
 

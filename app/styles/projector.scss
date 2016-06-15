@@ -595,7 +595,7 @@
 	display: none;
 }
 
-.question{
+.question-content{
 
 	.bar{
 		height: 100%;
@@ -603,6 +603,10 @@
 		position: absolute;
 		left: 0;
 		background: orange;
+	}
+
+	.wrap-card-question{
+		margin-left: 66px;
 	}
 }
 
@@ -630,6 +634,85 @@
 	z-index: 2;
 	right: -750px;
 	transition: right .5s ease;
+}
+
+.modal-question{
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	left: 0;
+	z-index: 10;
+	display: flex;
+	align-items: center;
+	background: rgba(0, 0, 0, .6);
+
+	.card{
+		margin: 0 auto;
+		width: 200px;
+		height: 200px;
+
+		img{
+			height: 120px;
+		}
+
+		p{
+			/*color: #25AE88;*/
+			padding-top: 20px;
+			font-size: 22px;
+		}
+
+		.hit-question{
+			color: #25AE88;
+		}
+
+		.error-question{
+			color: #D75A4A;
+		}
+	}
+}
+
+.modal-winner{
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	left: 0;
+	z-index: 10;
+	display: flex;
+	align-items: center;
+	background: rgba(0, 0, 0, .8);
+
+	> img{
+		height: 300px;
+		margin: 0px 30px;
+	}
+
+	.card{
+		margin: 0 auto;
+		width: 200px;
+		height: 200px;
+		background: #154551;
+
+		img{
+			height: 120px;
+		}
+
+		p{
+			/*color: #25AE88;*/
+			padding-top: 10px;
+			font-size: 18px;
+			color: white;
+		}
+	}
+}
+
+.modal-show{
+	top: 0;
+	transition: top .5s ease;	
+}
+
+.modal-hide{
+	top: -100%;
+	transition: top .5s ease;	
 }
 
 /* 

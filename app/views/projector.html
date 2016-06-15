@@ -162,8 +162,72 @@
 		<a href="http://bolodesal.com.br" target="_blanck"><img src="images/bolo-de-sal.png" alt="Bolo de Sal Studio"></a>
 	</div>
 
-	<div class="question question-close">
-		<div class="bar"></div>
+	<div class="question-content question-close">
+		<div class="bar">
+			
+		</div>
+
+		<div class="row">
+			<div class="col-md-8">
+				<div class="col-md-12 card wrap-card-question">
+					<h3 class="title">Pergunta Atual</h3>
+					<button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button>
+					<div class="content-question-theme">
+						<div class="content-question">
+							<p class="question">{{ controlPanel.questions.current.textoQuestao }}</p>
+						</div>
+						<p class="theme">Assunto: {{ controlPanel.questions.current.codAssunto }}</p>
+					</div>
+					<div class="groups-box">
+						<div class="group-box-name" ng-repeat="groupInfo in controlPanel.groupsInfo">
+							<span class="group-icon"></span>
+							<span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
+						</div>
+					</div>
+					<span class="time">1:20</span>
+				</div>
+				<!-- <div class="col-md-12">
+					<div class="row">
+						<div class="col-md-7 card wrap-card-graphic">
+							<button class="btn-graphic"><span class="btn-graphic-text">Gráficos</span></button>
+						</div>            
+						<div class="col-md-5 wrap-card-send-question">
+							<div class="col-md-12 card">
+								<button class="send-question" ng-click="controlPanel.questionsModal.open('lg')"><span class="send-question-text">Lançar Pergunta</span></button>
+							</div>
+						</div>
+					</div>
+				</div> -->
+			</div>
+		</div>
+
 	</div>
 
+	<div class="modal-question modal-hide">
+		<div class="card">
+			<img src="images/acerto.png" alt="Acertou">
+			<p class="hit-question">Resposta Certa</p>
+		</div>
+	</div>
+
+	<div class="modal-question modal-hide">
+		<div class="card">
+			<img src="images/erro.png" alt="Errou">
+			<p class="error-question">Resposta Errada</p>
+		</div>
+	</div>
+
+	<div class="modal-winner">
+		<img src="images/estrela.png" alt="Estrela">
+
+		<div class="card">
+			<img src="images/trofeu.png" alt="Troféu">
+			<p>Campeão</p>
+			<div class="winner">
+				
+			</div>
+		</div>
+
+		<img src="images/estrelaInvertida.png" alt="Estrela Invertida">
+	</div>
 </div>
