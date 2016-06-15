@@ -17,16 +17,19 @@ angular
 
         return alertService;
 
-        function Add(type, msg) {
-          $rootScope.alerts.push({'type': type, 'msg': msg});
+        function Add(type, msg, clearMessages) {
+            if(clearMessages){
+                this.Clear();
+            }
+            $rootScope.alerts.push({'type': type, 'msg': msg});
         };
 
         function CloseAlert(index) {
-          $rootScope.alerts.splice(index, 1);
+            $rootScope.alerts.splice(index, 1);
         };
 
         function Clear(){
-          $rootScope.alerts = [];
+            $rootScope.alerts = [];
         }
 
     }

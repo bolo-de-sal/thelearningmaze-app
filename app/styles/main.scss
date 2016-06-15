@@ -659,6 +659,13 @@ button{
     font-size: 16px;    
     text-align: right;
     margin: 0;
+
+    a{
+      padding: 0 0 0 10px;
+      &:hover{
+        color: $lightblack;
+      }
+    }
   }
 
   .theme{

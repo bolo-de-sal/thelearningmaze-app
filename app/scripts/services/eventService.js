@@ -48,24 +48,26 @@ angular
             return promise;
         }
 
-        function openEvent(){
-            $http.post(AppConfig.api.identifier + '/Eventos/Iniciar', { "codEvento": 114 } )
-            .success(function (response) {
-                console.log("Response: ", response);
+        function openEvent(eventId){
+            var promise = $http.post(AppConfig.api.identifier + '/Eventos/Iniciar', {'codEvento': eventId } )
+            .then(function (response) {
+                return response.data;
               // callback(response);
-            }); 
+            });
         }
 
-        function closeEvent() {
-            $http.post(AppConfig.api.identifier + '/Eventos/Encerrar', { "codEvento": 75 } )
-            .success(function (response) {
-                console.log("Response: ", response);
+        function closeEvent(eventId) {
+            var promise = $http.post(AppConfig.api.identifier + '/Eventos/Encerrar', {'codEvento': eventId })
+            .then(function (response) {
+                return response.data;
               // callback(response);
-            });            
+            });
+
+            return promise;           
         }
 
-        function getEventGroups(codEvento){
-            var promise = $http.get(AppConfig.api.identifier + '/Eventos/' + codEvento + '/GruposCompleto')
+        function getEventGroups(eventId){
+            var promise = $http.get(AppConfig.api.identifier + '/Eventos/' + eventId + '/GruposCompleto')
             .then(function (response) {
                 return response.data;
               // callback(response);

@@ -27,13 +27,22 @@ angular
         // All requests
         $q.all([
 		   EventService.getEventById(eventId),
-		   QuestionService.getCurrentQuestionByEventId(eventId),
-		   GroupService.getGroupsByEventId(eventId)
+		   GroupService.getCurrentGroupInfo(eventId),
+		   GroupService.getGroupsByEventId(eventId),
+		   GroupService.getGroupsQuestions(eventId)
 		]).then(function(response){
 			controlPanelCtrl.event = response[0];
 			controlPanelCtrl.questions.current = response[1];
 			controlPanelCtrl.groupsInfo = response[2];
+			controlPanelCtrl.groupsQuestions = response[3];
 		}).finally(function(){
+			controlPanelCtrl.questions.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + controlPanelCtrl.questions.current.Questao.codImagem
+			controlPanelCtrl.maxQtdQuestions = 0;
+			angular.forEach(controlPanelCtrl.groupsQuestions, function(groupQuestion, key){
+				if(groupQuestion.Questoes.length > controlPanelCtrl.maxQtdQuestions){
+					controlPanelCtrl.maxQtdQuestions = groupQuestion.Questoes.length;
+				}
+			});
 			// Close dataLoading after all requests are finished
 			$rootScope.dataLoading = false;
 		});
@@ -52,6 +61,14 @@ angular
         		  size: size
         		});
         	}
+        }
+
+        controlPanelCtrl.getMaxQtdQuestions = function(qtd){
+        	return new Array(qtd);
+        }
+
+        controlPanelCtrl.closeEvent = function(){
+        	EventService.closeEvent(eventId);
         }
     }
 
@@ -99,14 +116,12 @@ angular
 			];
 		}).finally(function(){
 			angular.forEach(questionsModalCtrl.questionsItems, function(value, key){
-				value.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + value.Questao.codImagem
+				value.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + value.Questao.codImagem;
 			});
 
 			questionsModalCtrl.difficultyIncludes.push(questionsModalCtrl.currentGroupInfo.Grupo.questao.dificuldade);
 
 			questionsModalCtrl.themeIncludes.push(questionsModalCtrl.currentGroupInfo.Grupo.assunto.descricao);
-
-			questionsModalCtrl.questionsEnabled = !($('.radio input[type=radio]:enabled').length > 0);
 
 			questionsModalCtrl.filtersLoaded = true;
 			$rootScope.dataLoading = false;
@@ -123,7 +138,7 @@ angular
 		            questionsModalCtrl.difficultyIncludes.push(difficulty);
 		        }
 			}else{
-				AlertService.Add('danger', 'A questão e dificuldade do grupo atual deve estar sempre selecionada.');
+				AlertService.Add('danger', 'A questão e dificuldade do grupo atual deve estar sempre selecionada.', true);
 			}		
 		}
 
@@ -159,8 +174,8 @@ angular
 		        } else {
 		            questionsModalCtrl.themeIncludes.push(theme);
 		        }
-			}else{
-				AlertService.Add('danger', 'A questão e dificuldade do grupo atual deve estar sempre selecionada.');
+			}else{				
+				AlertService.Add('danger', 'A questão e dificuldade do grupo atual deve estar sempre selecionada.', true);
 			}			
 		}
 
@@ -205,7 +220,7 @@ angular
 					questionRandom.prop('checked', true);
 				}
 
-				QuestionService.sendQuestion(selectedQuestionId).then(function(response){
+				QuestionService.sendQuestion(eventId, selectedQuestionId).then(function(response){
 					AlertService.Add('success', 'Pergunta lançada com sucesso.');
 				}, function(error){
 					console.log(error);
@@ -218,12 +233,10 @@ angular
 					});
 
 					$rootScope.dataLoading = false;
-				});
-
-				questionsModalCtrl.close();
+					questionsModalCtrl.close();
+				});				
 			}else{
-				AlertService.Clear();
-				AlertService.Add('danger', 'Nenhuma questão disponível para o assunto e nível do grupo atual.');
+				AlertService.Add('danger', 'Nenhuma questão disponível para o assunto e nível do grupo atual.', true);
 			}
 
 		}

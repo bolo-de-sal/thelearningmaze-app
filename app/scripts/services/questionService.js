@@ -35,8 +35,8 @@ angular
             return promise;
         }
 
-        function sendQuestion(questionId){
-            var promisse = $http.post(AppConfig.api.identifier + '/Eventos/LancarPergunta', {codQuestao: questionId})
+        function sendQuestion(eventId, questionId){
+            var promisse = $http.post(AppConfig.api.identifier + '/Eventos/LancarPergunta', {codEvento: eventId, codQuestao: questionId})
             .then(function(response){
                 return response.data;
             });
