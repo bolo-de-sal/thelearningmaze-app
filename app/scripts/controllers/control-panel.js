@@ -14,15 +14,14 @@ angular
     ControlPanelController.$inject = ['$routeParams', '$rootScope', '$q', '$uibModal', 'EventService', 'QuestionService', 'GroupService'];
 
     function ControlPanelController($routeParams, $rootScope, $q, $uibModal, EventService, QuestionService, GroupService) {
-    	$("body").removeClass("bodyLogin");
-        $(".header").show();
-
         var controlPanelCtrl = this;
         controlPanelCtrl.questions = {};
 
         $rootScope.dataLoading = true;
 
         var eventId = $routeParams.eventId;
+
+        $rootScope.selectedEvent = $routeParams.eventId;
 
         // All requests
         $q.all([

@@ -136,7 +136,7 @@
 		</div>	
 	</div> -->
 
-	<div class="controls groups-to-play">
+	<div class="controls groups-to-play" ng-show="projector.groups.length > 0">
 		<div ng-repeat="group in projector.groups" ng-click="projector.acertar(group.Grupo.codGrupo)">
 			<p>Acertar grupo {{group.Grupo.codGrupo}}</p>
 		</div>

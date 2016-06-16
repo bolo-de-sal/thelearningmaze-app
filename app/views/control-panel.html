@@ -23,7 +23,7 @@
               <span class="group-name" title="{{ groupInfo.Grupo.nmGrupo }}">{{ groupInfo.Grupo.nmGrupo }}</span>
             </div>
           </div>
-          <span class="time">1:20</span>
+          <timer countdown="80" max-time-unit="'minute'" interval="1000" class="time">{{mminutes}}:{{sseconds}}</timer>
         </div>
         <div class="col-md-12">
           <div class="row">
@@ -88,9 +88,9 @@
     <div class="col-md-12 card wrap-card-sound">
       <button class="sound active"><span class="sound-text">Som</span></button>
     </div>
-    <div class="col-md-12 card wrap-card-projector">
+    <a class="col-md-12 card wrap-card-projector" href="#/projector/{{selectedEvent}}" target="_blank">
       <button class="projector active"><span class="projector-text">Projetor</span></button>
-    </div>
+    </a>
     <div class="col-md-12 card wrap-card-groups">
       <h3 class="title">Grupos</h3>
       <!-- <button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button> -->

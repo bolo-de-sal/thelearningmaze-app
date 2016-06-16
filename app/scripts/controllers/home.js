@@ -18,10 +18,6 @@ angular
 
         $rootScope.dataLoading = true;
 
-        $("body").removeClass("bodyLogin");
-        $(".header").show();
-        $(".content").css("top", "50px");
-
         //Array para controle de páginas já carregadas
         var pageContentControl = [{ loaded: true }];
 
@@ -170,5 +166,32 @@ angular
         homeCtrl.setItemsPerPage = function(num) {
             homeCtrl.itemsPerPage = num;
             homeCtrl.currentPage = 1; //reset to first paghe
+        }
+
+        homeCtrl.openConnectionSignlR = function() {
+
+            $location.path("/lobby/" + homeCtrl.activeEvent.codEvento);
+            // Habilita CORS
+            jQuery.support.cors = true;
+
+            // Declara endereço do servidor
+            $.connection.hub.url = "http://tlm-api-dev.azurewebsites.net/signalr";
+
+            // chatHub é o nome do Hub definido no código do server
+            var evento = $.connection.eventoHub;
+
+            $.connection.hub.logging = true;
+
+            console.log("Antes do done de abrir conexão joinProf.");
+
+            $.connection.hub.start().done(function () {
+                console.log("Abriu conexão antes do joinProf.");
+                evento.server.joinEventoProfessor(homeCtrl.activeEvent.identificador);
+
+                console.log("Abriu conexão depois do joinProf.");
+            })
+            .then(function (response) {
+                console.log("then: ", response);
+            });
         }
     }

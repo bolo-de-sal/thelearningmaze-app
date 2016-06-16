@@ -17,8 +17,6 @@ angular.module('thelearningmaze')
 
         loginCtrl.login = login;
 
-        $("body").addClass("bodyLogin");
-
         function login() {
             
             // Exibe o loader
@@ -36,6 +34,8 @@ angular.module('thelearningmaze')
 
                 SessionService.setUser(user);
                 SessionService.setTokenInfo(tokenInfo);
+
+                $rootScope.userLoggedIn = user;
 
                 $location.path('/');
 

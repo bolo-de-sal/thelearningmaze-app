@@ -17,11 +17,6 @@ angular
 
         // console.log("--->LobbyController init");
 
-        $("body").removeClass("bodyLogin");
-        $(".header").show();
-        $(".content").css("top", "50px");
-        $("body").css("overflow-y", "auto");
-
         // var div = '<div class="col-md-4"><div class="card group"><p>P</p><p>POWERPUFF</p><p>Formação</p><p>Alunos: 4</p><div class="students"><div class="student"><img src="../images/pu.jpg" alt="Professor Utonio"><p>aluno1</p></div><div class="student"><img src="../images/pu.jpg" alt="Professor Utonio"><p>aluno2</p></div><div class="student"><img src="../images/pu.jpg" alt="Professor Utonio"><p>aluno3</p></div><div class="student"><img src="../images/pu.jpg" alt="Professor Utonio"><p>aluno4</p></div></div><p>Assunto</p></div></div>';
 
         // // var p1 = '<div class="col-md-4"><div class="card group"><p>P</p><p>Grupo ';
@@ -33,6 +28,7 @@ angular
         // }
 
         var eventId = $routeParams.eventId;
+        $rootScope.selectedEvent = $routeParams.eventId;
 
         $rootScope.dataLoading = true;
 
@@ -50,6 +46,22 @@ angular
         	console.log("Grupos do evento: " + eventId);
             console.log(response);
             $rootScope.dataLoading = false;
+        }
+
+        // Habilita CORS
+        jQuery.support.cors = true;
+
+        // Declara endereço do servidor
+        $.connection.hub.url = "http://tlm-api-dev.azurewebsites.net/signalr";
+
+        // chatHub é o nome do Hub definido no código do server
+        var evento = $.connection.eventoHub;
+        
+        $.connection.hub.logging = true;
+
+        evento.client.joinEvento = function (message) {
+            //$('#discussion').append('<li>' + message + ' entrou no evento!</li>');
+            alert('Alguém entrou no lobby. Mensagem SignalR: ' + message);
         }
 
     }

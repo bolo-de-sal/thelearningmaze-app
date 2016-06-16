@@ -23,12 +23,6 @@ angular
   ])
   .config(function ($routeProvider) {
     $routeProvider
-    //   .when('/', {
-    //     templateUrl: 'views/main.html',
-    //     controller: 'MainCtrl',
-    //     controllerAs: 'main'
-    //   })
-    //   .when('/home', {
       .when('/index', {
           templateUrl: 'index.html',
           controller: 'MainCtrl',
@@ -49,16 +43,6 @@ angular
           controller: 'LoginController',
           controllerAs: 'login'
       })
-      .when('/register', {
-          templateUrl: 'views/register.html',
-          controller: 'RegisterController',
-          controllerAs: 'register'
-      })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
-      })
       .when('/control-panel/:eventId', {
         templateUrl: 'views/control-panel.html',
         controller: 'ControlPanelController',
@@ -74,16 +58,21 @@ angular
         controller: 'ProjectorController',
         controllerAs: 'projector'
       })
+      .when('/student', {
+        templateUrl: 'views/student.html',
+        controller: 'StudentController',
+        controllerAs: 'student'
+      })
       .otherwise({
         redirectTo: '/404'
     });
   })
-  .run(function ($rootScope, $location, AppConfig, AuthenticationService, SessionService, AlertService) {
+  .run(function ($rootScope, $location, AppConfig, RestrictedPagesConfig, AuthenticationService, SessionService, AlertService) {
 
       angular.element(document).ready(function () {
         lightbox.option({
           'albumLabel': '%1 de %2'
-        })
+        });
       });
 
       $(".navbar-nav:first li").each(function(){
@@ -96,19 +85,16 @@ angular
       $rootScope.$on('$locationChangeStart', function (event, next, current) {
           AlertService.Clear();
 
-          // // redirect to login page if not logged in and trying to access a restricted page
-          var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
+          $rootScope.loginPage = $location.path() == '/login';
+          $rootScope.projectorPage = $location.path().split("/")[1] == 'projector';
 
-          var loggedIn = SessionService.getUser();
+          // redirect to login page if not logged in and trying to access a restricted page
+          var restrictedPage = $.inArray($location.path(), RestrictedPagesConfig.anonymousAccess) === -1;
 
-          if (restrictedPage && !loggedIn) {
+          if (restrictedPage && !$rootScope.userLoggedIn) {
             $location.path('/login');
-            $(".header").hide();
-            $("body").addClass("bodyLogin");
-          }else if(loggedIn && $location.path() === '/login'){
+          }else if($rootScope.userLoggedIn && $location.path() === '/login'){
             $location.path('/');
-            $(".header").show();
-            $("body").removeClass("bodyLogin");
           }
 
           // $location.path('/');
@@ -116,7 +102,7 @@ angular
       });
 
       // Global
-      $rootScope.user = SessionService.getUser();
+      $rootScope.userLoggedIn = SessionService.getUser();
       $rootScope.Logout = AuthenticationService.Logout;
       $rootScope.CloseAlert = AlertService.CloseAlert;
       $rootScope.imagesUrl = AppConfig.api.endpoint + AppConfig.api.identifier + '/Imagens';
