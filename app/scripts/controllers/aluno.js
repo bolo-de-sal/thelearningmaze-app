@@ -32,8 +32,7 @@ angular
         }
 
         // Declara endereço do servidor
-        //$.connection.hub.url = "http://tlm-api-dev.azurewebsites.net/signalr";
-        $.connection.hub.url = "http://localhost:50806/signalr";
+        $.connection.hub.url = "http://tlm-api-dev.azurewebsites.net/signalr";
 
         // chatHub é o nome do Hub definido no código do server
         var evento = $.connection.eventoHub;
