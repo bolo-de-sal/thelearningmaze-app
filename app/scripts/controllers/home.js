@@ -11,9 +11,9 @@ angular
     .module('thelearningmaze')
     .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['AuthenticationService', 'SessionService', 'EventService', '$rootScope', '$location', 'AlertService'];
+    HomeController.$inject = ['$q', 'AuthenticationService', 'SessionService', 'EventService', '$rootScope', '$location', 'AlertService'];
 
-    function HomeController(AuthenticationService, SessionService, EventService, $rootScope, $location, AlertService) {
+    function HomeController($q, AuthenticationService, SessionService, EventService, $rootScope, $location, AlertService) {
         var homeCtrl = this;
 
         $rootScope.dataLoading = true;
@@ -27,9 +27,21 @@ angular
         // EventService.closeEvent(); 
         // EventService.openEvent(); 
 
-        EventService.getEvents(0).then(getEventsSuccess, getEventsError);
+        // All requests
+        $q.all([
+            EventService.getEvents(0).then(getEventsSuccess, getEventsError),
+            EventService.getActiveEvent().then(getActiveEventSuccess, getActiveEventError)
+        ]).then(function(response){
+            console.log(response);
+            // controlPanelCtrl.event = response[0];
+            // controlPanelCtrl.questions.current = response[1];
+            // controlPanelCtrl.groupsInfo = response[2];
+        }).finally(function(){
+            // Close dataLoading after all requests are finished
+            $rootScope.dataLoading = false;
+        });
 
-        EventService.getActiveEvent().then(getActiveEventSuccess, getActiveEventError);
+        
 
         // Get Events
 
@@ -64,7 +76,7 @@ angular
                 // console.log("pageContentControl: ", pageContentControl);
             }
 
-            $rootScope.dataLoading = false;
+            // $rootScope.dataLoading = false;
         }
 
         function getEventsError(error){
@@ -85,7 +97,7 @@ angular
                 homeCtrl.disableButtons = false;
             }
 
-            $rootScope.dataLoading = false;
+            // $rootScope.dataLoading = false;
         }
 
         function getActiveEventError(error){
@@ -154,5 +166,32 @@ angular
         homeCtrl.setItemsPerPage = function(num) {
             homeCtrl.itemsPerPage = num;
             homeCtrl.currentPage = 1; //reset to first paghe
+        }
+
+        homeCtrl.openConnectionSignlR = function() {
+
+            $location.path("/lobby/" + homeCtrl.activeEvent.codEvento);
+            // Habilita CORS
+            jQuery.support.cors = true;
+
+            // Declara endereço do servidor
+            $.connection.hub.url = "http://tlm-api-dev.azurewebsites.net/signalr";
+
+            // chatHub é o nome do Hub definido no código do server
+            var evento = $.connection.eventoHub;
+
+            $.connection.hub.logging = true;
+
+            console.log("Antes do done de abrir conexão joinProf.");
+
+            $.connection.hub.start().done(function () {
+                console.log("Abriu conexão antes do joinProf.");
+                evento.server.joinEventoProfessor(homeCtrl.activeEvent.identificador);
+
+                console.log("Abriu conexão depois do joinProf.");
+            })
+            .then(function (response) {
+                console.log("then: ", response);
+            });
         }
     }

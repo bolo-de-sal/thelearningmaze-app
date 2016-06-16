@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="styles/home.css">
     <link rel="stylesheet" href="styles/control-panel.css">
     <link rel="stylesheet" href="styles/lobby.css">
+    <link rel="stylesheet" href="styles/projector.css">
+    <link rel="stylesheet" href="styles/under-construction.css">
     <link rel="stylesheet" href="styles/student.css">
     <!-- endbuild -->
   </head>
@@ -29,7 +31,7 @@
 
     <uib-alert class="global-alert" ng-repeat="alert in alerts" type="{{ alert.type }}" close="CloseAlert($index)">{{ alert.msg }}</uib-alert>
 
-    <div class="header" ng-show="userLoggedIn" ng-class="{show: userLoggedIn}">
+    <div class="header" ng-show="userLoggedIn && !projectorPage" ng-class="{show: userLoggedIn && !projectorPage}"> 
       <div class="navbar navbar-default" role="navigation">
         <div class="container">
           <div class="navbar-header">
@@ -41,7 +43,7 @@
               <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand" href="#/"><img src="../images/Logo.png" alt="Learning Maze"></a>
+            <a class="navbar-brand" href="#/"><img src="images/Logo.png" alt="Learning Maze"></a>
           </div>
 
           <div class="collapse navbar-collapse" id="js-navbar-collapse">
@@ -114,8 +116,11 @@
         <script src="scripts/controllers/login.js"></script>
         <script src="scripts/controllers/control-panel.js"></script>
         <script src="scripts/controllers/lobby.js"></script>
+        <script src="scripts/controllers/projector.js"></script>
+        <script src="scripts/controllers/under-construction.js"></script>
         <script src="scripts/controllers/student.js"></script>
 
+        
         <script src="scripts/services/authenticationService.js"></script>
         <script src="scripts/services/sessionService.js"></script>
         <script src="scripts/services/eventService.js"></script>

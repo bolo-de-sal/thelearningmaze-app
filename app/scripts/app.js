@@ -33,6 +33,11 @@ angular
           controller: 'HomeController',
           controllerAs: 'home'
       })
+      // .when('/', {
+      //     templateUrl: 'views/under-construction.html',
+      //     controller: 'UnderConstructionController',
+      //     controllerAs: 'underConstruction'
+      // })
       .when('/login', {
           templateUrl: 'views/login.html',
           controller: 'LoginController',
@@ -43,10 +48,15 @@ angular
         controller: 'ControlPanelController',
         controllerAs: 'controlPanel'
       })
-      .when('/lobby', {
+      .when('/lobby/:eventId', {
         templateUrl: 'views/lobby.html',
         controller: 'LobbyController',
         controllerAs: 'lobby'
+      })
+      .when('/projector/:eventId', {
+        templateUrl: 'views/projector.html',
+        controller: 'ProjectorController',
+        controllerAs: 'projector'
       })
       .when('/student', {
         templateUrl: 'views/student.html',
@@ -76,6 +86,7 @@ angular
           AlertService.Clear();
 
           $rootScope.loginPage = $location.path() == '/login';
+          $rootScope.projectorPage = $location.path().split("/")[1] == 'projector';
 
           // redirect to login page if not logged in and trying to access a restricted page
           var restrictedPage = $.inArray($location.path(), RestrictedPagesConfig.anonymousAccess) === -1;
@@ -90,6 +101,8 @@ angular
                 break;
             }
           }
+
+          // $location.path('/');
 
       });
 

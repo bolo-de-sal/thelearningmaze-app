@@ -1,0 +1,79 @@
+/*
+* IMPORT
+*/
+
+@import "util\/variables.scss";
+
+/*
+* END IMPORT
+*/
+
+.content{
+	/*height: 100%;*/
+
+	> div:nth-child(1){
+		height: 100%;
+		position: relative;
+	}
+}
+
+.under-container{
+	height: 100%;
+	width: 100%;
+	display: flex;
+	-ms-align-items: center;
+	align-items: center;
+
+	.under-construction{
+		margin: 0 auto;
+		text-align: center;
+
+		img{
+			height: 200px;
+			margin: 0 auto;
+		}
+
+		p{
+			font-size: 40px;
+			color: white;
+			margin-top: 50px;
+			margin-bottom: 200px;
+		}
+	}
+
+}
+
+.bds{
+	position: absolute;
+    bottom: -217px;
+    right: 0;
+    background: $lightblack;
+    height: 300px;
+    width: 300px;
+    border-radius: 45%;
+    text-align: center;
+    padding-top: 33px;
+    box-shadow: 2px 10px 18px 10px rgba(0, 0, 0, 0.6);
+
+	img{
+		width: 190px;
+	}
+}
+
+.veja{
+	position: absolute;
+    bottom: 20px;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+
+.veja:hover{
+	color: white;
+}
+
+.veja:focus{
+	color: white;
+	text-decoration: none;
+}

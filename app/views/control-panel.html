@@ -20,7 +20,7 @@
           <div class="groups-box">
             <div class="group-box-name" ng-repeat="groupInfo in controlPanel.groupsInfo" ng-class="{current: controlPanel.questions.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
               <span class="group-icon"></span>                                 
-              <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
+              <span class="group-name" title="{{ groupInfo.Grupo.nmGrupo }}">{{ groupInfo.Grupo.nmGrupo }}</span>
             </div>
           </div>
           <timer countdown="80" max-time-unit="'minute'" interval="1000" class="time">{{mminutes}}:{{sseconds}}</timer>
@@ -47,7 +47,7 @@
               <div class="group-box" ng-repeat="groupInfo in controlPanel.groupsInfo">
                 <div class="group-box-name">
                   <span class="group-icon"></span>
-                  <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
+                  <span class="group-name" title="{{ groupInfo.Grupo.nmGrupo }}">{{ groupInfo.Grupo.nmGrupo }}</span>
                   <div class="group-score">{{ groupInfo.Acertos }}pts.</div>
                 </div>
               </div>
@@ -88,9 +88,9 @@
     <div class="col-md-12 card wrap-card-sound">
       <button class="sound active"><span class="sound-text">Som</span></button>
     </div>
-    <div class="col-md-12 card wrap-card-projector">
+    <a class="col-md-12 card wrap-card-projector" href="#/projector/{{selectedEvent}}" target="_blank">
       <button class="projector active"><span class="projector-text">Projetor</span></button>
-    </div>
+    </a>
     <div class="col-md-12 card wrap-card-groups">
       <h3 class="title">Grupos</h3>
       <!-- <button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button> -->
@@ -99,7 +99,7 @@
           <uib-accordion-group ng-repeat="groupInfo in controlPanel.groupsInfo" template-url="group-template.html">
             <uib-accordion-heading>
               <span class="group-icon"></span>
-              <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
+              <span class="group-name" title="{{ groupInfo.Grupo.nmGrupo }}">{{ groupInfo.Grupo.nmGrupo }}</span>
               <i class="pull-right glyphicon" ng-class="{'glyphicon-plus': !controlPanel.groups[$index].open, 'glyphicon-minus': controlPanel.groups[$index].open}"></i>
             </uib-accordion-heading>
             <div class="group-member-box" ng-repeat="member in groupInfo.ParticipantesGrupo">

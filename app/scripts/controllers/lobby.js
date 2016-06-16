@@ -11,8 +11,8 @@ angular
     .module('thelearningmaze')
     .controller('LobbyController', LobbyController);
 
-    LobbyController.$inject = ['AuthenticationService', 'SessionService', '$location', '$rootScope', "EventService"];
-    function LobbyController(AuthenticationService, SessionService, $location, $rootScope, EventService) {
+    LobbyController.$inject = ['$routeParams', 'AuthenticationService', 'SessionService', '$location', '$rootScope', "EventService"];
+    function LobbyController($routeParams, AuthenticationService, SessionService, $location, $rootScope, EventService) {
     	var lobbyCtrl = this;
 
         // console.log("--->LobbyController init");
@@ -27,14 +27,15 @@ angular
         // 	// $('.groups').append(p1 + i + p2);
         // }
 
-        var codEvento = 1;
+        var eventId = $routeParams.eventId;
+        $rootScope.selectedEvent = $routeParams.eventId;
 
         $rootScope.dataLoading = true;
 
-        EventService.getEventGroups(codEvento).then(getEventGroupsSuccess, getEventGroupsFailure);
+        EventService.getEventGroups(eventId).then(getEventGroupsSuccess, getEventGroupsFailure);
 
         function getEventGroupsSuccess(response){
-        	console.log("Grupos do evento: " + codEvento);
+        	console.log("Grupos do evento: " + eventId);
             console.log(response);
 
             lobbyCtrl.groups = response;
@@ -42,9 +43,25 @@ angular
         }
 
         function getEventGroupsFailure(response){
-        	console.log("Grupos do evento: " + codEvento);
+        	console.log("Grupos do evento: " + eventId);
             console.log(response);
             $rootScope.dataLoading = false;
+        }
+
+        // Habilita CORS
+        jQuery.support.cors = true;
+
+        // Declara endereço do servidor
+        $.connection.hub.url = "http://tlm-api-dev.azurewebsites.net/signalr";
+
+        // chatHub é o nome do Hub definido no código do server
+        var evento = $.connection.eventoHub;
+        
+        $.connection.hub.logging = true;
+
+        evento.client.joinEvento = function (message) {
+            //$('#discussion').append('<li>' + message + ' entrou no evento!</li>');
+            alert('Alguém entrou no lobby. Mensagem SignalR: ' + message);
         }
 
     }

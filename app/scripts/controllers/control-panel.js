@@ -21,6 +21,8 @@ angular
 
         var eventId = $routeParams.eventId;
 
+        $rootScope.selectedEvent = $routeParams.eventId;
+
         // All requests
         $q.all([
 		   EventService.getEventById(eventId),

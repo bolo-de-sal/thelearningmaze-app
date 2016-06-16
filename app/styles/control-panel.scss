@@ -20,6 +20,10 @@
 				background: nth($group-colors, $i) url('../images/groups/icons/#{$i}.png') center center no-repeat;
 				background-size: 60%;
 			}
+
+			.group-name{
+				color: nth($group-colors, $i);
+			}
 		}
 	}
 	
@@ -104,6 +108,10 @@
 
 			.group-box-name{
 				cursor: pointer;
+
+				.group-name{
+					width: 134px;
+				}
 			}
 
 			.glyphicon{
