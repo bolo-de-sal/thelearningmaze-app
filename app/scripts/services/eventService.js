@@ -10,6 +10,7 @@ angular
         var events = {};
 
         events.getEventById = getEventById;
+        events.getEventByGroupIdAndMemberGroupId = getEventByGroupIdAndMemberGroupId;
         events.getEvents = getEvents;
         events.getActiveEvent = getActiveEvent;
         events.closeEvent = closeEvent;
@@ -21,6 +22,16 @@ angular
         function getEventById(eventId) {
 
             var promise = $http.get(AppConfig.api.identifier + '/Eventos/' + eventId)
+            .then(function(response){
+                return response.data;
+            });
+
+            return promise;
+        }
+
+        function getEventByGroupIdAndMemberGroupId(groupId, memberGroupId) {
+
+            var promise = $http.get(AppConfig.api.identifier + '/Eventos/' + groupId + '/' + memberGroupId)
             .then(function(response){
                 return response.data;
             });

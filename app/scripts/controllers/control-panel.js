@@ -34,7 +34,7 @@ angular
 			controlPanelCtrl.groupsQuestions = response[3];
 		}).finally(function(){
 			controlPanelCtrl.event.dataFormatada = new Date(controlPanelCtrl.event.data).getTime();
-			controlPanelCtrl.questions.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + controlPanelCtrl.questions.current.Questao.codImagem
+			controlPanelCtrl.questions.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + controlPanelCtrl.questions.current.Questao.codImagem;
 			controlPanelCtrl.maxQtdQuestions = 0;
 			angular.forEach(controlPanelCtrl.groupsQuestions, function(groupQuestion, key){
 				if(groupQuestion.Questoes.length > controlPanelCtrl.maxQtdQuestions){

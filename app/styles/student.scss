@@ -7,3 +7,65 @@
 /*
 * END IMPORT
 */
+
+#student{
+	.student{
+		padding: 0 0 20px 0;
+	}
+
+	#student-waiting-start-event{
+		display: none;
+		.logo{
+			width: 210px;
+			margin: 0 auto;
+		
+			img{
+				display: block;
+				max-width: 100%;
+			}
+		}
+
+		#waiting-start-event{
+			margin-top: 90px;
+			font-size: 32px;
+			color: $white;
+			text-align: center;
+		}
+	}
+
+	#student-event-started{
+		.logo{
+			position: absolute;
+			top: -40px;
+			left: 0;
+			width: 145px;
+			margin: 0 15px;
+		
+			img{
+				display: block;
+				max-width: 100%;
+			}
+		}
+
+		.wrap-card-question{
+			&:first-of-type{
+				margin: 100px 0 0 0;
+			}
+			&:last-of-type{
+				height: auto;
+				padding: 10px 15px;
+			}
+			margin: 25px 0 0 0;
+			
+			.ansawer-alternative{
+				height: 100px;
+				overflow: auto;
+			}
+
+			.btn-send-selected-question{
+				float: right;
+				margin-top: 20px;
+			}
+		}
+	}
+}

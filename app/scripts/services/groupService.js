@@ -12,12 +12,23 @@ angular
         groups.getGroupsByEventId = getGroupsByEventId;
         groups.getCurrentGroupInfo = getCurrentGroupInfo;
         groups.getGroupsQuestions = getGroupsQuestions;
+        groups.getGroupById = getGroupById;
 
         return groups;
 
         function getGroupsByEventId(eventId) {
 
             var promise = $http.get(AppConfig.api.identifier + '/Eventos/' + eventId + '/GruposCompleto')
+            .then(function(response){
+                return response.data;
+            });
+
+            return promise;
+        }
+
+        function getGroupById(groupId) {
+
+            var promise = $http.get(AppConfig.api.identifier + '/Grupos/' + groupId)
             .then(function(response){
                 return response.data;
             });
