@@ -4,8 +4,7 @@
 		<p id="waiting-start-event">Aguarde enquanto o jogo é iniciado</p>
 		<div class="groups-box">
 		  <div class="group-box-name" ng-repeat="groupInfo in student.groupsInfo" ng-class="{current: student.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
-		    <span class="group-icon"></span>                                 
-		    <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
+		    <span class="group-icon" title="{{ groupInfo.Grupo.nmGrupo }}"></span>
 		  </div>
 		</div>
 	</div>
@@ -20,13 +19,13 @@
 		        <a href="{{student.current.Questao.caminhoImagem}}" data-lightbox="{{student.current.Questao.codImagem}}" class="btn-question-picture" ng-click="$event.preventDefault()" ng-show="student.current.Questao.codImagem">
 		          <span class="glyphicon glyphicon-picture"></span>
 		        </a>
-		      </p>              
+		      </p>
 		    </div>
 		    <p class="theme">Assunto: {{ student.current.Questao.assunto.descricao }}</p>
 		  </div>
 		  <div class="groups-box">
 		    <div class="group-box-name" ng-repeat="groupInfo in student.groupsInfo" ng-class="{current: student.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
-		      <span class="group-icon"></span>                                 
+		      <span class="group-icon"></span>
 		      <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
 		    </div>
 		  </div>
