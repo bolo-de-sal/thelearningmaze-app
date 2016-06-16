@@ -689,8 +689,9 @@
 	.card{
 		margin: 0 auto;
 		width: 200px;
-		height: 200px;
+		height: 270px;
 		background: #154551;
+		padding-top: 30px;
 
 		img{
 			height: 120px;
@@ -701,6 +702,20 @@
 			padding-top: 10px;
 			font-size: 18px;
 			color: white;
+		}
+
+		.winner{
+			height: inherit;
+		    padding: 0px;
+		    background: none;
+		    border-top: none;
+		    text-align: left;
+		    overflow: hidden;
+		    margin-top: 30px;
+
+		    .group-name{
+		    	width: 110px;
+		    }
 		}
 	}
 }

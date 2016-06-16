@@ -186,18 +186,6 @@
 					</div>
 					<span class="time">1:20</span>
 				</div>
-				<!-- <div class="col-md-12">
-					<div class="row">
-						<div class="col-md-7 card wrap-card-graphic">
-							<button class="btn-graphic"><span class="btn-graphic-text">Gráficos</span></button>
-						</div>            
-						<div class="col-md-5 wrap-card-send-question">
-							<div class="col-md-12 card">
-								<button class="send-question" ng-click="controlPanel.questionsModal.open('lg')"><span class="send-question-text">Lançar Pergunta</span></button>
-							</div>
-						</div>
-					</div>
-				</div> -->
 			</div>
 		</div>
 
@@ -217,14 +205,19 @@
 		</div>
 	</div>
 
-	<div class="modal-winner">
+	<div class="modal-winner modal-hide">
 		<img src="images/estrela.png" alt="Estrela">
 
 		<div class="card">
 			<img src="images/trofeu.png" alt="Troféu">
 			<p>Campeão</p>
-			<div class="winner">
-				
+			<div class="winner wrap-card-question">
+				<div class="groups-box">
+					<div class="group-box-name" ng-repeat="group in projector.groups" ng-class="{current: projector.currentGroupInfo.Grupo.codGrupo == group.Grupo.codGrupo}">
+						<span class="group-icon"></span>                                 
+						<span class="group-name" title="{{group.Grupo.nmGrupo}}">{{ group.Grupo.nmGrupo }}</span>
+					</div>
+				</div>
 			</div>
 		</div>
 

@@ -20,7 +20,7 @@
           <div class="groups-box">
             <div class="group-box-name" ng-repeat="groupInfo in controlPanel.groupsInfo" ng-class="{current: controlPanel.questions.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
               <span class="group-icon"></span>                                 
-              <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
+              <span class="group-name" title="{{ groupInfo.Grupo.nmGrupo }}">{{ groupInfo.Grupo.nmGrupo }}</span>
             </div>
           </div>
           <span class="time">1:20</span>
@@ -99,7 +99,7 @@
           <uib-accordion-group ng-repeat="groupInfo in controlPanel.groupsInfo" template-url="group-template.html">
             <uib-accordion-heading>
               <span class="group-icon"></span>
-              <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
+              <span class="group-name" title="{{ groupInfo.Grupo.nmGrupo }}">{{ groupInfo.Grupo.nmGrupo }}</span>
               <i class="pull-right glyphicon" ng-class="{'glyphicon-plus': !controlPanel.groups[$index].open, 'glyphicon-minus': controlPanel.groups[$index].open}"></i>
             </uib-accordion-heading>
             <div class="group-member-box" ng-repeat="member in groupInfo.ParticipantesGrupo">
