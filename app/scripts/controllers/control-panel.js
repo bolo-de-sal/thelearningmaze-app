@@ -14,9 +14,6 @@ angular
     ControlPanelController.$inject = ['$routeParams', '$rootScope', '$q', '$uibModal', 'EventService', 'QuestionService', 'GroupService'];
 
     function ControlPanelController($routeParams, $rootScope, $q, $uibModal, EventService, QuestionService, GroupService) {
-    	$("body").removeClass("bodyLogin");
-        $(".header").show();
-
         var controlPanelCtrl = this;
         controlPanelCtrl.questions = {};
 

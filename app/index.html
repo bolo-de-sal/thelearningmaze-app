@@ -21,15 +21,16 @@
     <link rel="stylesheet" href="styles/home.css">
     <link rel="stylesheet" href="styles/control-panel.css">
     <link rel="stylesheet" href="styles/lobby.css">
+    <link rel="stylesheet" href="styles/student.css">
     <!-- endbuild -->
   </head>
 
-  <body class="bodyLogin">
+  <body ng-class="{bodyLogin: loginPage}">
 
     <uib-alert class="global-alert" ng-repeat="alert in alerts" type="{{ alert.type }}" close="CloseAlert($index)">{{ alert.msg }}</uib-alert>
 
     <!-- Add your site or application content here -->
-    <div class="header">
+    <div class="header" ng-show="userLoggedIn">
       <div class="navbar navbar-default" role="navigation">
         <div class="container">
           <div class="navbar-header">
@@ -48,18 +49,13 @@
 
             <ul class="nav navbar-nav">
               <li class="active"><a href="#/">Eventos</a></li>
-              <li><a ng-href="#/about">Evento Atual</a></li>
-              <li><a ng-href="#/control-panel">Painel de Controle</a></li>
-              <!-- <li><a ng-href="#/">Contact</a></li> -->
             </ul>
 
             <ul class="nav navbar-nav">
-              <li class="active"><p>{{user.nome}}</p></li>
-              <li><img src="../images/pu.jpg" alt="Professor Utonio"></li>
-              <li ng-click="Logout()"><img src="../images/logout.jpg" alt="Logout"></li>
-              <!-- <li><a ng-href="#/">Contact</a></li> -->
+              <li class="active"><p>{{userLoggedIn.nome}}</p></li>
+              <li><img src="../images/pu.jpg"></li>
+              <li ng-click="Logout()"><img src="../images/logout.jpg" alt="Sair" title="Sair"></li>
             </ul>
-
           </div>
         </div>
       </div>
@@ -109,6 +105,7 @@
         <script src="scripts/app.js"></script>
 
         <script src="scripts/values/appConfigValue.js"></script>
+        <script src="scripts/values/restrictedPagesValue.js"></script>
 
         <script src="scripts/interceptors/apiInterceptor.js"></script>
         <script src="scripts/interceptors/tokenInterceptor.js"></script>
@@ -120,6 +117,7 @@
         <script src="scripts/controllers/login.js"></script>
         <script src="scripts/controllers/control-panel.js"></script>
         <script src="scripts/controllers/lobby.js"></script>
+        <script src="scripts/controllers/student.js"></script>
 
         <script src="scripts/services/authenticationService.js"></script>
         <script src="scripts/services/sessionService.js"></script>

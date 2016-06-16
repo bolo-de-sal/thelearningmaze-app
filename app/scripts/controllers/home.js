@@ -18,9 +18,6 @@ angular
 
         $rootScope.dataLoading = true;
 
-        $("body").removeClass("bodyLogin");
-        $(".header").show();
-
         //Array para controle de páginas já carregadas
         var pageContentControl = [{ loaded: true }];
 

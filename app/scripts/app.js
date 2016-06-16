@@ -64,16 +64,21 @@ angular
         controller: 'LobbyController',
         controllerAs: 'lobby'
       })
+      .when('/student', {
+        templateUrl: 'views/student.html',
+        controller: 'StudentController',
+        controllerAs: 'student'
+      })
       .otherwise({
         redirectTo: '/404'
     });
   })
-  .run(function ($rootScope, $location, AppConfig, AuthenticationService, SessionService, AlertService) {
+  .run(function ($rootScope, $location, AppConfig, RestrictedPagesConfig, AuthenticationService, SessionService, AlertService) {
 
       angular.element(document).ready(function () {
         lightbox.option({
           'albumLabel': '%1 de %2'
-        })
+        });
       });
 
       $(".navbar-nav:first li").each(function(){
@@ -86,25 +91,21 @@ angular
       $rootScope.$on('$locationChangeStart', function (event, next, current) {
           AlertService.Clear();
 
+          $rootScope.loginPage = $location.path() == '/login';
+
           // redirect to login page if not logged in and trying to access a restricted page
-          var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
+          var restrictedPage = $.inArray($location.path(), RestrictedPagesConfig.anonymousAccess) === -1;
 
-          var loggedIn = SessionService.getUser();
-
-          if (restrictedPage && !loggedIn) {
+          if (restrictedPage && !$rootScope.userLoggedIn) {
             $location.path('/login');
-            $(".header").hide();
-            $("body").addClass("bodyLogin");
-          }else if(loggedIn && $location.path() === '/login'){
+          }else if($rootScope.userLoggedIn && $location.path() === '/login'){
             $location.path('/');
-            $(".header").show();
-            $("body").removeClass("bodyLogin");
           }
 
       });
 
       // Global
-      $rootScope.user = SessionService.getUser();
+      $rootScope.userLoggedIn = SessionService.getUser();
       $rootScope.Logout = AuthenticationService.Logout;
       $rootScope.CloseAlert = AlertService.CloseAlert;
       $rootScope.imagesUrl = AppConfig.api.endpoint + AppConfig.api.identifier + '/Imagens';

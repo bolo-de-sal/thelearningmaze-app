@@ -4,9 +4,9 @@ angular
     .module('thelearningmaze')
     .factory('AuthenticationService', AuthenticationService);
 
-    AuthenticationService.$inject = ['$http', '$location', 'AppConfig', 'SessionService'];
+    AuthenticationService.$inject = ['$rootScope', '$http', '$location', 'AppConfig', 'SessionService'];
 
-    function AuthenticationService($http, $location, AppConfig, SessionService) {
+    function AuthenticationService($rootScope, $http, $location, AppConfig, SessionService) {
         var authentication = {};
 
         authentication.Login = Login;
@@ -26,14 +26,10 @@ angular
         }
 
         function Logout(){
-          // $http.delete(AppConfig.api.identifier + '/professors/login')
-          //      .success(function (response) {
-          //          callback(response);
-          //      });
+          $rootScope.userLoggedIn = null;
           SessionService.removeUserData();
 
           $("body").addClass("bodyLogin");
-          $(".header").hide();
 
           $location.path('/login');
         }
