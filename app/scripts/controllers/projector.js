@@ -480,7 +480,8 @@ angular
 
         // Abre conexão com o servidor
         $.connection.hub.start().done(function () {
-                evento.server.joinEvento(25, 2);
+            evento.server.joinEvento(25, 2);
+            console.log("SignalR connection success");
         }).fail(function (reason) {
             console.log("SignalR connection failed: " + reason);
         });

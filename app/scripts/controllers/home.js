@@ -182,19 +182,11 @@ angular
 
             $.connection.hub.logging = true;
 
-            console.log("Antes do done de abrir conexão joinProf.");
-
             $.connection.hub.start().done(function () {
-                console.log("Abriu conexão antes do joinProf.");
                 evento.server.joinEventoProfessor(homeCtrl.activeEvent.identificador);
-
-                console.log("Abriu conexão depois do joinProf.");
             })
-            .then(function (response) {
-                console.log("then: ", response);
-            })
-            .fail(function (response) {
-                console.log("Fail: ", response);
+            .fail(function (reason) {
+                console.log("SignalR connection failed: " + reason);
             });
         }
     }

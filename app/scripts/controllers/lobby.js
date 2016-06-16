@@ -59,13 +59,22 @@ angular
         
         $.connection.hub.logging = true;
 
+        // Abre conexão com o servidor
+        $.connection.hub.start().done(function (message) {
+            console.log("Conexão com o SignalR aberta com sucesso!");
+        }).fail(function (reason) {
+            console.log("SignalR connection failed: " + reason);
+        });
+
         evento.client.joinEvento = function (message) {
             //$('#discussion').append('<li>' + message + ' entrou no evento!</li>');
-            alert('Alguém entrou no lobby. Mensagem SignalR: ' + message);
+            console.log("Chamou joinEvento", message);
+            alert('Alguém entrou no lobby. Mensagem SignalR: ');
         }
          $.connection.hub.start().done(function(){
          	console.log("Entrou no done lobby");
          });
 
 
+        
     }
