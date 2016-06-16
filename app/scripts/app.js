@@ -44,16 +44,6 @@ angular
           controller: 'LoginController',
           controllerAs: 'login'
       })
-      .when('/register', {
-          templateUrl: 'views/register.html',
-          controller: 'RegisterController',
-          controllerAs: 'register'
-      })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
-      })
       .when('/control-panel/:eventId', {
         templateUrl: 'views/control-panel.html',
         controller: 'ControlPanelController',
