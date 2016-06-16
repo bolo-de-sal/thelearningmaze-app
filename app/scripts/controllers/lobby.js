@@ -66,8 +66,9 @@ angular
             alert('Alguém entrou no lobby. Mensagem SignalR: ' + message);
         }
 
-        // Abre conexão com o servidor
+        // Abre conexão com o servidor SignalR
         $.connection.hub.start().done(function () {
-            evento.server.joinEventoProfessor("78953384");
+            console.log("Teste");
+            evento.server.joinEventoProfessor("JJJJJJ");
         });
     }
