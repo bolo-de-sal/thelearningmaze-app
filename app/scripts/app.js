@@ -93,8 +93,13 @@ angular
 
           if (restrictedPage && !$rootScope.userLoggedIn) {
             $location.path('/login');
-          }else if($rootScope.userLoggedIn && $location.path() === '/login'){
-            $location.path('/');
+          }else if($rootScope.userLoggedIn){
+            switch($location.path()){
+              case '/login':
+              case '/student':
+                $location.path('/');
+                break;
+            }
           }
 
           // $location.path('/');
