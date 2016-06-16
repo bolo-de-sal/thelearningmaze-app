@@ -63,5 +63,9 @@ angular
             //$('#discussion').append('<li>' + message + ' entrou no evento!</li>');
             alert('Alguém entrou no lobby. Mensagem SignalR: ' + message);
         }
+         $.connection.hub.start().done(function(){
+         	console.log("Entrou no done lobby");
+         });
+
 
     }

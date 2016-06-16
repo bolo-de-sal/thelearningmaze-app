@@ -192,6 +192,9 @@ angular
             })
             .then(function (response) {
                 console.log("then: ", response);
+            })
+            .fail(function (response) {
+                console.log("Fail: ", response);
             });
         }
     }
