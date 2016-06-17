@@ -117,6 +117,7 @@ angular
               });
 
               if($location.path() != '/student'){
+                alert('a');
                 $location.url('/student?codGrupo=' + $location.search().codGrupo + '&codParticipante=' + $location.search().codParticipante);
               }
             }

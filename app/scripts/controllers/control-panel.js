@@ -38,6 +38,9 @@ angular
 			if(!controlPanelCtrl.questions.current.Questao){
 				controlPanelCtrl.questions.current.Questao = {};
 				controlPanelCtrl.questions.current.Questao.textoQuestao = 'Sem pergunta no momento';
+				if(!controlPanelCtrl.questions.current.Questao.assunto){
+					controlPanelCtrl.questions.current.Questao.assunto = {};
+				}
 				controlPanelCtrl.questions.current.Questao.assunto.descricao = 'Sem assunto';
 			}
 			controlPanelCtrl.event.dataFormatada = new Date(controlPanelCtrl.event.data).getTime();

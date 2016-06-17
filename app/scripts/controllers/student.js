@@ -150,6 +150,9 @@ angular
 				if(!studentCtrl.current.Questao){
 					studentCtrl.current.Questao = {};
 					studentCtrl.current.Questao.textoQuestao = 'Sem pergunta no momento';
+					if(!controlPanelCtrl.questions.current.Questao.assunto){
+						controlPanelCtrl.questions.current.Questao.assunto = {};
+					}
 					studentCtrl.current.Questao.assunto.descricao = 'Sem assunto';
 				}
 				studentCtrl.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + studentCtrl.current.Questao.codImagem;
