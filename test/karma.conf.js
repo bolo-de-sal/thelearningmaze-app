@@ -36,6 +36,7 @@ module.exports = function(config) {
       'bower_components/humanize-duration/humanize-duration.js',
       'bower_components/angular-timer/dist/angular-timer.js',
       'bower_components/signalr/jquery.signalR.js',
+      'bower_components/angular-base64/angular-base64.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

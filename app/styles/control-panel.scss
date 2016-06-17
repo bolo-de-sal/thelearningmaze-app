@@ -26,7 +26,7 @@
 			}
 		}
 	}
-	
+
 	.time{
 		position: absolute;
 		right: 20px;
@@ -66,7 +66,8 @@
 
 .wrap-card-send-question{
 	margin-bottom: 15px;
-	padding: 0 0 0 15px;
+	//padding: 0 0 0 15px;
+	padding: 0;
 	background: transparent;
 
 	.card{
@@ -83,7 +84,7 @@
 		height: 250px;
 	  overflow: auto;
 	}
-	
+
 	.title{
 		margin-bottom: 20px;
 	}
@@ -94,10 +95,10 @@
 }
 
 .wrap-card-groups{
-	height: 248px;
+	height: 316px;
 
 	.groups-box{
-		height: 165px;
+		height: 233px;
 
 		.group-box{
 			margin-bottom: 10px;
@@ -127,7 +128,7 @@
 		font-weight: normal;
 	}
 
-	.questions-filters{	
+	.questions-filters{
 		.questions-filter{
 			float: left;
 			width: 50%;
@@ -141,7 +142,7 @@
 
 			label{
 				$dimension: 36px;
-				
+
 				display: inline-block;
 				width: $dimension;
 				height: $dimension;
@@ -164,7 +165,7 @@
 		}
 
 		.difficulty{
-			
+
 		}
 	}
 

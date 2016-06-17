@@ -13,7 +13,7 @@
         margin: 0 0 16px;
     }
 
-    .title-columns{        
+    .title-columns{
         background: $orange;
 
         p{
@@ -43,7 +43,7 @@
         height: 440px;
     }
 
-    .title-columns{        
+    .title-columns{
         background: $lightblue;
 
         p{
@@ -80,6 +80,10 @@
                 padding-top: 2px;
                 color: white;
                 cursor: pointer;
+
+                &:hover{
+                    text-decoration: none;
+                }
             }
 
             .green{

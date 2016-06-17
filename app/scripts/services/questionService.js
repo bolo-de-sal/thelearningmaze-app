@@ -44,4 +44,13 @@ angular
             return promisse;
         }
 
+        function sendAnsawer(eventId, questionType, alternative, isTrue, text, questionTimerFinished){
+            var promisse = $http.post(AppConfig.api.identifier + '/Eventos/ResponderPergunta', {codEvento: eventId, tipoQuestao: questionId, alternativa: alternative, verdadeiro: isTrue, texto: text, tempoExpirou: questionTimerFinished})
+            .then(function(response){
+                return response.data;
+            });
+
+            return promisse;
+        }
+
     }

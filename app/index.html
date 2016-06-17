@@ -30,7 +30,7 @@
 
     <uib-alert class="global-alert" ng-repeat="alert in alerts" type="{{ alert.type }}" close="CloseAlert($index)">{{ alert.msg }}</uib-alert>
 
-    <div class="header" ng-show="userLoggedIn && !projectorPage" ng-class="{show: userLoggedIn && !projectorPage}"> 
+    <div class="header" ng-show="userLoggedIn && !projectorPage" ng-class="{show: userLoggedIn && !projectorPage}">
       <div class="navbar navbar-default" role="navigation">
         <div class="container">
           <div class="navbar-header">
@@ -96,9 +96,10 @@
     <script src="bower_components/humanize-duration/humanize-duration.js"></script>
     <script src="bower_components/angular-timer/dist/angular-timer.js"></script>
     <script src="bower_components/signalr/jquery.signalR.js"></script>
+    <script src="bower_components/angular-base64/angular-base64.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
-    
+
     <script src="http://tlm-api-dev.azurewebsites.net/signalr/hubs"></script>
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -106,6 +107,7 @@
 
         <script src="scripts/values/appConfigValue.js"></script>
         <script src="scripts/values/restrictedPagesValue.js"></script>
+        <script src="scripts/values/QuestionDifficultyConfigValue.js"></script>
 
         <script src="scripts/interceptors/apiInterceptor.js"></script>
         <script src="scripts/interceptors/tokenInterceptor.js"></script>
@@ -118,7 +120,7 @@
         <script src="scripts/controllers/projector.js"></script>
         <script src="scripts/controllers/student.js"></script>
 
-        
+
         <script src="scripts/services/authenticationService.js"></script>
         <script src="scripts/services/sessionService.js"></script>
         <script src="scripts/services/eventService.js"></script>

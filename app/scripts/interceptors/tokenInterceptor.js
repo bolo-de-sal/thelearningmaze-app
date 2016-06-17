@@ -18,7 +18,7 @@ angular
 	        	if(token){
 
 	        		config.headers['Authorization'] = 'Token ' + token;
-	        	}				
+	        	}
 
 				return config;
 	        },
@@ -27,10 +27,10 @@ angular
 	            var data = response.data;
 
 	            // Token expirado
-	            if((data === 'Token expirado' || httpStatus === 419) && !$rootScope.recoveredToken){
+	            if((data == null || data === 'Token expirado' || httpStatus === 419) && !$rootScope.recoveredToken){
 	            	$rootScope.recoveredToken = true;
 	            	// Buscar novo token
-	            	console.log('##TOKEN.INTERCEPTOR.RESPONSEERROR## TOKEN EXPIROU');         	
+	            	console.log('##TOKEN.INTERCEPTOR.RESPONSEERROR## TOKEN EXPIROU');
 	                var $http = $injector.get('$http');
 	                var deferred = $q.defer();
 
@@ -41,7 +41,7 @@ angular
 	                        console.log('##TOKEN.INTERCEPTOR.SUCCESS## TOKEN ' + response.data.token);
 	                        $rootScope.recoveredToken = false;
             	    	}
-            	        
+
             	    }).then(deferred.resolve, deferred.reject);
 
             	    if(httpStatus === 419){
@@ -50,7 +50,7 @@ angular
 	            	    if(SessionService.getUser()){
 	            	    	$rootScope.userLoggedIn = null;
 		            	    SessionService.removeUserData();
-		            	    $location.path('/login');		            	    
+		            	    $location.path('/login');
 	            	    }
 
 	            	    return $q.reject(response);
@@ -62,7 +62,13 @@ angular
 	                    return $http(response.config);
 	                });
 	            }
-	            
+
+	            if(httpStatus === 401 && $rootScope.userLoggedIn){
+        	    	$rootScope.userLoggedIn = null;
+            	    SessionService.removeUserData();
+            	    $location.path('/login');
+	            }
+
 	            return $q.reject(response);
 	        }
 	    };
@@ -85,7 +91,7 @@ angular
 		    .error(function(){
 	            console.log('##TOKEN.INTERCEPTOR.ERROR##');
 	        });
-		}	
+		}
 
-		console.log('##TOKEN.INTERCEPTOR## TOKEN ' + token);    
+		console.log('##TOKEN.INTERCEPTOR## TOKEN ' + token);
 	}

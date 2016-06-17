@@ -11,11 +11,78 @@ angular
     .module('thelearningmaze')
     .controller('ControlPanelController', ControlPanelController);
 
-    ControlPanelController.$inject = ['$routeParams', '$rootScope', '$q', '$uibModal', 'EventService', 'QuestionService', 'GroupService'];
+    ControlPanelController.$inject = ['$routeParams', '$rootScope', '$q', '$uibModal', 'EventService', 'QuestionService', 'GroupService', 'QuestionDifficultyConfig'];
 
-    function ControlPanelController($routeParams, $rootScope, $q, $uibModal, EventService, QuestionService, GroupService) {
+    function ControlPanelController($routeParams, $rootScope, $q, $uibModal, EventService, QuestionService, GroupService, QuestionDifficultyConfig) {
         var controlPanelCtrl = this;
         controlPanelCtrl.questions = {};
+
+        controlPanelCtrl.countdown = 0;
+
+        $.connection.hub.start().done(function () {
+            $rootScope.evento.client.ativarTimer = function () {
+              console.log("## TIMER ATIVADO ##");
+
+              switch(controlPanelCtrl.current.Questao.dificuldade){
+              	case 'F':
+	              	controlPanelCtrl.countdown = QuestionDifficultyConfig.F;
+	             	break;
+	            case 'M':
+	             	controlPanelCtrl.countdown = QuestionDifficultyConfig.M;
+	             	break;
+	            default:
+	            	controlPanelCtrl.countdown = QuestionDifficultyConfig.D;
+	            	break;
+              }
+            }
+        })
+        .fail(function (reason) {
+            console.log("SignalR connection failed: " + reason);
+        });
+
+        $.connection.hub.start().done(function () {
+	        $rootScope.evento.client.responderPergunta = function (ok, isChampion, groupIdChampion, qtdQuestionsOk) {
+	          console.log("## PERGUNTA RESPONDIDA ##");
+              $rootScope.dataLoading = true;
+
+	          controlPanelCtrl.countdown = 0;
+
+              // All requests
+              $q.all([
+      		   EventService.getEventById(eventId),
+      		   GroupService.getCurrentGroupInfo(eventId),
+      		   GroupService.getGroupsByEventId(eventId),
+      		   GroupService.getGroupsQuestions(eventId)
+      		]).then(function(response){
+      			controlPanelCtrl.event = response[0];
+      			controlPanelCtrl.questions.current = response[1];
+      			controlPanelCtrl.groupsInfo = response[2];
+      			controlPanelCtrl.groupsQuestions = response[3];
+      		}).finally(function(){
+      			if(!controlPanelCtrl.questions.current.Questao){
+      				controlPanelCtrl.questions.current.Questao = {};
+      				controlPanelCtrl.questions.current.Questao.textoQuestao = 'Sem pergunta no momento';
+      				if(!controlPanelCtrl.questions.current.Questao.assunto){
+      					controlPanelCtrl.questions.current.Questao.assunto = {};
+      				}
+      				controlPanelCtrl.questions.current.Questao.assunto.descricao = 'Sem assunto';
+      			}
+      			controlPanelCtrl.event.dataFormatada = new Date(controlPanelCtrl.event.data).getTime();
+      			controlPanelCtrl.questions.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + controlPanelCtrl.questions.current.Questao.codImagem;
+      			controlPanelCtrl.maxQtdQuestions = 0;
+      			angular.forEach(controlPanelCtrl.groupsQuestions, function(groupQuestion, key){
+      				if(groupQuestion.Questoes.length > controlPanelCtrl.maxQtdQuestions){
+      					controlPanelCtrl.maxQtdQuestions = groupQuestion.Questoes.length;
+      				}
+      			});
+      			// Close dataLoading after all requests are finished
+      			$rootScope.dataLoading = false;
+      		});
+	        }
+	    })
+	    .fail(function (reason) {
+	        console.log("SignalR connection failed: " + reason);
+	    });
 
         $rootScope.dataLoading = true;
 
@@ -37,6 +104,11 @@ angular
 		}).finally(function(){
 			if(!controlPanelCtrl.questions.current.Questao){
 				controlPanelCtrl.questions.current.Questao = {};
+				controlPanelCtrl.questions.current.Questao.textoQuestao = 'Sem pergunta no momento';
+				if(!controlPanelCtrl.questions.current.Questao.assunto){
+					controlPanelCtrl.questions.current.Questao.assunto = {};
+				}
+				controlPanelCtrl.questions.current.Questao.assunto.descricao = 'Sem assunto';
 			}
 			controlPanelCtrl.event.dataFormatada = new Date(controlPanelCtrl.event.data).getTime();
 			controlPanelCtrl.questions.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + controlPanelCtrl.questions.current.Questao.codImagem;
@@ -71,7 +143,20 @@ angular
         }
 
         controlPanelCtrl.closeEvent = function(){
-        	EventService.closeEvent(eventId);
+        	$rootScope.dataLoading = true;
+        	EventService.closeEvent(eventId).then(function(){
+        		AlertService.Add('success', 'Evento encerrado com sucesso', true);
+				$.connection.hub.start().done(function () {
+		            $rootScope.evento.server.encerrarJogo(eventId);
+		        })
+		        .fail(function (reason) {
+		            console.log("SignalR connection failed: " + reason);
+		        });
+        	}, function(error){
+        		AlertService.Add('danger', error.data.message, true);
+        	}).finally(function(){
+        		$rootScope.dataLoading = false;
+        	});
         }
     }
 
@@ -89,7 +174,7 @@ angular
     QuestionsModalController.$inject = ['$routeParams', '$rootScope', '$q', '$uibModalInstance', 'AlertService', 'QuestionService', 'ThemeService', 'GroupService'];
 
     function QuestionsModalController($routeParams, $rootScope, $q, $uibModalInstance, AlertService, QuestionService, ThemeService, GroupService){
-    	var questionsModalCtrl = this;    	
+    	var questionsModalCtrl = this;
 
     	$rootScope.dataLoading = true;
 
@@ -106,15 +191,15 @@ angular
 			questionsModalCtrl.difficultiesItems = [
 				{
 					descricao: 'Fácil',
-					dificuldade: 'F'	
+					dificuldade: 'F'
 				},
 				{
 					descricao: 'Médio',
-					dificuldade: 'M'	
+					dificuldade: 'M'
 				},
 				{
 					descricao: 'Difícil',
-					dificuldade: 'D'	
+					dificuldade: 'D'
 				}
 			];
 		}).finally(function(){
@@ -128,7 +213,7 @@ angular
 
 			questionsModalCtrl.filtersLoaded = true;
 			$rootScope.dataLoading = false;
-		});		
+		});
 
 		questionsModalCtrl.difficultyIncludes = [];
 
@@ -142,7 +227,7 @@ angular
 		        }
 			}else{
 				AlertService.Add('danger', 'A questão e dificuldade do grupo atual deve estar sempre selecionada.', true);
-			}		
+			}
 		}
 
 		questionsModalCtrl.difficultyFilter = function(questionItem){
@@ -177,9 +262,9 @@ angular
 		        } else {
 		            questionsModalCtrl.themeIncludes.push(theme);
 		        }
-			}else{				
+			}else{
 				AlertService.Add('danger', 'A questão e dificuldade do grupo atual deve estar sempre selecionada.', true);
-			}			
+			}
 		}
 
 		questionsModalCtrl.themeFilter = function(questionItem){
@@ -210,7 +295,7 @@ angular
 			if(questionsEnabled.length > 0){
 				$rootScope.dataLoading = true;
 
-				if(!selectedQuestionId){				
+				if(!selectedQuestionId){
 					var random = Math.floor((Math.random() * questionsEnabled.length));
 					var questionRandom = questionsEnabled.eq(random);
 					var questionIdRandom = questionRandom.val();
@@ -225,6 +310,12 @@ angular
 
 				QuestionService.sendQuestion(eventId, selectedQuestionId).then(function(response){
 					AlertService.Add('success', 'Pergunta lançada com sucesso.');
+					$.connection.hub.start().done(function () {
+			            $rootScope.evento.server.lancarPergunta(eventId);
+			        })
+			        .fail(function (reason) {
+			            console.log("SignalR connection failed: " + reason);
+			        });
 				}, function(error){
 					AlertService.Add('danger', 'Ops! Não foi possível lançar a questão: ' + error.data.message + '.');
 				}).finally(function(){
@@ -236,7 +327,7 @@ angular
 
 					$rootScope.dataLoading = false;
 					questionsModalCtrl.close();
-				});				
+				});
 			}else{
 				AlertService.Add('danger', 'Nenhuma questão disponível para o assunto e nível do grupo atual.', true);
 			}

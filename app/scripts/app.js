@@ -19,7 +19,8 @@ angular
     'ngTouch',
     'ngStorage',
     'ui.bootstrap',
-    'timer'
+    'timer',
+    'base64'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -60,7 +61,7 @@ angular
       })
       .otherwise({
         redirectTo: '/404'
-    });
+      });
   })
   .run(function ($rootScope, $location, AppConfig, RestrictedPagesConfig, AuthenticationService, SessionService, AlertService, EventService) {
 
@@ -87,7 +88,7 @@ angular
 
       // // chatHub é o nome do Hub definido no código do server
       $rootScope.evento = $.connection.eventoHub;
-      
+
       $.connection.hub.logging = true;
 
       /*========End Configs signalR=========*/
@@ -96,7 +97,7 @@ angular
           AlertService.Clear();
 
           if($rootScope.sessionTimeout){
-            AlertService.Add('warning', 'Sua sessão expirou');
+            AlertService.Add('warning', 'Sua sessão expirou', true);
             $rootScope.sessionTimeout = false;
           }
 
@@ -108,7 +109,9 @@ angular
           if (restrictedPage && !$rootScope.userLoggedIn) {
             $location.path('/login');
           }else if(!restrictedPage){
-            if($location.search().codGrupo && $location.search().codParticipante){
+            if($rootScope.userLoggedIn){
+              $location.path('/');
+            }else if($location.search().codGrupo && $location.search().codParticipante){
               $.connection.hub.start().done(function (response) {
                   $rootScope.evento.server.joinEvento(25, 2);
                   console.log("SignalR connection success", response);
