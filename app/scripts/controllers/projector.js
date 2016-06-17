@@ -301,7 +301,7 @@ angular
         $q.all([
             EventService.getEventGroups(eventId).then(getEventGroupsSuccess, getEventGroupsFailure),
             EventService.getEventThemes(eventId).then(getEventSubjectsSuccess, getEventSubjectsFailure),
-            EventService.getEventCurrentGroupInfo(eventId).then(getEventCurrentGroupInfoSuccess, getEventCurrentGroupInfoFailure)            
+            EventService.getEventCurrentGroupInfo(eventId).then(getEventCurrentGroupInfoSuccess, getEventCurrentGroupInfoFailure)
         ]).then(function(response){
             console.log(response);
         }).finally(function(){
@@ -467,45 +467,67 @@ angular
             });
         }
 
+        function adjustHits(codGrupo, hits){
+            angular.forEach(projectorCtrl.groups, function(group, key){
+                if(group.Grupo.codGrupo == codGrupo){
+                    group.Acertos = hits;
+                }
+            });
+        }
+
+        function callbackOnQuestionResponse(result){
+
+            $rootScope.dataLoading = true;
+
+            EventService.getEventCurrentGroupInfo(eventId).then(function(response){
+
+                $rootScope.dataLoading = true;
+
+                var currentGroup = response;
+                
+                var codGrupo = projectorCtrl.currentGroupInfo.Grupo.codGrupo;
+                var codAssunto = projectorCtrl.currentGroupInfo.Grupo.codAssunto;
+
+                if(result.acertou){
+                    adjustHits(codGrupo, result.acertos);
+                    $('.modal-question.hit').toggleClass('modal-show', 'modal-hide');
+                }
+                else{
+                    $('.modal-question.error').toggleClass('modal-show', 'modal.hide');
+                }
+
+                $timeout(function(){
+                    $('.modal-question').removeClass('modal-show').addClass('modal-hide');
+                }, 3000);
+
+                // var oldPosition = projectorCtrl.boardMap[codAssunto][result.acertos].pos;
+
+                positionGroupOnHit(codGrupo);
+
+                projectorCtrl.currentGroupInfo = currentGroup;
+
+                focusCurrentElement();
+            });
+        }
+
         // evento.client.joinEvento = function (message) {
         //     console.log("Chamou joinEvento", message);
         //     alert('Alguém entrou no lobby. Mensagem SignalR: ');
         // }
 
+        $rootScope.evento.client.responderPergunta = function(response){
+            console.log("Chamou joinEvento", message);
+            alert('Chamou o responder pergunta');
+
+            callbackOnQuestionResponse(response);
+        }
+
         // Abre conexão com o servidor
         $.connection.hub.start().done(function (response) {
-            $rootScope.evento.server.joinEvento(25, 2);
+            // $rootScope.evento.server.joinEvento(25, 2);
             console.log("SignalR connection success", response);
         }).fail(function (reason) {
             console.log("SignalR connection failed: " + reason);
         });
-
-        // $(document).ready(function () {
-        //     var query = window.location.search;
-        //     var toRemove = '?id=';
-        //     var gorge = query.replace(toRemove, '');
-        //     // Proxy created on the fly
-        //     var hub = $.connection.chatHub;
-        //     $.connection.hub.qs = "Id=" + gorge;
-        //     // Start the connection
-        //     $.connection.hub.start(function () {
-        //         //chat.server.getAllOnlineStatus();
-        //     });
-        // });
-
-        // $(document).ready(function () {
-        //     var query = window.location.search;
-        //     var toRemove = '?id=';
-        //     var gorge = query.replace(toRemove, '');
-        //     // Proxy created on the fly
-        //     var hub = $.connection.chatHub2;
-        //     $.connection.hub.qs = "Id=" + gorge;
-
-        //     hub.client.foo = function() {};
-        //     // Start the connection
-        //     $.connection.hub.start(function () {
-        //         //chat.server.getAllOnlineStatus();
-        //     });
-        // });
 
     }

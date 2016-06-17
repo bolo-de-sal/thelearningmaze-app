@@ -18,7 +18,7 @@
 				<p>{{home.activeEvent.inicio}}</p>
 				<p>{{home.activeEvent.codStatus}}</p>
 				<div class="btns">
-					<a ng-click="home.openConnectionSignlR()" class="list-button green enabled" ng-if="home.activeEvent.codStatus == 'ABERTO'">Iniciar</a>
+					<a href="#/lobby/{{home.activeEvent.codEvento}}" ng-click="home.openConnectionSignlR()" class="list-button green enabled" ng-if="home.activeEvent.codStatus == 'ABERTO'">Iniciar</a>
 					<a href="#/control-panel/{{home.activeEvent.codEvento}}" class="list-button green enabled" ng-if="home.activeEvent.codStatus == 'EXECUTANDO'">Ver</a>
 				</div>
 			</div>

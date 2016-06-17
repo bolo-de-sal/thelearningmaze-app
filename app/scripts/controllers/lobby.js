@@ -32,12 +32,24 @@ angular
 
         function getEventGroupsFailure(response){
             $rootScope.dataLoading = false;
-        }        
-
-        $rootScope.evento.client.joinEvento = function (message) {
-            console.log("Chamou joinEvento", message);
-            alert('Alguém entrou no lobby. Mensagem SignalR: ');
         }
+
+        lobbyCtrl.initEvent = function(eventId){
+        	$rootScope.dataLoading = true;
+
+        	EventService.initEvent(eventId).then(function(response){
+        		console.log("Response iniciar evento: ", response);
+
+        		$rootScope.dataLoading = false;
+
+        		$location.path('control-panel/' + eventId);
+        	});
+        }
+
+        // $rootScope.evento.client.joinEvento = function (message) {
+        //     console.log("Chamou joinEvento", message);
+        //     alert('Alguém entrou no lobby. Mensagem SignalR: ');
+        // }
 
   //       evento.on("client.joinEvento", function(message){
 		// 	console.log("Chamou joinEvento", message);

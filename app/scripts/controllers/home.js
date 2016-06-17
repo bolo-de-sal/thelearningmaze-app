@@ -167,24 +167,25 @@ angular
             homeCtrl.itemsPerPage = num;
             homeCtrl.currentPage = 1; //reset to first paghe
         }
+        
+        // $rootScope.evento.client.joinEvento = function (message) {
+        //     console.log("Chamou joinEvento", message);
+        //     alert('Alguém entrou no lobby. Mensagem SignalR: ');
+        // }
 
-        homeCtrl.openConnectionSignlR = function() {
+        // homeCtrl.openConnectionSignlR = function() {
 
-            // $location.path("/lobby/" + homeCtrl.activeEvent.codEvento);
+        //     // $location.path("/lobby/" + homeCtrl.activeEvent.codEvento);
 
-            $rootScope.evento.client.joinEvento = function (message) {
-                console.log("Chamou joinEvento", message);
-                alert('Alguém entrou no lobby. Mensagem SignalR: ');
-            }
 
-            // $.connection.hub.start().done(function () {
-            //     // evento.server.joinEventoProfessor(homeCtrl.activeEvent.identificador);
-            //     $rootScope.evento.server.joinEventoProfessor("10");
-            // })
-            // .fail(function (reason) {
-            //     console.log("SignalR connection failed: " + reason);
-            // });
-        }
+        //     // $.connection.hub.start().done(function () {
+        //     //     // evento.server.joinEventoProfessor(homeCtrl.activeEvent.identificador);
+        //     //     $rootScope.evento.server.joinEventoProfessor("10");
+        //     // })
+        //     // .fail(function (reason) {
+        //     //     console.log("SignalR connection failed: " + reason);
+        //     // });
+        // }
 
-        homeCtrl.openConnectionSignlR();
+        // homeCtrl.openConnectionSignlR();
     }

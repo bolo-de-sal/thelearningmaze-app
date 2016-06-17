@@ -14,7 +14,7 @@ angular
         events.getEvents = getEvents;
         events.getActiveEvent = getActiveEvent;
         events.closeEvent = closeEvent;
-        events.openEvent = openEvent;
+        events.initEvent = initEvent;
         events.getEventGroups = getEventGroups;
         events.getEventThemes = getEventThemes;
         events.getEventCurrentGroupInfo = getEventCurrentGroupInfo;
@@ -61,12 +61,14 @@ angular
             return promise;
         }
 
-        function openEvent(eventId){
+        function initEvent(eventId){
             var promise = $http.post(AppConfig.api.identifier + '/Eventos/Iniciar', {'codEvento': eventId } )
             .then(function (response) {
                 return response.data;
               // callback(response);
             });
+
+            return promise;
         }
 
         function closeEvent(eventId) {

@@ -128,26 +128,26 @@ angular
                 break;
 
               default:
-                // EventService.getActiveEvent().then(function(response){
-                //   var codEvento = response.codEvento;
+                EventService.getActiveEvent().then(function(response){
+                  var codEvento = response.codEvento;
 
-                //   $.connection.hub.start().done(function () {
-                //       // evento.server.joinEventoProfessor(homeCtrl.activeEvent.identificador);
-                //       $rootScope.evento.server.joinEventoProfessor("10");
-                //   })
-                //   .fail(function (reason) {
-                //       console.log("SignalR connection failed: " + reason);
-                //   });
-                // }, function(response){
-                //   //Error
-                // });
-
-                $.connection.hub.start().done(function (response) {
-                    $rootScope.evento.server.joinEvento(25, 2);
-                    console.log("SignalR connection success", response);
-                }).fail(function (reason) {
-                    console.log("SignalR connection failed: " + reason);
+                  $.connection.hub.start().done(function () {
+                      // evento.server.joinEventoProfessor(homeCtrl.activeEvent.identificador);
+                      $rootScope.evento.server.joinEventoProfessor("10");
+                  })
+                  .fail(function (reason) {
+                      console.log("SignalR connection failed: " + reason);
+                  });
+                }, function(response){
+                  //Error
                 });
+
+                // $.connection.hub.start().done(function (response) {
+                //     $rootScope.evento.server.joinEvento(25, 2);
+                //     console.log("SignalR connection success", response);
+                // }).fail(function (reason) {
+                //     console.log("SignalR connection failed: " + reason);
+                // });
 
 
             }
@@ -162,4 +162,9 @@ angular
       $rootScope.Logout = AuthenticationService.Logout;
       $rootScope.CloseAlert = AlertService.CloseAlert;
       $rootScope.imagesUrl = AppConfig.api.endpoint + AppConfig.api.identifier + '/Imagens';
+
+      $rootScope.evento.client.joinEvento = function (message) {
+            console.log("Chamou joinEvento", message);
+            alert('Alguém entrou no lobby. Mensagem SignalR: ');
+        }
   });
