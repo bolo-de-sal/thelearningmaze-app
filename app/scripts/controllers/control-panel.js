@@ -46,7 +46,6 @@ angular
 					controlPanelCtrl.maxQtdQuestions = groupQuestion.Questoes.length;
 				}
 			});
-			console.log('a');
 			// Close dataLoading after all requests are finished
 			$rootScope.dataLoading = false;
 		});
@@ -227,7 +226,6 @@ angular
 				QuestionService.sendQuestion(eventId, selectedQuestionId).then(function(response){
 					AlertService.Add('success', 'Pergunta lançada com sucesso.');
 				}, function(error){
-					console.log(error);
 					AlertService.Add('danger', 'Ops! Não foi possível lançar a questão: ' + error.data.message + '.');
 				}).finally(function(){
 					angular.forEach(questionsModalCtrl.questionsItems, function(value, key){
