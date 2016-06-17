@@ -40,7 +40,9 @@ body {
 button{
   border: 0;
   padding: 0;
-  outline-color: $lightblue;
+  &.btn:focus, &.btn:active, &.btn:active:focus{
+    outline: none;
+  }
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -655,16 +657,19 @@ button{
 
   .content-question-theme{
     height: 100px;
+
+    .content-question,
+    .content-ansawer{
+      &::-webkit-scrollbar{
+        width: 5px;
+        height: 5px;
+      }
+    }
     
     .content-question{
       height: 70px;
       overflow: auto;
       padding-right: 10px;
-      
-      &::-webkit-scrollbar{
-        width: 5px;
-        height: 5px;
-      }
     }
   }
 
@@ -726,6 +731,16 @@ button{
     border-radius: 50%;
     text-align: center;
     color: $white;
+  }
+
+  .ansawer-plain-text{
+    .plain-text{
+      width: 100%;
+      padding: 10px;
+      border: 1px solid $lightgray;
+      outline: none;
+      resize: vertical;
+    }
   }
 }
 
@@ -848,7 +863,7 @@ button{
 .btn-send-selected-question{
   border-color: $orange;
   background-color: $orange;
-  &:hover, &:active, &:active:hover, &:focus, &:visited, &[disabled]:hover{
+  &:hover, &:active, &:active:hover, &:focus, &:active:focus, &:visited, &[disabled]:hover{
     border-color: $orange;
     background-color: darken($orange, 12%); 
   }

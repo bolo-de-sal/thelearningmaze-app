@@ -58,6 +58,17 @@ angular
         var evento = $.connection.eventoHub;
         
         $.connection.hub.logging = true;
+        
+        evento.client.joinEvento = function (message) {
+            //$('#discussion').append('<li>' + message + ' entrou no evento!</li>');
+            console.log("Chamou joinEvento", message);
+            alert('Alguém entrou no lobby. Mensagem SignalR: ');
+        }
+
+  //       evento.on("client.joinEvento", function(message){
+		// 	console.log("Chamou joinEvento", message);
+  //           alert('Alguém entrou no lobby. Mensagem SignalR: ');
+		// });
 
         // Abre conexão com o servidor
         $.connection.hub.start().done(function (message) {
@@ -66,15 +77,14 @@ angular
             console.log("SignalR connection failed: " + reason);
         });
 
-        evento.client.joinEvento = function (message) {
-            //$('#discussion').append('<li>' + message + ' entrou no evento!</li>');
-            console.log("Chamou joinEvento", message);
-            alert('Alguém entrou no lobby. Mensagem SignalR: ');
-        }
-         $.connection.hub.start().done(function(){
-         	console.log("Entrou no done lobby");
-         });
+        //  $.connection.hub.start().done(function(){
+        //  	console.log("Entrou no done lobby");
+        //  });
 
 
+		// evento.client.on("joinEvento", function(message){
+		// 	console.log("Chamou joinEvento", message);
+  //           alert('Alguém entrou no lobby. Mensagem SignalR: ');
+		// });
         
     }
