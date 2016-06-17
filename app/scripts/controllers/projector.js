@@ -439,7 +439,11 @@ angular
         }
 
         function focusCurrentElement(){
-            var codCurrentGroup = projectorCtrl.currentGroupInfo.Grupo.codGrupo;
+            var codCurrentGroup = null;
+
+            if(projectorCtrl.currentGroup != undefined){
+                codCurrentGroup = projectorCtrl.currentGroupInfo.Grupo.codGrupo;
+            }
 
             angular.forEach(projectorCtrl.groups, function(group, key){
                 if(group.Grupo.codGrupo == codCurrentGroup){
@@ -479,6 +483,9 @@ angular
 
             $rootScope.dataLoading = true;
 
+            $(".question-content").removeClass("question-open");
+            $(".question-content").addClass("question-close"); 
+
             EventService.getEventCurrentGroupInfo(eventId).then(function(response){
 
                 $rootScope.dataLoading = true;
@@ -515,9 +522,17 @@ angular
         //     alert('Alguém entrou no lobby. Mensagem SignalR: ');
         // }
 
+        $rootScope.evento.client.lancarPergunta = function(response){
+            console.log("Chamou lancarPergunta", message);
+            alert('Chamou o lancarPergunta');
+            
+            $(".question-content").removeClass("question-close");
+            $(".question-content").addClass("question-open");
+        }
+
         $rootScope.evento.client.responderPergunta = function(response){
-            console.log("Chamou joinEvento", message);
-            alert('Chamou o responder pergunta');
+            console.log("Chamou responderPergunta", message);
+            alert('Chamou o responderPergunta');
 
             callbackOnQuestionResponse(response);
         }
