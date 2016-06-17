@@ -87,7 +87,7 @@ angular
 
       // // chatHub é o nome do Hub definido no código do server
       $rootScope.evento = $.connection.eventoHub;
-      
+
       $.connection.hub.logging = true;
 
       /*========End Configs signalR=========*/
@@ -108,7 +108,9 @@ angular
           if (restrictedPage && !$rootScope.userLoggedIn) {
             $location.path('/login');
           }else if(!restrictedPage){
-            if($location.search().codGrupo && $location.search().codParticipante){
+            if($rootScope.userLoggedIn){
+              $location.path('/');
+            }else if($location.search().codGrupo && $location.search().codParticipante){
               $.connection.hub.start().done(function (response) {
                   $rootScope.evento.server.joinEvento(25, 2);
                   console.log("SignalR connection success", response);
