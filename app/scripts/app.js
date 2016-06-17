@@ -33,11 +33,6 @@ angular
           controller: 'HomeController',
           controllerAs: 'home'
       })
-      // .when('/', {
-      //     templateUrl: 'views/under-construction.html',
-      //     controller: 'UnderConstructionController',
-      //     controllerAs: 'underConstruction'
-      // })
       .when('/login', {
           templateUrl: 'views/login.html',
           controller: 'LoginController',
@@ -84,6 +79,11 @@ angular
 
       $rootScope.$on('$locationChangeStart', function (event, next, current) {
           AlertService.Clear();
+
+          if($rootScope.sessionTimeout){
+            AlertService.Add('warning', 'Sua sessão expirou');
+            $rootScope.sessionTimeout = false;
+          }
 
           $rootScope.loginPage = $location.path() == '/login';
           $rootScope.projectorPage = $location.path().split("/")[1] == 'projector';
