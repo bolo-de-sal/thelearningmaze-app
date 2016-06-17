@@ -17,6 +17,15 @@
 		  </div>
 		</div>
 	</div>
+	<div id="student-waiting-close-event" class="col-xs-12 col-sm-12 col-md-12 student" ng-if="student.event.codStatus == 'F' && student.closeEvent">
+		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h1>
+		<p id="waiting-close-event" ng-if="student.closeEvent">O professor encerrou o jogo</p>
+		<div class="groups-box">
+		  <div class="group-box-name" ng-repeat="groupInfo in student.groupsInfo" ng-class="{current: student.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
+		    <span class="group-icon" title="{{ groupInfo.Grupo.nmGrupo }}"></span>
+		  </div>
+		</div>
+	</div>
 	<div id="student-waiting-champion-event" class="col-xs-12 col-sm-12 col-md-12 student" ng-if="student.event.codStatus == 'F' && student.hasChampion">
 		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h1>
 		<p id="waiting-question-event" ng-if="student.gameStarted">CAMPEÃO</p>

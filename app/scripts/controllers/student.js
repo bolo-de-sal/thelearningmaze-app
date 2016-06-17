@@ -104,6 +104,21 @@ angular
 			        console.log("SignalR connection failed: " + reason);
 			    });
 
+			    $.connection.hub.start().done(function () {
+			        $rootScope.evento.client.encerrarJogo = function () {
+			          console.log("## JOGO ENCERRADO ##");
+			          updateStudentInfo(function(){
+			        	  studentCtrl.receivedQuestion = false;
+			        	  studentCtrl.questionAnswered = false;
+			        	  studentCtrl.hasChampion = false;
+			        	  studentCtrl.closeEvent = true;
+			          });
+			        }
+			    })
+			    .fail(function (reason) {
+			        console.log("SignalR connection failed: " + reason);
+			    });
+
 			});
 		});
 

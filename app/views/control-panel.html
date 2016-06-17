@@ -13,13 +13,13 @@
                 <a href="{{controlPanel.questions.current.Questao.caminhoImagem}}" data-lightbox="{{controlPanel.questions.current.Questao.codImagem}}" class="btn-question-picture" ng-click="$event.preventDefault()" ng-show="controlPanel.questions.current.Questao.codImagem">
                   <span class="glyphicon glyphicon-picture"></span>
                 </a>
-              </p>              
+              </p>
             </div>
             <p class="theme">Assunto: {{ controlPanel.questions.current.Questao.assunto.descricao }}</p>
           </div>
           <div class="groups-box">
             <div class="group-box-name" ng-repeat="groupInfo in controlPanel.groupsInfo" ng-class="{current: controlPanel.questions.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
-              <span class="group-icon"></span>                                 
+              <span class="group-icon"></span>
               <span class="group-name" title="{{ groupInfo.Grupo.nmGrupo }}">{{ groupInfo.Grupo.nmGrupo }}</span>
             </div>
           </div>
@@ -29,7 +29,7 @@
           <div class="row">
             <div class="col-md-7 card wrap-card-graphic">
               <button class="btn-graphic"><span class="btn-graphic-text">Gráficos</span></button>
-            </div>            
+            </div>
             <div class="col-md-5 wrap-card-send-question">
               <div class="col-md-12 card">
                 <button class="send-question" ng-click="controlPanel.questionsModal.open('lg')"><span class="send-question-text">Lançar Pergunta</span></button>
@@ -37,7 +37,7 @@
             </div>
           </div>
         </div>
-      </div>              
+      </div>
       <div class="col-md-4">
         <div class="row">
           <div class="col-md-12 card wrap-card-score">
@@ -113,7 +113,7 @@
       </div>
     </div>
     <div class="col-md-12 card wrap-card-close-event">
-      <button class="close-event" ng-click="controlPanel.closeEvent()">Encerrar Evento</button>
+      <button class="close-event" ng-if="controlPane..event.codStatus != 'F'" ng-click="controlPanel.closeEvent()">Encerrar Evento</button>
     </div>
   </div>
 </div>
@@ -175,7 +175,7 @@
               </td>
             </tr>
           </tbody>
-        </table>  
+        </table>
       </div>
     </form>
   </div>

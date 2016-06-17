@@ -76,7 +76,20 @@ angular
         }
 
         controlPanelCtrl.closeEvent = function(){
-        	EventService.closeEvent(eventId);
+        	$rootScope.dataLoading = true;
+        	EventService.closeEvent(eventId).then(function(){
+        		AlertService.Add('success', 'Evento encerrado com sucesso', true);
+				$.connection.hub.start().done(function () {
+		            $rootScope.evento.server.encerrarJogo();
+		        })
+		        .fail(function (reason) {
+		            console.log("SignalR connection failed: " + reason);
+		        });
+        	}, function(error){
+        		AlertService.Add('danger', error.data.message, true);
+        	}).finally(function(){
+        		$rootScope.dataLoading = false;
+        	});
         }
     }
 
@@ -94,7 +107,7 @@ angular
     QuestionsModalController.$inject = ['$routeParams', '$rootScope', '$q', '$uibModalInstance', 'AlertService', 'QuestionService', 'ThemeService', 'GroupService'];
 
     function QuestionsModalController($routeParams, $rootScope, $q, $uibModalInstance, AlertService, QuestionService, ThemeService, GroupService){
-    	var questionsModalCtrl = this;    	
+    	var questionsModalCtrl = this;
 
     	$rootScope.dataLoading = true;
 
@@ -111,15 +124,15 @@ angular
 			questionsModalCtrl.difficultiesItems = [
 				{
 					descricao: 'Fácil',
-					dificuldade: 'F'	
+					dificuldade: 'F'
 				},
 				{
 					descricao: 'Médio',
-					dificuldade: 'M'	
+					dificuldade: 'M'
 				},
 				{
 					descricao: 'Difícil',
-					dificuldade: 'D'	
+					dificuldade: 'D'
 				}
 			];
 		}).finally(function(){
@@ -133,7 +146,7 @@ angular
 
 			questionsModalCtrl.filtersLoaded = true;
 			$rootScope.dataLoading = false;
-		});		
+		});
 
 		questionsModalCtrl.difficultyIncludes = [];
 
@@ -147,7 +160,7 @@ angular
 		        }
 			}else{
 				AlertService.Add('danger', 'A questão e dificuldade do grupo atual deve estar sempre selecionada.', true);
-			}		
+			}
 		}
 
 		questionsModalCtrl.difficultyFilter = function(questionItem){
@@ -182,9 +195,9 @@ angular
 		        } else {
 		            questionsModalCtrl.themeIncludes.push(theme);
 		        }
-			}else{				
+			}else{
 				AlertService.Add('danger', 'A questão e dificuldade do grupo atual deve estar sempre selecionada.', true);
-			}			
+			}
 		}
 
 		questionsModalCtrl.themeFilter = function(questionItem){
@@ -215,7 +228,7 @@ angular
 			if(questionsEnabled.length > 0){
 				$rootScope.dataLoading = true;
 
-				if(!selectedQuestionId){				
+				if(!selectedQuestionId){
 					var random = Math.floor((Math.random() * questionsEnabled.length));
 					var questionRandom = questionsEnabled.eq(random);
 					var questionIdRandom = questionRandom.val();
@@ -241,7 +254,7 @@ angular
 
 					$rootScope.dataLoading = false;
 					questionsModalCtrl.close();
-				});				
+				});
 			}else{
 				AlertService.Add('danger', 'Nenhuma questão disponível para o assunto e nível do grupo atual.', true);
 			}
