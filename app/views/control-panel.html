@@ -23,7 +23,7 @@
               <span class="group-name" title="{{ groupInfo.Grupo.nmGrupo }}">{{ groupInfo.Grupo.nmGrupo }}</span>
             </div>
           </div>
-          <timer countdown="80" max-time-unit="'minute'" interval="1000" class="time">{{mminutes}}:{{sseconds}}</timer>
+          <timer countdown="controlPanelCtrl.countdown" max-time-unit="'minute'" id="timer-question" interval="1000" class="time">{{mminutes}}:{{sseconds}}</timer>
         </div>
         <div class="col-md-12">
           <div class="row">

@@ -11,11 +11,32 @@ angular
     .module('thelearningmaze')
     .controller('ControlPanelController', ControlPanelController);
 
-    ControlPanelController.$inject = ['$routeParams', '$rootScope', '$q', '$uibModal', 'EventService', 'QuestionService', 'GroupService'];
+    ControlPanelController.$inject = ['$routeParams', '$rootScope', '$q', '$uibModal', 'EventService', 'QuestionService', 'GroupService', 'QuestionDifficultyConfig'];
 
-    function ControlPanelController($routeParams, $rootScope, $q, $uibModal, EventService, QuestionService, GroupService) {
+    function ControlPanelController($routeParams, $rootScope, $q, $uibModal, EventService, QuestionService, GroupService, QuestionDifficultyConfig) {
         var controlPanelCtrl = this;
         controlPanelCtrl.questions = {};
+
+        $.connection.hub.start().done(function () {
+            $rootScope.evento.client.ativarTimer = function () {
+              console.log("## TIMER ATIVADO ##");
+
+              switch(controlPanelCtrl.current.Questao.dificuldade){
+              	case 'F':
+	              	controlPanelCtrl.countdown = QuestionDifficultyConfig.F;
+	             	break;
+	            case 'M':
+	             	controlPanelCtrl.countdown = QuestionDifficultyConfig.M;
+	             	break;
+	            default:
+	            	controlPanelCtrl.countdown = QuestionDifficultyConfig.D;
+	            	break;
+              }
+            }
+        })
+        .fail(function (reason) {
+            console.log("SignalR connection failed: " + reason);
+        });
 
         $rootScope.dataLoading = true;
 
