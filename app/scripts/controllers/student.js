@@ -15,12 +15,14 @@ angular
 
     function StudentController($rootScope, $location, $q, GroupService, EventService, QuestionService, QuestionDifficultyConfig, AlertService, $localStorage, $base64) {
         var studentCtrl = this;
+        var otherGroup = $base64.decode($localStorage.groupId) != $location.search().codGrupo;
 
-        if(!$localStorage.memberGroupId){
+        if(!$localStorage.memberGroupId || otherGroup){
 	        $localStorage.memberGroupId = 'lm' + $base64.encode($location.search().codParticipante);
+	        $localStorage.groupId = $base64.encode($location.search().codGrupo);
         }
 
-        studentCtrl.groupId = $location.search().codGrupo;
+        studentCtrl.groupId = $base64.decode($localStorage.groupId);
         studentCtrl.memberGroupId = $base64.decode($localStorage.memberGroupId.substring(2));
 
         $.connection.hub.start().done(function () {
