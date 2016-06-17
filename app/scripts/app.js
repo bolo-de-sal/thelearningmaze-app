@@ -92,7 +92,11 @@ angular
           var restrictedPage = $.inArray($location.path(), RestrictedPagesConfig.anonymousAccess) === -1;
 
           if (restrictedPage && !$rootScope.userLoggedIn) {
-            $location.path('/login');
+            if($location.search().codGrupo && $location.search().codParticipante){
+              $location.url('/student?codGrupo=' + $location.search().codGrupo + '&codParticipante=' + $location.search().codParticipante);
+            }else{
+              $location.path('/login');
+            }
           }else if($rootScope.userLoggedIn){
             switch($location.path()){
               case '/login':
