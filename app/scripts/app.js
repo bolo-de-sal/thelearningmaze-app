@@ -105,8 +105,9 @@ angular
 
           // redirect to login page if not logged in and trying to access a restricted page
           var restrictedPage = $.inArray($location.path(), RestrictedPagesConfig.anonymousAccess) === -1;
-
           if (restrictedPage && !$rootScope.userLoggedIn) {
+            $location.path('/login');
+          }else if(!restrictedPage){
             if($location.search().codGrupo && $location.search().codParticipante){
               $.connection.hub.start().done(function (response) {
                   $rootScope.evento.server.joinEvento(25, 2);
@@ -115,9 +116,9 @@ angular
                   console.log("SignalR connection failed: " + reason);
               });
 
-              $location.url('/student?codGrupo=' + $location.search().codGrupo + '&codParticipante=' + $location.search().codParticipante);
-            }else{
-              $location.path('/login');
+              if($location.path() != '/student'){
+                $location.url('/student?codGrupo=' + $location.search().codGrupo + '&codParticipante=' + $location.search().codParticipante);
+              }
             }
           }else if($rootScope.userLoggedIn){
             switch($location.path()){
