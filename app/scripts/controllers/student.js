@@ -27,7 +27,7 @@ angular
               	case 'F':
 	              	studentCtrl.countdown = QuestionDifficultyConfig.F;
 	             	break;
-	            case 'M': 
+	            case 'M':
 	             	studentCtrl.countdown = QuestionDifficultyConfig.M;
 	             	break;
 	            default:
@@ -38,7 +38,7 @@ angular
         })
         .fail(function (reason) {
             console.log("SignalR connection failed: " + reason);
-        });	
+        });
 
         $rootScope.dataLoading = true;
 
@@ -52,11 +52,12 @@ angular
 			AlertService.Add('danger', error.data.message, true);
 		}).finally(function(){
 			$q.all([
-			   GroupService.getCurrentGroupInfo(studentCtrl.studentGroup.codEvento),
+			   // GroupService.getCurrentGroupInfo(studentCtrl.studentGroup.codEvento),
 			   GroupService.getGroupsByEventId(studentCtrl.studentGroup.codEvento)
 			]).then(function(response){
-				studentCtrl.current = response[0];
-				studentCtrl.groupsInfo = response[1];
+				studentCtrl.current = {};
+				studentCtrl.current.Grupo = studentCtrl.studentGroup;
+				studentCtrl.groupsInfo = response[0];
 			}, function(error){
 				AlertService.Add('danger', error.data.message, true);
 			}).finally(function(){
@@ -101,7 +102,7 @@ angular
 			    })
 			    .fail(function (reason) {
 			        console.log("SignalR connection failed: " + reason);
-			    });				
+			    });
 
 			});
 		});
@@ -157,14 +158,14 @@ angular
 				}
 				studentCtrl.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + studentCtrl.current.Questao.codImagem;
 				studentCtrl.enabledSendAnsawer = studentCtrl.groupId == studentCtrl.current.Grupo.codLider;
-				
+
 				if(studentCtrl.enabledSendAnsawer){
 					$.connection.hub.start().done(function () {
 					    $rootScope.evento.server.ativarTimer();
 					})
 					.fail(function (reason) {
 					    console.log("SignalR connection failed: " + reason);
-					});				
+					});
 				}
 			}
 		}
