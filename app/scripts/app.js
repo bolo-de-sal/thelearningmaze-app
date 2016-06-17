@@ -127,26 +127,26 @@ angular
                 break;
 
               default:
-                EventService.getActiveEvent().then(function(response){
-                  var codEvento = response.codEvento;
+                // EventService.getActiveEvent().then(function(response){
+                //   var codEvento = response.codEvento;
 
-                  $.connection.hub.start().done(function () {
-                      // evento.server.joinEventoProfessor(homeCtrl.activeEvent.identificador);
-                      $rootScope.evento.server.joinEventoProfessor("10");
-                  })
-                  .fail(function (reason) {
-                      console.log("SignalR connection failed: " + reason);
-                  });
-                }, function(response){
-                  //Error
-                });
-
-                // $.connection.hub.start().done(function (response) {
-                //     $rootScope.evento.server.joinEvento(25, 2);
-                //     console.log("SignalR connection success", response);
-                // }).fail(function (reason) {
-                //     console.log("SignalR connection failed: " + reason);
+                //   $.connection.hub.start().done(function () {
+                //       // evento.server.joinEventoProfessor(homeCtrl.activeEvent.identificador);
+                //       $rootScope.evento.server.joinEventoProfessor("10");
+                //   })
+                //   .fail(function (reason) {
+                //       console.log("SignalR connection failed: " + reason);
+                //   });
+                // }, function(response){
+                //   //Error
                 // });
+
+                $.connection.hub.start().done(function (response) {
+                    $rootScope.evento.server.joinEvento(25, 2);
+                    console.log("SignalR connection success", response);
+                }).fail(function (reason) {
+                    console.log("SignalR connection failed: " + reason);
+                });
 
 
             }
