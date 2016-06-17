@@ -58,6 +58,13 @@ angular
 		}, function(error){
 			AlertService.Add('danger', error.data.message, true);
 		}).finally(function(){
+			console.log("Event: ", studentCtrl.event);
+			console.log("StudentGroup: ", studentCtrl.studentGroup);
+
+			if(studentCtrl.event.codStatus == "E"){
+				studentCtrl.gameStarted = true;
+			}
+
 			$q.all([
 			   // GroupService.getCurrentGroupInfo(studentCtrl.studentGroup.codEvento),
 			   GroupService.getGroupsByEventId(studentCtrl.studentGroup.codEvento)
@@ -68,67 +75,13 @@ angular
 			}, function(error){
 				AlertService.Add('danger', error.data.message, true);
 			}).finally(function(){
+				console.log("current.Grupo: ", studentCtrl.current.Grupo);
+				console.log("groupsInfo: ", studentCtrl.groupsInfo);
+
 				updateCurrentStudentInfo(studentCtrl.current || {});
 				$rootScope.dataLoading = false;
 
 				console.log("Entrou no finally...");
-
-		  //       $rootScope.evento.client.iniciarJogo = function () {
-		  //         console.log("## JOGO INICIADO ##");
-		  //         updateStudentInfo(function(){
-		  //         	studentCtrl.gameStarted = true;
-		  //         });
-		  //       }
-
-				// $.connection.hub.start().done(function () {
-				// 	$rootScope.evento.server.joinEvento($location.search().codGrupo, $location.search().codParticipante);
-			 //    })
-			 //    .fail(function (reason) {
-			 //        console.log("SignalR connection failed: " + reason);
-			 //    });
-
-				// $.connection.hub.start().done(function () {
-			 //        $rootScope.evento.client.lancarPergunta = function () {
-			 //          console.log("## PERGUNTA LANÇADA ##");
-			 //          updateStudentInfo(function(){
-			 //        	  studentCtrl.gameStarted = false;
-			 //        	  studentCtrl.questionAnswered = false;
-			 //        	  studentCtrl.receivedQuestion = true;
-			 //          });
-			 //        }
-			 //    })
-			 //    .fail(function (reason) {
-			 //        console.log("SignalR connection failed: " + reason);
-			 //    });
-
-			    // $.connection.hub.start().done(function () {
-			    //     $rootScope.evento.client.responderPergunta = function (ok, isChampion, groupIdChampion, qtdQuestionsOk) {
-			    //       console.log("## PERGUNTA RESPONDIDA ##");
-			    //       updateStudentInfo(function(){
-			    //     	  studentCtrl.receivedQuestion = false;
-			    //     	  studentCtrl.questionAnswered = !isChampion;
-			    //     	  studentCtrl.hasChampion = isChampion;
-			    //       });
-			    //     }
-			    // })
-			    // .fail(function (reason) {
-			    //     console.log("SignalR connection failed: " + reason);
-			    // });
-
-			    // $.connection.hub.start().done(function () {
-			    //     $rootScope.evento.client.encerrarJogo = function () {
-			    //       console.log("## JOGO ENCERRADO ##");
-			    //       updateStudentInfo(function(){
-			    //     	  studentCtrl.receivedQuestion = false;
-			    //     	  studentCtrl.questionAnswered = false;
-			    //     	  studentCtrl.hasChampion = false;
-			    //     	  studentCtrl.closeEvent = true;
-			    //       });
-			    //     }
-			    // })
-			    // .fail(function (reason) {
-			    //     console.log("SignalR connection failed: " + reason);
-			    // });
 
 			});
 		});
@@ -161,14 +114,32 @@ angular
 
 		function updateStudentInfo(fn){
 			$rootScope.dataLoading = true;
-			GroupService.getCurrentGroupInfo(studentCtrl.studentGroup.codEvento).then(function(response){
-				updateCurrentStudentInfo(response);
+			$q.all([
+			   // GroupService.getCurrentGroupInfo(studentCtrl.studentGroup.codEvento),
+			   GroupService.getCurrentGroupInfo(studentCtrl.studentGroup.codEvento),
+			   EventService.getEventByGroupIdAndMemberGroupId(studentCtrl.groupId, studentCtrl.memberGroupId)
+			]).then(function(response){
+				updateCurrentStudentInfo(response[0]);
+				studentCtrl.evemt = response[1];
 			}, function(error){
 				AlertService.Add('danger', error.data.message, true);
 			}).finally(function(){
+				console.log("studentCtrl.event: ", studentCtrl.event);
+
 				fn();
+
 				$rootScope.dataLoading = false;
 			});
+
+			// GroupService.getCurrentGroupInfo(studentCtrl.studentGroup.codEvento).then(function(response){
+			// 	updateCurrentStudentInfo(response);
+			// }, function(error){
+			// 	AlertService.Add('danger', error.data.message, true);
+			// }).finally(function(){
+			// 	fn();
+			// 	studentCtrl.event.codStatus = "E";
+			// 	$rootScope.dataLoading = false;
+			// });
 		}
 
 		function updateCurrentStudentInfo(response){

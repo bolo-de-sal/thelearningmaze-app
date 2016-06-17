@@ -311,7 +311,7 @@ angular
 				QuestionService.sendQuestion(eventId, selectedQuestionId).then(function(response){
 					AlertService.Add('success', 'Pergunta lançada com sucesso.');
 					$.connection.hub.start().done(function () {
-			            $rootScope.evento.server.lancarPergunta(eventId);
+			            $rootScope.evento.server.lancarPergunta(eventId, selectedQuestionId);
 			        })
 			        .fail(function (reason) {
 			            console.log("SignalR connection failed: " + reason);

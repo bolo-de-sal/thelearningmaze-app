@@ -605,8 +605,13 @@
 		background: orange;
 	}
 
+    .wrap-card-question:nth-child(1){
+        margin-top: 16px;
+    }
+
 	.wrap-card-question{
 		margin-left: 66px;
+        width: 720;
 	}
 }
 

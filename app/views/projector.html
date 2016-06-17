@@ -170,21 +170,53 @@
 		<div class="row">
 			<div class="col-md-8">
 				<div class="col-md-12 card wrap-card-question">
-					<h3 class="title">Pergunta Atual</h3>
-					<button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button>
-					<div class="content-question-theme">
-						<div class="content-question">
-							<p class="question">{{ controlPanel.questions.current.textoQuestao }}</p>
-						</div>
-						<p class="theme">Assunto: {{ controlPanel.questions.current.codAssunto }}</p>
-					</div>
-					<div class="groups-box">
-						<div class="group-box-name" ng-repeat="groupInfo in controlPanel.groupsInfo">
-							<span class="group-icon"></span>
-							<span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
-						</div>
-					</div>
-					<span class="time">1:20</span>
+				  <h3 class="title">Pergunta</h3>
+				  <div class="content-question-theme">
+				    <div class="content-question">
+				      <p class="question">
+				        {{ student.current.Questao.textoQuestao }}
+				        <a href="{{student.current.Questao.caminhoImagem}}" data-lightbox="{{student.current.Questao.codImagem}}" class="btn-question-picture" ng-click="$event.preventDefault()" ng-show="student.current.Questao.codImagem">
+				          <span class="glyphicon glyphicon-picture"></span>
+				        </a>
+				      </p>
+				    </div>
+				    <p class="theme">Assunto: {{ student.current.Questao.assunto.descricao }}</p>
+				  </div>
+				  <div class="groups-box">
+				    <div class="group-box-name" ng-repeat="groupInfo in student.groupsInfo" ng-class="{current: student.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
+				      <span class="group-icon"></span>
+				      <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
+				    </div>
+				  </div>
+				  <timer countdown="student.countdown" finish-callback="student.timerFinished()" max-time-unit="'minute'" interval="1000" id="timer-question" class="time">{{mminutes}}:{{sseconds}}</timer>
+				</div>
+				<div class="col-md-12 card wrap-card-question">
+				  <h3 class="title">Resposta</h3>
+				  <div class="content-ansawer ansawer-plain-text" ng-if="student.current.Questao.codTipoQuestao == 'T'">
+			  		<textarea model="student.ansawerText" class="plain-text" cols="30" rows="5" ng-disabled="!student.enabledSendAnsawer"></textarea>
+				  </div>
+				  <div class="content-ansawer ansawer-alternative" ng-if="student.current.Questao.codTipoQuestao == 'A'">
+					  <div class="radio" ng-class="{disabled: !student.enabledSendAnsawer}" ng-repeat="alternative in student.current.Alternativas">
+					  	<label>
+					  		<input type="radio" value="{{alternative.codAlternativa}}" ng-model="student.ansawerAlternative" ng-disabled="!student.enabledSendAnsawer"> {{alternative.textoAlternativa}}
+					  	</label>
+					  </div>
+				  </div>
+				  <div class="content-ansawer ansawer-alternative" ng-if="student.current.Questao.codTipoQuestao == 'V'">
+					  <div class="radio" ng-class="{disabled: !student.enabledSendAnsawer}">
+					  	<label>
+					  		<input type="radio" value="true" ng-model="student.ansawer.isTrue" ng-disabled="!student.enabledSendAnsawer"> Verdadeiro
+					  	</label>
+					  </div>
+					  <div class="radio" ng-class="{disabled: !student.enabledSendAnsawer}">
+					  	<label>
+					  		<input type="radio" value="false" ng-model="student.ansawer.isTrue" ng-disabled="!student.enabledSendAnsawer"> Falso
+					  	</label>
+					  </div>
+				  </div>
+				  <div class="content-ansawer-buttons">
+				  	<button class="btn btn-primary btn-lg btn-send-selected-question" ng-click="student.sendSelectedAnsawer(student.ansawerText, student.ansawerAlternative, student.ansawer.isTrue, false)" ng-disabled="!student.ansawer || !student.enabledSendAnsawer">Enviar</button>
+				  </div>
 				</div>
 			</div>
 		</div>

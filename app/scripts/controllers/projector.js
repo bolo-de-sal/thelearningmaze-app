@@ -529,7 +529,8 @@ angular
           // });
         }
 
-        $rootScope.evento.client.lancarPergunta = function(){
+        $rootScope.evento.client.lancarPergunta = function(response){
+            console.log("Perugnta lançada: ", response);
             console.log("Chamou lancarPergunta");
             alert('Chamou o lancarPergunta');
             
