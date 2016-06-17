@@ -35,6 +35,9 @@ angular
 			controlPanelCtrl.groupsInfo = response[2];
 			controlPanelCtrl.groupsQuestions = response[3];
 		}).finally(function(){
+			if(!controlPanelCtrl.questions.current.Questao){
+				controlPanelCtrl.questions.current.Questao = {};
+			}
 			controlPanelCtrl.event.dataFormatada = new Date(controlPanelCtrl.event.data).getTime();
 			controlPanelCtrl.questions.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + controlPanelCtrl.questions.current.Questao.codImagem;
 			controlPanelCtrl.maxQtdQuestions = 0;
@@ -43,6 +46,7 @@ angular
 					controlPanelCtrl.maxQtdQuestions = groupQuestion.Questoes.length;
 				}
 			});
+			console.log('a');
 			// Close dataLoading after all requests are finished
 			$rootScope.dataLoading = false;
 		});
