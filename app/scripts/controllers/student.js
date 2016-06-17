@@ -176,7 +176,7 @@ angular
 
 				if(studentCtrl.enabledSendAnsawer){
 					$.connection.hub.start().done(function () {
-					    $rootScope.evento.server.ativarTimer();
+					    $rootScope.evento.server.ativarTimer(studentCtrl.studentGroup.codEvento);
 					})
 					.fail(function (reason) {
 					    console.log("SignalR connection failed: " + reason);

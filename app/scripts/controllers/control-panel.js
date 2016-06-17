@@ -80,7 +80,7 @@ angular
         	EventService.closeEvent(eventId).then(function(){
         		AlertService.Add('success', 'Evento encerrado com sucesso', true);
 				$.connection.hub.start().done(function () {
-		            $rootScope.evento.server.encerrarJogo();
+		            $rootScope.evento.server.encerrarJogo(eventId);
 		        })
 		        .fail(function (reason) {
 		            console.log("SignalR connection failed: " + reason);
@@ -243,6 +243,12 @@ angular
 
 				QuestionService.sendQuestion(eventId, selectedQuestionId).then(function(response){
 					AlertService.Add('success', 'Pergunta lançada com sucesso.');
+					$.connection.hub.start().done(function () {
+			            $rootScope.evento.server.lancarPergunta(eventId);
+			        })
+			        .fail(function (reason) {
+			            console.log("SignalR connection failed: " + reason);
+			        });
 				}, function(error){
 					AlertService.Add('danger', 'Ops! Não foi possível lançar a questão: ' + error.data.message + '.');
 				}).finally(function(){
