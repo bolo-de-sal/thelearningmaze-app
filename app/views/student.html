@@ -47,7 +47,7 @@
 		      <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
 		    </div>
 		  </div>
-		  <timer countdown="80" max-time-unit="'minute'" interval="1000" class="time">{{mminutes}}:{{sseconds}}</timer>
+		  <timer countdown="student.countdown" finish-callback="student.timerFinished()" max-time-unit="'minute'" interval="1000" id="timer-question" class="time">{{mminutes}}:{{sseconds}}</timer>
 		</div>
 		<div class="col-md-12 card wrap-card-question">
 		  <h3 class="title">Resposta</h3>
@@ -74,7 +74,7 @@
 			  </div>
 		  </div>
 		  <div class="content-ansawer-buttons">
-		  	<button class="btn btn-primary btn-lg btn-send-selected-question" ng-click="student.sendSelectedAnsawer(student.ansawerText, student.ansawerAlternative, student.ansawer.isTrue)" ng-disabled="!student.ansawer || !student.enabledSendAnsawer">Enviar</button>
+		  	<button class="btn btn-primary btn-lg btn-send-selected-question" ng-click="student.sendSelectedAnsawer(student.ansawerText, student.ansawerAlternative, student.ansawer.isTrue, false)" ng-disabled="!student.ansawer || !student.enabledSendAnsawer">Enviar</button>
 		  </div>
 		</div>
 	</div>

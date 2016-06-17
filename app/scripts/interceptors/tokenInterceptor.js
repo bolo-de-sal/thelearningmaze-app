@@ -41,7 +41,7 @@ angular
 	                        console.log('##TOKEN.INTERCEPTOR.SUCCESS## TOKEN ' + response.data.token);
 	                        $rootScope.recoveredToken = false;
             	    	}
-            	        
+
             	    }).then(deferred.resolve, deferred.reject);
 
             	    if(httpStatus === 419){

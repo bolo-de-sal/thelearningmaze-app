@@ -11,13 +11,34 @@ angular
     .module('thelearningmaze')
     .controller('StudentController', StudentController);
 
-    StudentController.$inject = ['$rootScope', '$location', '$q', 'GroupService', 'EventService', 'QuestionService'];
+    StudentController.$inject = ['$rootScope', '$location', '$q', 'GroupService', 'EventService', 'QuestionService', 'QuestionDifficultyConfig'];
 
-    function StudentController($rootScope, $location, $q, GroupService, EventService, QuestionService) {
+    function StudentController($rootScope, $location, $q, GroupService, EventService, QuestionService, QuestionDifficultyConfig) {
         var studentCtrl = this;
 
         studentCtrl.groupId = $location.search().codGrupo;
         studentCtrl.memberGroupId = $location.search().codParticipante;
+
+        $.connection.hub.start().done(function () {
+            $rootScope.evento.client.ativarTimer = function () {
+              console.log("## TIMER ATIVADO ##");
+
+              switch(studentCtrl.current.Questao.dificuldade){
+              	case 'F':
+	              	studentCtrl.countdown = QuestionDifficultyConfig.F;
+	             	break;
+	            case 'M': 
+	             	studentCtrl.countdown = QuestionDifficultyConfig.M;
+	             	break;
+	            default:
+	            	studentCtrl.countdown = QuestionDifficultyConfig.D;
+	            	break;
+              }
+            }
+        })
+        .fail(function (reason) {
+            console.log("SignalR connection failed: " + reason);
+        });	
 
         $rootScope.dataLoading = true;
 
@@ -35,11 +56,7 @@ angular
 				studentCtrl.current = response[0];
 				studentCtrl.groupsInfo = response[1];
 			}).finally(function(){
-				if(!studentCtrl.current.Questao){
-					studentCtrl.current.Questao = {};
-				}
-				studentCtrl.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + studentCtrl.current.Questao.codImagem;
-				studentCtrl.enabledSendAnsawer = studentCtrl.groupId == studentCtrl.current.Grupo.codLider;
+				updateCurrentStudentInfo();
 				$rootScope.dataLoading = false;
 
 				$.connection.hub.start().done(function () {
@@ -85,9 +102,9 @@ angular
 			});
 		});
 
-		studentCtrl.sendSelectedAnsawer = function(ansawerText, ansawerAlternative, ansawerIsTrue){
+		studentCtrl.sendSelectedAnsawer = function(ansawerText, ansawerAlternative, ansawerIsTrue, questionTimerFinished){
 			$rootScope.dataLoading = true;
-			QuestionService.sendAnsawer(studentCtrl.studentGroup.codEvento, studentCtrl.current.Questao.codTipoQuestao, ansawerAlternative, ansawerIsTrue, ansawerText).then(function(response){
+			QuestionService.sendAnsawer(studentCtrl.studentGroup.codEvento, studentCtrl.current.Questao.codTipoQuestao, ansawerAlternative, ansawerIsTrue, ansawerText, questionTimerFinished).then(function(response){
 				if(response.correta){
 					AlertService.Add('success', 'Resposta correta', true);
 				}else{
@@ -106,22 +123,39 @@ angular
 			});
 		}
 
+		studentCtrl.timerFinished = function(){
+			this.sendSelectedAnsawer('', 0, false, true);
+		}
+
 		function updateStudentInfo(fn){
 			$rootScope.dataLoading = true;
 			GroupService.getCurrentGroupInfo(studentCtrl.studentGroup.codEvento).then(function(response){
-				studentCtrl.current = response;
-				if(!studentCtrl.current.Questao){
-					studentCtrl.current.Questao = {};
-					studentCtrl.current.Questao.textoQuestao = 'Sem pergunta no momento';
-					studentCtrl.current.Questao.assunto.descricao = 'Sem assunto';
-				}
-				studentCtrl.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + studentCtrl.current.Questao.codImagem;
-				studentCtrl.enabledSendAnsawer = studentCtrl.groupId == studentCtrl.current.Grupo.codLider;
+				updateCurrentStudentInfo();
 			}, function(error){
 				AlertService.Add('danger', error.data, true);
 			}).finally(function(){
 				fn();
 				$rootScope.dataLoading = false;
 			});
+		}
+
+		function updateCurrentStudentInfo(){
+			studentCtrl.current = response;
+			if(!studentCtrl.current.Questao){
+				studentCtrl.current.Questao = {};
+				studentCtrl.current.Questao.textoQuestao = 'Sem pergunta no momento';
+				studentCtrl.current.Questao.assunto.descricao = 'Sem assunto';
+			}
+			studentCtrl.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + studentCtrl.current.Questao.codImagem;
+			studentCtrl.enabledSendAnsawer = studentCtrl.groupId == studentCtrl.current.Grupo.codLider;
+
+			if(studentCtrl.enabledSendAnsawer){
+				$.connection.hub.start().done(function () {
+				    $rootScope.evento.server.ativarTimer();
+				})
+				.fail(function (reason) {
+				    console.log("SignalR connection failed: " + reason);
+				});				
+			}
 		}
     }
