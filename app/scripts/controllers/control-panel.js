@@ -38,6 +38,48 @@ angular
             console.log("SignalR connection failed: " + reason);
         });
 
+        $.connection.hub.start().done(function () {
+	        $rootScope.evento.client.responderPergunta = function (ok, isChampion, groupIdChampion, qtdQuestionsOk) {
+	          console.log("## PERGUNTA RESPONDIDA ##");
+              $rootScope.dataLoading = true;
+
+              // All requests
+              $q.all([
+      		   EventService.getEventById(eventId),
+      		   GroupService.getCurrentGroupInfo(eventId),
+      		   GroupService.getGroupsByEventId(eventId),
+      		   GroupService.getGroupsQuestions(eventId)
+      		]).then(function(response){
+      			controlPanelCtrl.event = response[0];
+      			controlPanelCtrl.questions.current = response[1];
+      			controlPanelCtrl.groupsInfo = response[2];
+      			controlPanelCtrl.groupsQuestions = response[3];
+      		}).finally(function(){
+      			if(!controlPanelCtrl.questions.current.Questao){
+      				controlPanelCtrl.questions.current.Questao = {};
+      				controlPanelCtrl.questions.current.Questao.textoQuestao = 'Sem pergunta no momento';
+      				if(!controlPanelCtrl.questions.current.Questao.assunto){
+      					controlPanelCtrl.questions.current.Questao.assunto = {};
+      				}
+      				controlPanelCtrl.questions.current.Questao.assunto.descricao = 'Sem assunto';
+      			}
+      			controlPanelCtrl.event.dataFormatada = new Date(controlPanelCtrl.event.data).getTime();
+      			controlPanelCtrl.questions.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + controlPanelCtrl.questions.current.Questao.codImagem;
+      			controlPanelCtrl.maxQtdQuestions = 0;
+      			angular.forEach(controlPanelCtrl.groupsQuestions, function(groupQuestion, key){
+      				if(groupQuestion.Questoes.length > controlPanelCtrl.maxQtdQuestions){
+      					controlPanelCtrl.maxQtdQuestions = groupQuestion.Questoes.length;
+      				}
+      			});
+      			// Close dataLoading after all requests are finished
+      			$rootScope.dataLoading = false;
+      		});
+	        }
+	    })
+	    .fail(function (reason) {
+	        console.log("SignalR connection failed: " + reason);
+	    });
+
         $rootScope.dataLoading = true;
 
         var eventId = $routeParams.eventId;
