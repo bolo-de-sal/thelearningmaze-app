@@ -15,7 +15,8 @@ angular
 
     function StudentController($rootScope, $location, $q, GroupService, EventService, QuestionService, QuestionDifficultyConfig, AlertService, $localStorage, $base64) {
         var studentCtrl = this;
-        var otherGroup = $base64.decode($localStorage.groupId) != $location.search().codGrupo;
+        var groupIdDecoded = $localStorage.groupId ? $base64.decode($localStorage.groupId) : 0;
+        var otherGroup = groupIdDecoded != $location.search().codGrupo;
 
         if(!$localStorage.memberGroupId || otherGroup){
 	        $localStorage.memberGroupId = 'lm' + $base64.encode($location.search().codParticipante);
