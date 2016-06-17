@@ -18,7 +18,7 @@ html{
   overflow: hidden;
   cursor: default;
   -webkit-touch-callout: none;
-  -webkit-user-select: none; 
+  -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -665,7 +665,7 @@ button{
         height: 5px;
       }
     }
-    
+
     .content-question{
       height: 70px;
       overflow: auto;
@@ -674,7 +674,7 @@ button{
   }
 
   .question{
-    font-size: 16px;    
+    font-size: 16px;
     text-align: right;
     margin: 0;
 
@@ -753,7 +753,7 @@ button{
 
   .fullscreen{
     color: $lightgray;
-  } 
+  }
 }
 
 .wrap-card-time-event{
@@ -821,25 +821,25 @@ button{
     background-position: right center;
     background-image: url('../images/sound.png');
     background-repeat: no-repeat;
-  } 
+  }
 
   &.disabled{
     .sound-text{
       background-image: url('../images/sound.png');
     }
-  } 
+  }
 
 }
 
 .projector{
   position: relative;
   width: 100%;
-  padding: 81px 0;
+  padding: 90px 0;
   font-size: 36px;
   color: $white;
   &.active{
-    background: $purple url('../images/projector.png') center 15% no-repeat;
-    
+    background: $purple url('../images/projector.png') center 25% no-repeat;
+
   }
 
   .projector-text{
@@ -865,7 +865,7 @@ button{
   background-color: $orange;
   &:hover, &:active, &:active:hover, &:focus, &:active:focus, &:visited, &[disabled]:hover{
     border-color: $orange;
-    background-color: darken($orange, 12%); 
+    background-color: darken($orange, 12%);
   }
 }
 
@@ -874,13 +874,13 @@ button{
   background-color: $darkgray;
   &:hover, &:active, &:active:hover, &:focus, &:visited, &[disabled]:hover{
     border-color: $darkgray;
-    background-color: darken($darkgray, 12%); 
+    background-color: darken($darkgray, 12%);
   }
 }
 
 .btn-question-picture{
   color: $lightblack;
-  outline: none; 
+  outline: none;
 }
 
 /*
@@ -908,7 +908,7 @@ button{
   &::-webkit-scrollbar{
     width: 5px;
     height: 5px;
-  }  
+  }
 }
 
 .table-info{
