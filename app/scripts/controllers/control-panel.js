@@ -17,6 +17,8 @@ angular
         var controlPanelCtrl = this;
         controlPanelCtrl.questions = {};
 
+        controlPanelCtrl.countdown = 0;
+
         $.connection.hub.start().done(function () {
             $rootScope.evento.client.ativarTimer = function () {
               console.log("## TIMER ATIVADO ##");
@@ -42,6 +44,8 @@ angular
 	        $rootScope.evento.client.responderPergunta = function (ok, isChampion, groupIdChampion, qtdQuestionsOk) {
 	          console.log("## PERGUNTA RESPONDIDA ##");
               $rootScope.dataLoading = true;
+
+	          controlPanelCtrl.countdown = 0;
 
               // All requests
               $q.all([
