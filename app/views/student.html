@@ -8,7 +8,25 @@
 		  </div>
 		</div>
 	</div>
-	<div id="student-event-started" class="col-xs-12 col-sm-12 col-md-12 student" ng-if="student.event.codStatus == 'E'">
+	<div id="student-waiting-question-event" class="col-xs-12 col-sm-12 col-md-12 student" ng-if="student.event.codStatus == 'E' && (student.gameStarted || student.questionAnswered)">
+		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h1>
+		<p id="waiting-question-event" ng-if="student.gameStarted">Aguarde o professor lançar uma pergunta</p>
+		<div class="groups-box">
+		  <div class="group-box-name" ng-repeat="groupInfo in student.groupsInfo" ng-class="{current: student.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
+		    <span class="group-icon" title="{{ groupInfo.Grupo.nmGrupo }}"></span>
+		  </div>
+		</div>
+	</div>
+	<div id="student-waiting-champion-event" class="col-xs-12 col-sm-12 col-md-12 student" ng-if="student.event.codStatus == 'F' && student.hasChampion">
+		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h1>
+		<p id="waiting-question-event" ng-if="student.gameStarted">CAMPEÃO</p>
+		<div class="groups-box">
+		  <div class="group-box-name" ng-repeat="groupInfo in student.groupsInfo" ng-class="{current: student.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
+		    <span class="group-icon" title="{{ groupInfo.Grupo.nmGrupo }}"></span>
+		  </div>
+		</div>
+	</div>
+	<div id="student-event-started" class="col-xs-12 col-sm-12 col-md-12 student" ng-if="student.event.codStatus == 'E' && student.receivedQuestion">
 		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h2>
 		<div class="col-md-12 card wrap-card-question">
 		  <h3 class="title">Pergunta</h3>
@@ -34,29 +52,29 @@
 		<div class="col-md-12 card wrap-card-question">
 		  <h3 class="title">Resposta</h3>
 		  <div class="content-ansawer ansawer-plain-text" ng-if="student.current.Questao.codTipoQuestao == 'T'">
-	  		<textarea model="student.ansawer" class="plain-text" cols="30" rows="5" ng-disabled="!student.enabledSendAnsawer"></textarea>
+	  		<textarea model="student.ansawerText" class="plain-text" cols="30" rows="5" ng-disabled="!student.enabledSendAnsawer"></textarea>
 		  </div>
 		  <div class="content-ansawer ansawer-alternative" ng-if="student.current.Questao.codTipoQuestao == 'A'">
 			  <div class="radio" ng-class="{disabled: !student.enabledSendAnsawer}" ng-repeat="alternative in student.current.Alternativas">
 			  	<label>
-			  		<input type="radio" value="{{alternative.codAlternativa}}" ng-model="student.ansawer" ng-disabled="!student.enabledSendAnsawer"> {{alternative.textoAlternativa}}
+			  		<input type="radio" value="{{alternative.codAlternativa}}" ng-model="student.ansawerAlternative" ng-disabled="!student.enabledSendAnsawer"> {{alternative.textoAlternativa}}
 			  	</label>
 			  </div>
 		  </div>
 		  <div class="content-ansawer ansawer-alternative" ng-if="student.current.Questao.codTipoQuestao == 'V'">
 			  <div class="radio" ng-class="{disabled: !student.enabledSendAnsawer}">
 			  	<label>
-			  		<input type="radio" value="true" ng-model="student.ansawer" ng-disabled="!student.enabledSendAnsawer"> Verdadeiro
+			  		<input type="radio" value="true" ng-model="student.ansawer.isTrue" ng-disabled="!student.enabledSendAnsawer"> Verdadeiro
 			  	</label>
 			  </div>
 			  <div class="radio" ng-class="{disabled: !student.enabledSendAnsawer}">
 			  	<label>
-			  		<input type="radio" value="false" ng-model="student.ansawer" ng-disabled="!student.enabledSendAnsawer"> Falso
+			  		<input type="radio" value="false" ng-model="student.ansawer.isTrue" ng-disabled="!student.enabledSendAnsawer"> Falso
 			  	</label>
 			  </div>
 		  </div>
 		  <div class="content-ansawer-buttons">
-		  	<button class="btn btn-primary btn-lg btn-send-selected-question" ng-disabled="!student.ansawer || !student.enabledSendAnsawer">Enviar</button>
+		  	<button class="btn btn-primary btn-lg btn-send-selected-question" ng-click="student.sendSelectedAnsawer(student.ansawerText, student.ansawerAlternative, student.ansawer.isTrue)" ng-disabled="!student.ansawer || !student.enabledSendAnsawer">Enviar</button>
 		  </div>
 		</div>
 	</div>

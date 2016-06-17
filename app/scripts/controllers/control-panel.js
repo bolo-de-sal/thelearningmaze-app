@@ -37,6 +37,8 @@ angular
 		}).finally(function(){
 			if(!controlPanelCtrl.questions.current.Questao){
 				controlPanelCtrl.questions.current.Questao = {};
+				controlPanelCtrl.questions.current.Questao.textoQuestao = 'Sem pergunta no momento';
+				controlPanelCtrl.questions.current.Questao.assunto.descricao = 'Sem assunto';
 			}
 			controlPanelCtrl.event.dataFormatada = new Date(controlPanelCtrl.event.data).getTime();
 			controlPanelCtrl.questions.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + controlPanelCtrl.questions.current.Questao.codImagem;

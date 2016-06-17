@@ -96,7 +96,7 @@ angular
           AlertService.Clear();
 
           if($rootScope.sessionTimeout){
-            AlertService.Add('warning', 'Sua sessão expirou');
+            AlertService.Add('warning', 'Sua sessão expirou', true);
             $rootScope.sessionTimeout = false;
           }
 
