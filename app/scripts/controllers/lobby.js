@@ -32,9 +32,7 @@ angular
 
         function getEventGroupsFailure(response){
             $rootScope.dataLoading = false;
-        }
-
-        
+        }        
 
         $rootScope.evento.client.joinEvento = function (message) {
             console.log("Chamou joinEvento", message);
