@@ -11,13 +11,17 @@ angular
     .module('thelearningmaze')
     .controller('StudentController', StudentController);
 
-    StudentController.$inject = ['$rootScope', '$location', '$q', 'GroupService', 'EventService', 'QuestionService', 'QuestionDifficultyConfig', 'AlertService'];
+    StudentController.$inject = ['$rootScope', '$location', '$q', 'GroupService', 'EventService', 'QuestionService', 'QuestionDifficultyConfig', 'AlertService', '$localStorage', '$crypto'];
 
-    function StudentController($rootScope, $location, $q, GroupService, EventService, QuestionService, QuestionDifficultyConfig, AlertService) {
+    function StudentController($rootScope, $location, $q, GroupService, EventService, QuestionService, QuestionDifficultyConfig, AlertService, $localStorage, $crypto) {
         var studentCtrl = this;
 
+        if(!$localStorage.memberGroupId){
+	        $localStorage.memberGroupId = $crypto.encrypt($location.search().codParticipante);
+        }
+
         studentCtrl.groupId = $location.search().codGrupo;
-        studentCtrl.memberGroupId = $location.search().codParticipante;
+        studentCtrl.memberGroupId = $crypto.decrypt($localStorage.memberGroupId);
 
         $.connection.hub.start().done(function () {
             $rootScope.evento.client.ativarTimer = function () {

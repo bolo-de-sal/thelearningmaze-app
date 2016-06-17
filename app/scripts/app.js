@@ -19,9 +19,10 @@ angular
     'ngTouch',
     'ngStorage',
     'ui.bootstrap',
-    'timer'
+    'timer',
+    'mdo-angular-cryptography'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $cryptoProvider) {
     $routeProvider
       .when('/index', {
           templateUrl: 'index.html',
@@ -60,7 +61,9 @@ angular
       })
       .otherwise({
         redirectTo: '/404'
-    });
+      });
+
+      $cryptoProvider.setCryptographyKey('thelearningmaze');
   })
   .run(function ($rootScope, $location, AppConfig, RestrictedPagesConfig, AuthenticationService, SessionService, AlertService, EventService) {
 
