@@ -37,17 +37,40 @@ angular
         // Habilita CORS
         jQuery.support.cors = true;
 
-        // Declara endereço do servidor
+        // // Declara endereço do servidor
         $.connection.hub.url = "http://tlm-api-dev.azurewebsites.net/signalr";
 
-        // chatHub é o nome do Hub definido no código do server
+        // // chatHub é o nome do Hub definido no código do server
         var evento = $.connection.eventoHub;
         
         $.connection.hub.logging = true;
 
         evento.client.joinEvento = function (message) {
-            //$('#discussion').append('<li>' + message + ' entrou no evento!</li>');
-            alert('Alguém entrou no lobby. Mensagem SignalR: ' + message);
+            console.log("Chamou joinEvento", message);
+            alert('Alguém entrou no lobby. Mensagem SignalR: ');
         }
 
+  //       evento.on("client.joinEvento", function(message){
+		// 	console.log("Chamou joinEvento", message);
+  //           alert('Alguém entrou no lobby. Mensagem SignalR: ');
+		// });
+
+        // Abre conexão com o servidor
+        $.connection.hub.start().done(function (message) {
+            console.log("Conexão com o SignalR aberta com sucesso!");
+            evento.server.joinEventoProfessor("10");
+        }).fail(function (reason) {
+            console.log("SignalR connection failed: " + reason);
+        });
+
+        //  $.connection.hub.start().done(function(){
+        //  	console.log("Entrou no done lobby");
+        //  });
+
+
+		// evento.client.on("joinEvento", function(message){
+		// 	console.log("Chamou joinEvento", message);
+  //           alert('Alguém entrou no lobby. Mensagem SignalR: ');
+		// });
+        
     }

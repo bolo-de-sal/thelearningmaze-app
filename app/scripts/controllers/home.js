@@ -170,7 +170,7 @@ angular
 
         homeCtrl.openConnectionSignlR = function() {
 
-            $location.path("/lobby/" + homeCtrl.activeEvent.codEvento);
+            // $location.path("/lobby/" + homeCtrl.activeEvent.codEvento);
             // Habilita CORS
             jQuery.support.cors = true;
 
@@ -182,16 +182,19 @@ angular
 
             $.connection.hub.logging = true;
 
-            console.log("Antes do done de abrir conexão joinProf.");
+            evento.client.joinEvento = function (message) {
+                console.log("Chamou joinEvento", message);
+                alert('Alguém entrou no lobby. Mensagem SignalR: ');
+            }
 
             $.connection.hub.start().done(function () {
-                console.log("Abriu conexão antes do joinProf.");
-                evento.server.joinEventoProfessor(homeCtrl.activeEvent.identificador);
-
-                console.log("Abriu conexão depois do joinProf.");
+                // evento.server.joinEventoProfessor(homeCtrl.activeEvent.identificador);
+                evento.server.joinEventoProfessor("10");
             })
-            .then(function (response) {
-                console.log("then: ", response);
+            .fail(function (reason) {
+                console.log("SignalR connection failed: " + reason);
             });
         }
+
+        homeCtrl.openConnectionSignlR();
     }
