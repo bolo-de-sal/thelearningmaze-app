@@ -20,9 +20,9 @@ angular
     'ngStorage',
     'ui.bootstrap',
     'timer',
-    'mdo-angular-cryptography'
+    'base64'
   ])
-  .config(function ($routeProvider, $cryptoProvider) {
+  .config(function ($routeProvider) {
     $routeProvider
       .when('/index', {
           templateUrl: 'index.html',
@@ -62,8 +62,6 @@ angular
       .otherwise({
         redirectTo: '/404'
       });
-
-      $cryptoProvider.setCryptographyKey('thelearningmaze');
   })
   .run(function ($rootScope, $location, AppConfig, RestrictedPagesConfig, AuthenticationService, SessionService, AlertService, EventService) {
 
