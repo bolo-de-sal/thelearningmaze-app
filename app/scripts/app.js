@@ -112,15 +112,21 @@ angular
             if($rootScope.userLoggedIn){
               $location.path('/');
             }else if($location.search().codGrupo && $location.search().codParticipante){
-              $.connection.hub.start().done(function (response) {
-                  $rootScope.evento.server.joinEvento(25, 2);
-                  console.log("SignalR connection success", response);
-              }).fail(function (reason) {
-                  console.log("SignalR connection failed: " + reason);
-              });
+              // $.connection.hub.start().done(function (response) {
+              //     $rootScope.evento.server.joinEvento($location.search().codGrupo, $location.search().codParticipante);
+              //     console.log("SignalR connection success", response);
+              // }).fail(function (reason) {
+              //     console.log("SignalR connection failed: " + reason);
+              // });
 
               if($location.path() != '/student'){
                 $location.url('/student?codGrupo=' + $location.search().codGrupo + '&codParticipante=' + $location.search().codParticipante);
+                $.connection.hub.start().done(function (response) {
+                  $rootScope.evento.server.joinEvento($location.search().codGrupo, $location.search().codParticipante);
+                      console.log("SignalR connection success", response);
+                  }).fail(function (reason) {
+                      console.log("SignalR connection failed: " + reason);
+                  });
               }
             }
           }else if($rootScope.userLoggedIn){
@@ -136,7 +142,7 @@ angular
 
                   $.connection.hub.start().done(function () {
                       // evento.server.joinEventoProfessor(homeCtrl.activeEvent.identificador);
-                      $rootScope.evento.server.joinEventoProfessor("10");
+                      $rootScope.evento.server.joinEventoProfessor(codEvento.toString());
                   })
                   .fail(function (reason) {
                       console.log("SignalR connection failed: " + reason);
