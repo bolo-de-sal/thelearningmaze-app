@@ -24,9 +24,11 @@ angular
 	        },
 	        responseError: function(response) {
 	            var httpStatus = response.status;
+	            var data = response.data;
 
 	            // Token expirado
-	            if(httpStatus === 419){	            	
+	            if((data === 'Token expirado' || httpStatus === 419) && !$rootScope.recoveredToken){
+	            	$rootScope.recoveredToken = true;
 	            	// Buscar novo token
 	            	console.log('##TOKEN.INTERCEPTOR.RESPONSEERROR## TOKEN EXPIROU');         	
 	                var $http = $injector.get('$http');
@@ -37,19 +39,23 @@ angular
             	    	if(response.status === 200){
             	    		SessionService.setTokenInfo(response.data);
 	                        console.log('##TOKEN.INTERCEPTOR.SUCCESS## TOKEN ' + response.data.token);
+	                        $rootScope.recoveredToken = false;
             	    	}
             	        
             	    }).then(deferred.resolve, deferred.reject);
 
-            	    // Limpar os dados
-            	    if(SessionService.getUser()){
-	            	    SessionService.removeUserData();
-	            	    $(".header").hide();
-            			$("body").addClass("bodyLogin");
-	            	    $location.path('/login');
+            	    if(httpStatus === 419){
+            	    	$rootScope.sessionTimeout = true;
+	            	    // Limpar os dados
+	            	    if(SessionService.getUser()){
+	            	    	$rootScope.userLoggedIn = null;
+		            	    SessionService.removeUserData();
+		            	    $location.path('/login');		            	    
+	            	    }
 
 	            	    return $q.reject(response);
             	    }
+
 
 	                // Refaz as requisições
 	                return deferred.promise.then(function() {
