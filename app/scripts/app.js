@@ -112,21 +112,21 @@ angular
             if($rootScope.userLoggedIn){
               $location.path('/');
             }else if($location.search().codGrupo && $location.search().codParticipante){
-              // $.connection.hub.start().done(function (response) {
-              //     $rootScope.evento.server.joinEvento($location.search().codGrupo, $location.search().codParticipante);
-              //     console.log("SignalR connection success", response);
-              // }).fail(function (reason) {
-              //     console.log("SignalR connection failed: " + reason);
-              // });
+              $.connection.hub.start().done(function (response) {
+                  $rootScope.evento.server.joinEvento($location.search().codGrupo, $location.search().codParticipante);
+                  console.log("Aluno: " + $location.search().codParticipante + " do grupo: " + $location.search().codGrupo + " entrou no evento", response);
+              }).fail(function (reason) {
+                  console.log("SignalR connection failed: " + reason);
+              });
 
               if($location.path() != '/student'){
                 $location.url('/student?codGrupo=' + $location.search().codGrupo + '&codParticipante=' + $location.search().codParticipante);
-                $.connection.hub.start().done(function (response) {
-                  $rootScope.evento.server.joinEvento($location.search().codGrupo, $location.search().codParticipante);
-                      console.log("SignalR connection success", response);
-                  }).fail(function (reason) {
-                      console.log("SignalR connection failed: " + reason);
-                  });
+                // $.connection.hub.start().done(function (response) {
+                //   $rootScope.evento.server.joinEvento($location.search().codGrupo, $location.search().codParticipante);
+                //       console.log("SignalR connection success", response);
+                //   }).fail(function (reason) {
+                //       console.log("SignalR connection failed: " + reason);
+                //   });
               }
             }
           }else if($rootScope.userLoggedIn){
@@ -142,6 +142,7 @@ angular
 
                   $.connection.hub.start().done(function () {
                       // evento.server.joinEventoProfessor(homeCtrl.activeEvent.identificador);
+                      console.log("Professor entrou no grupo do evento: " + codEvento.toString());
                       $rootScope.evento.server.joinEventoProfessor(codEvento.toString());
                   })
                   .fail(function (reason) {
@@ -172,8 +173,8 @@ angular
       $rootScope.CloseAlert = AlertService.CloseAlert;
       $rootScope.imagesUrl = AppConfig.api.endpoint + AppConfig.api.identifier + '/Imagens';
 
-      $rootScope.evento.client.joinEvento = function (message) {
-            console.log("Chamou joinEvento", message);
-            alert('Alguém entrou no lobby. Mensagem SignalR: ');
-        }
+      // $rootScope.evento.client.joinEvento = function (message) {
+      //       console.log("Chamou joinEvento", message);
+      //       alert('Alguém entrou no lobby. Mensagem SignalR: ');
+      //   }
   });

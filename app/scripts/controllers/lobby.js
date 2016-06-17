@@ -40,16 +40,23 @@ angular
         	EventService.initEvent(eventId).then(function(response){
         		console.log("Response iniciar evento: ", response);
 
+        		$.connection.hub.start().done(function (message) {
+		            console.log("Disparou iniciarJogo con id: ", eventId);
+		            $rootScope.evento.server.iniciarJogo(eventId.toString());
+		        }).fail(function (reason) {
+		            console.log("SignalR connection failed: " + reason);
+		        });
+
         		$rootScope.dataLoading = false;
 
         		$location.path('control-panel/' + eventId);
         	});
         }
 
-        // $rootScope.evento.client.joinEvento = function (message) {
-        //     console.log("Chamou joinEvento", message);
-        //     alert('Alguém entrou no lobby. Mensagem SignalR: ');
-        // }
+        $rootScope.evento.client.joinEvento = function (message) {
+            console.log("Chamou joinEvento", message);
+            alert('Alguém entrou no lobby. Mensagem SignalR: ');
+        }
 
   //       evento.on("client.joinEvento", function(message){
 		// 	console.log("Chamou joinEvento", message);
@@ -59,7 +66,7 @@ angular
         // Abre conexão com o servidor
         $.connection.hub.start().done(function (message) {
             console.log("Conexão com o SignalR aberta com sucesso!");
-            $rootScope.evento.server.joinEventoProfessor("10");
+            $rootScope.evento.server.joinEventoProfessor(eventId.toString());
         }).fail(function (reason) {
             console.log("SignalR connection failed: " + reason);
         });

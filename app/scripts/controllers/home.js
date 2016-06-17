@@ -168,10 +168,10 @@ angular
             homeCtrl.currentPage = 1; //reset to first paghe
         }
         
-        // $rootScope.evento.client.joinEvento = function (message) {
-        //     console.log("Chamou joinEvento", message);
-        //     alert('Alguém entrou no lobby. Mensagem SignalR: ');
-        // }
+        $rootScope.evento.client.joinEvento = function (message) {
+            console.log("Chamou joinEvento", message);
+            alert('Alguém entrou no lobby. Mensagem SignalR: ');
+        }
 
         // homeCtrl.openConnectionSignlR = function() {
 

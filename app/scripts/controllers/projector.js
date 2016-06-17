@@ -517,13 +517,20 @@ angular
             });
         }
 
-        // evento.client.joinEvento = function (message) {
-        //     console.log("Chamou joinEvento", message);
-        //     alert('Alguém entrou no lobby. Mensagem SignalR: ');
-        // }
+        $rootScope.evento.client.joinEvento = function (message) {
+            console.log("Chamou joinEvento", message);
+            alert('Alguém entrou no lobby. Mensagem SignalR: ');
+        }
 
-        $rootScope.evento.client.lancarPergunta = function(response){
-            console.log("Chamou lancarPergunta", message);
+        $rootScope.evento.client.iniciarJogo = function () {
+          console.log("## JOGO INICIADO ##");
+          // updateStudentInfo(function(){
+          //   studentCtrl.gameStarted = true;
+          // });
+        }
+
+        $rootScope.evento.client.lancarPergunta = function(){
+            console.log("Chamou lancarPergunta");
             alert('Chamou o lancarPergunta');
             
             $(".question-content").removeClass("question-close");
