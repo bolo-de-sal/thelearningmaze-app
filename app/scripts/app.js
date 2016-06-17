@@ -67,7 +67,7 @@ angular
         redirectTo: '/404'
     });
   })
-  .run(function ($rootScope, $location, AppConfig, RestrictedPagesConfig, AuthenticationService, SessionService, AlertService) {
+  .run(function ($rootScope, $location, AppConfig, RestrictedPagesConfig, AuthenticationService, SessionService, AlertService, EventService) {
 
       angular.element(document).ready(function () {
         lightbox.option({
@@ -82,6 +82,21 @@ angular
           });
       });
 
+      /*========Configs signalR=========*/
+
+      // Habilita CORS
+      jQuery.support.cors = true;
+
+      // // Declara endereço do servidor
+      $.connection.hub.url = "http://tlm-api-dev.azurewebsites.net/signalr";
+
+      // // chatHub é o nome do Hub definido no código do server
+      $rootScope.evento = $.connection.eventoHub;
+      
+      $.connection.hub.logging = true;
+
+      /*========End Configs signalR=========*/
+
       $rootScope.$on('$locationChangeStart', function (event, next, current) {
           AlertService.Clear();
 
@@ -93,6 +108,13 @@ angular
 
           if (restrictedPage && !$rootScope.userLoggedIn) {
             if($location.search().codGrupo && $location.search().codParticipante){
+              $.connection.hub.start().done(function (response) {
+                  $rootScope.evento.server.joinEvento(25, 2);
+                  console.log("SignalR connection success", response);
+              }).fail(function (reason) {
+                  console.log("SignalR connection failed: " + reason);
+              });
+
               $location.url('/student?codGrupo=' + $location.search().codGrupo + '&codParticipante=' + $location.search().codParticipante);
             }else{
               $location.path('/login');
@@ -103,6 +125,30 @@ angular
               case '/student':
                 $location.path('/');
                 break;
+
+              default:
+                EventService.getActiveEvent().then(function(response){
+                  var codEvento = response.codEvento;
+
+                  $.connection.hub.start().done(function () {
+                      // evento.server.joinEventoProfessor(homeCtrl.activeEvent.identificador);
+                      $rootScope.evento.server.joinEventoProfessor("10");
+                  })
+                  .fail(function (reason) {
+                      console.log("SignalR connection failed: " + reason);
+                  });
+                }, function(response){
+                  //Error
+                });
+
+                // $.connection.hub.start().done(function (response) {
+                //     $rootScope.evento.server.joinEvento(25, 2);
+                //     console.log("SignalR connection success", response);
+                // }).fail(function (reason) {
+                //     console.log("SignalR connection failed: " + reason);
+                // });
+
+
             }
           }
 
