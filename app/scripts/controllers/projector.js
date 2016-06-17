@@ -478,10 +478,10 @@ angular
         
         $.connection.hub.logging = true;
 
-        evento.client.joinEvento = function (message) {
-            console.log("Chamou joinEvento", message);
-            alert('Alguém entrou no lobby. Mensagem SignalR: ');
-        }
+        // evento.client.joinEvento = function (message) {
+        //     console.log("Chamou joinEvento", message);
+        //     alert('Alguém entrou no lobby. Mensagem SignalR: ');
+        // }
 
         // Abre conexão com o servidor
         $.connection.hub.start().done(function (response) {
