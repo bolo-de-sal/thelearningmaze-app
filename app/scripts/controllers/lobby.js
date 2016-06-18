@@ -11,8 +11,8 @@ angular
     .module('thelearningmaze')
     .controller('LobbyController', LobbyController);
 
-    LobbyController.$inject = ['$routeParams', 'AuthenticationService', 'SessionService', '$location', '$rootScope', "EventService"];
-    function LobbyController($routeParams, AuthenticationService, SessionService, $location, $rootScope, EventService) {
+    LobbyController.$inject = ['$routeParams', '$q', 'AuthenticationService', 'SessionService', '$location', '$rootScope', 'EventService', 'AlertService'];
+    function LobbyController($routeParams, $q, AuthenticationService, SessionService, $location, $rootScope, EventService, AlertService) {
     	var lobbyCtrl = this;
 
         var eventId = $routeParams.eventId;
@@ -20,19 +20,18 @@ angular
 
         $rootScope.dataLoading = true;
 
-        EventService.getEventGroups(eventId).then(getEventGroupsSuccess, getEventGroupsFailure);
-
-        function getEventGroupsSuccess(response){
-        	console.log("Grupos do evento: " + eventId);
-            console.log(response);
-
-            lobbyCtrl.groups = response;
+        $q.all([
+            EventService.getEventById(eventId),
+            EventService.getEventGroups(eventId)
+        ]).then(function(response){
+            lobbyCtrl.event = response[0];
+            lobbyCtrl.groups = response[1];
+        }, function(error){
+            AlertService.Add('danger', error.data.message);
+        })
+        .finally(function(){
             $rootScope.dataLoading = false;
-        }
-
-        function getEventGroupsFailure(response){
-            $rootScope.dataLoading = false;
-        }
+        });
 
         lobbyCtrl.initEvent = function(eventId){
         	$rootScope.dataLoading = true;
@@ -47,10 +46,10 @@ angular
 		            console.log("SignalR connection failed: " + reason);
 		        });
 
+                $location.path('control-panel/' + eventId);
+            }).finally(function(){
         		$rootScope.dataLoading = false;
-
-        		$location.path('control-panel/' + eventId);
-        	});
+            });
         }
 
         $rootScope.evento.client.joinEvento = function (message) {
@@ -58,27 +57,11 @@ angular
             alert('Alguém entrou no lobby. Mensagem SignalR: ');
         }
 
-  //       evento.on("client.joinEvento", function(message){
-		// 	console.log("Chamou joinEvento", message);
-  //           alert('Alguém entrou no lobby. Mensagem SignalR: ');
-		// });
-
         // Abre conexão com o servidor
         $.connection.hub.start().done(function (message) {
             console.log("Conexão com o SignalR aberta com sucesso!");
             $rootScope.evento.server.joinEventoProfessor(eventId.toString());
         }).fail(function (reason) {
             console.log("SignalR connection failed: " + reason);
-        });
-
-        //  $.connection.hub.start().done(function(){
-        //  	console.log("Entrou no done lobby");
-        //  });
-
-
-		// evento.client.on("joinEvento", function(message){
-		// 	console.log("Chamou joinEvento", message);
-  //           alert('Alguém entrou no lobby. Mensagem SignalR: ');
-		// });
-        
+        });        
     }

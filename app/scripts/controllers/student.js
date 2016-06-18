@@ -19,8 +19,11 @@ angular
         var otherGroup = groupIdDecoded != $location.search().codGrupo;
 
         if(!$localStorage.memberGroupId || otherGroup){
-	        $localStorage.memberGroupId = 'lm' + $base64.encode($location.search().codParticipante);
-	        $localStorage.groupId = $base64.encode($location.search().codGrupo);
+        	var groupId = $location.search().codGrupo && Number.isInteger($location.search().codGrupo) ? $location.search().codGrupo : 0;
+        	var memberId = $location.search().codParticipante && Number.isInteger($location.search().codParticipante) ? $location.search().codParticipante : 0;
+        	console.log($location.search());
+	        $localStorage.groupId = $base64.encode(groupId);
+	        $localStorage.memberGroupId = 'lm' + $base64.encode(memberId);
         }
 
         studentCtrl.groupId = $base64.decode($localStorage.groupId);
