@@ -13,7 +13,7 @@
 		padding: 0 0 20px 0;
 	}
 
-	#student-waiting-start-event{
+	.student{
 		.logo{
 			width: 210px;
 			margin: 0 auto;
@@ -24,7 +24,7 @@
 			}
 		}
 
-		#waiting-start-event{
+		.student-text{
 			margin-top: 90px;
 			font-size: 32px;
 			color: $white;
@@ -49,6 +49,10 @@
 	    	    &.current{
     	    	    top: 0;
 				    z-index: 10;
+	    	    }
+
+	    	    .group-name{
+	    	    	line-height: 55px;
 	    	    }
 
 	    	    .group-icon{
