@@ -19,8 +19,8 @@ angular
         var otherGroup = groupIdDecoded != $location.search().codGrupo;
 
         if(!$localStorage.memberGroupId || otherGroup){
-        	var groupId = $location.search().codGrupo && Number.isInteger($location.search().codGrupo) ? $location.search().codGrupo : 0;
-        	var memberId = $location.search().codParticipante && Number.isInteger($location.search().codParticipante) ? $location.search().codParticipante : 0;
+        	var groupId = parseInt($location.search().codGrupo);
+        	var memberId = parseInt($location.search().codParticipante);
         	console.log($location.search());
 	        $localStorage.groupId = $base64.encode(groupId);
 	        $localStorage.memberGroupId = 'lm' + $base64.encode(memberId);
@@ -55,7 +55,6 @@ angular
 				studentCtrl.groupsInfo = response[1];
 			}, function(error){
 				$rootScope.dataLoading = false;
-				AlertService.Add('danger', 'Não foi possível obter informações do grupo', true);
 			}).finally(function(){
 				if(studentCtrl.event.codStatus == "E" && !studentCtrl.current.Questao){
 					studentCtrl.gameStarted = true;

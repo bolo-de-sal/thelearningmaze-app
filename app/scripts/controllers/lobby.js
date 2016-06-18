@@ -41,12 +41,11 @@ angular
 
         		$.connection.hub.start().done(function (message) {
 		            console.log("Disparou iniciarJogo con id: ", eventId);
-		            $rootScope.evento.server.iniciarJogo(eventId.toString());
+		            $rootScope.evento.server.iniciarJogo(eventId);
+                    $location.path('control-panel/' + eventId);
 		        }).fail(function (reason) {
 		            console.log("SignalR connection failed: " + reason);
 		        });
-
-                $location.path('control-panel/' + eventId);
             }).finally(function(){
         		$rootScope.dataLoading = false;
             });
