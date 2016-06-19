@@ -11,9 +11,9 @@ angular
     .module('thelearningmaze')
     .controller('ControlPanelController', ControlPanelController);
 
-    ControlPanelController.$inject = ['$routeParams', '$rootScope', '$q', '$uibModal', 'EventService', 'QuestionService', 'GroupService', 'QuestionDifficultyConfig'];
+    ControlPanelController.$inject = ['$routeParams', '$rootScope', '$q', '$timeout', '$uibModal', 'EventService', 'QuestionService', 'GroupService', 'QuestionDifficultyConfig'];
 
-    function ControlPanelController($routeParams, $rootScope, $q, $uibModal, EventService, QuestionService, GroupService, QuestionDifficultyConfig) {
+    function ControlPanelController($routeParams, $rootScope, $q, $timeout, $uibModal, EventService, QuestionService, GroupService, QuestionDifficultyConfig) {
         var controlPanelCtrl = this;
         controlPanelCtrl.questions = {};
 
@@ -53,6 +53,10 @@ angular
 					controlPanelCtrl.maxQtdQuestions = groupQuestion.Questoes.length;
 				}
 			});
+
+			$timeout(function(){
+				document.getElementById('event-time').start();
+			}, 100);
 
 			$rootScope.dataLoading = false;
 		});
@@ -133,7 +137,8 @@ angular
       			controlPanelCtrl.questions.current = response[1];
       			controlPanelCtrl.groupsInfo = response[2];
       			controlPanelCtrl.groupsQuestions = response[3];
-      		}).finally(function(){
+      		}).finally(function(){      
+	      		controlPanelCtrl.event.dataFormatada = new Date(controlPanelCtrl.event.data).getTime();			
       			if(!controlPanelCtrl.questions.current.Questao){
       				controlPanelCtrl.questions.current.Questao = {};
       				controlPanelCtrl.questions.current.Questao.textoQuestao = 'Sem pergunta no momento';
@@ -141,8 +146,7 @@ angular
       					controlPanelCtrl.questions.current.Questao.assunto = {};
       				}
       				controlPanelCtrl.questions.current.Questao.assunto.descricao = 'Sem assunto';
-      			}
-      			controlPanelCtrl.event.dataFormatada = new Date(controlPanelCtrl.event.data).getTime();
+      			}      			
       			controlPanelCtrl.questions.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + controlPanelCtrl.questions.current.Questao.codImagem;
       			controlPanelCtrl.maxQtdQuestions = 0;
       			angular.forEach(controlPanelCtrl.groupsQuestions, function(groupQuestion, key){
@@ -150,6 +154,12 @@ angular
       					controlPanelCtrl.maxQtdQuestions = groupQuestion.Questoes.length;
       				}
       			});
+
+      			setTimeout(function(){
+      				document.getElementById('event-time').start();
+      				alert('start');
+      			}, 3000);   			
+      			
       			// Close dataLoading after all requests are finished
       			$rootScope.dataLoading = false;
       		});
