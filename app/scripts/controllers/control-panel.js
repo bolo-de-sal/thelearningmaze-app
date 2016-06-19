@@ -41,9 +41,9 @@ angular
 				controlPanelCtrl.questions.current.Questao = {};
 				controlPanelCtrl.questions.current.Questao.textoQuestao = 'Sem pergunta no momento';
 				if(!controlPanelCtrl.questions.current.Questao.assunto){
-					controlPanelCtrl.questions.current.Questao.assunto = {};
+					controlPanelCtrl.questions.current.Questao.assunto = controlPanelCtrl.questions.current.Grupo.assunto;
+
 				}
-				controlPanelCtrl.questions.current.Questao.assunto.descricao = 'Sem assunto';
 			}
 			controlPanelCtrl.event.dataFormatada = new Date(controlPanelCtrl.event.data).getTime();
 			controlPanelCtrl.questions.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + controlPanelCtrl.questions.current.Questao.codImagem;
@@ -143,9 +143,8 @@ angular
       				controlPanelCtrl.questions.current.Questao = {};
       				controlPanelCtrl.questions.current.Questao.textoQuestao = 'Sem pergunta no momento';
       				if(!controlPanelCtrl.questions.current.Questao.assunto){
-      					controlPanelCtrl.questions.current.Questao.assunto = {};
+      					controlPanelCtrl.questions.current.Questao.assunto = controlPanelCtrl.questions.current.Questao.Grupo.assunto;
       				}
-      				controlPanelCtrl.questions.current.Questao.assunto.descricao = 'Sem assunto';
       			}      			
       			controlPanelCtrl.questions.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + controlPanelCtrl.questions.current.Questao.codImagem;
       			controlPanelCtrl.maxQtdQuestions = 0;
@@ -190,54 +189,15 @@ angular
 
     	var eventId = $routeParams.eventId;
 
-    	$q.all([
-		   GroupService.getCurrentGroupInfo(eventId),
-		   QuestionService.getQuestionsByEvent(eventId),
-		   ThemeService.getThemesByEvent(eventId)
-		]).then(function(response){
-			questionsModalCtrl.currentGroupInfo = response[0];
-			questionsModalCtrl.questionsItems = response[1];
-			questionsModalCtrl.themes = response[2];
-			questionsModalCtrl.difficultiesItems = [
-				{
-					descricao: 'Fácil',
-					dificuldade: 'F'
-				},
-				{
-					descricao: 'Médio',
-					dificuldade: 'M'
-				},
-				{
-					descricao: 'Difícil',
-					dificuldade: 'D'
-				}
-			];
-		}).finally(function(){
-			angular.forEach(questionsModalCtrl.questionsItems, function(value, key){
-				value.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + value.Questao.codImagem;
-			});
-
-			questionsModalCtrl.difficultyIncludes.push(questionsModalCtrl.currentGroupInfo.Grupo.questao.dificuldade);
-
-			questionsModalCtrl.themeIncludes.push(questionsModalCtrl.currentGroupInfo.Grupo.assunto.descricao);
-
-			questionsModalCtrl.filtersLoaded = true;
-			$rootScope.dataLoading = false;
-		});
-
 		questionsModalCtrl.difficultyIncludes = [];
 
 		questionsModalCtrl.includeDifficulty = function(difficulty){
-			if(difficulty != questionsModalCtrl.currentGroupInfo.Grupo.questao.dificuldade){
-				var i = $.inArray(difficulty, questionsModalCtrl.difficultyIncludes);
-		        if (i > -1) {
-		            questionsModalCtrl.difficultyIncludes.splice(i, 1);
-		        } else {
-		            questionsModalCtrl.difficultyIncludes.push(difficulty);
-		        }
-			}else{
-				AlertService.Add('danger', 'A questão e dificuldade do grupo atual deve estar sempre selecionada.', true);
-			}
+			var i = $.inArray(difficulty, questionsModalCtrl.difficultyIncludes);
+	        if (i > -1) {
+	            questionsModalCtrl.difficultyIncludes.splice(i, 1);
+	        } else {
+	            questionsModalCtrl.difficultyIncludes.push(difficulty);
+	        }
 		}
 
 		questionsModalCtrl.difficultyFilter = function(questionItem){
@@ -264,17 +224,12 @@ angular
 		questionsModalCtrl.themeIncludes = [];
 
 		questionsModalCtrl.includeTheme = function(theme){
-			if(theme != questionsModalCtrl.currentGroupInfo.Grupo.assunto.descricao)
-			{
-				var i = $.inArray(theme, questionsModalCtrl.themeIncludes);
-		        if (i > -1){
-		            questionsModalCtrl.themeIncludes.splice(i, 1);
-		        } else {
-		            questionsModalCtrl.themeIncludes.push(theme);
-		        }
-			}else{
-				AlertService.Add('danger', 'A questão e dificuldade do grupo atual deve estar sempre selecionada.', true);
-			}
+			var i = $.inArray(theme, questionsModalCtrl.themeIncludes);
+	        if (i > -1){
+	            questionsModalCtrl.themeIncludes.splice(i, 1);
+	        } else {
+	            questionsModalCtrl.themeIncludes.push(theme);
+	        }
 		}
 
 		questionsModalCtrl.themeFilter = function(questionItem){
@@ -347,4 +302,43 @@ angular
     	questionsModalCtrl.close = function(){
     		$uibModalInstance.dismiss();
     	}
+
+    	$q.all([
+		   GroupService.getCurrentGroupInfo(eventId),
+		   QuestionService.getQuestionsByEvent(eventId),
+		   ThemeService.getThemesByEvent(eventId)
+		]).then(function(response){
+			questionsModalCtrl.currentGroupInfo = response[0];
+			questionsModalCtrl.questionsItems = response[1];
+			questionsModalCtrl.themes = response[2];
+			questionsModalCtrl.difficultiesItems = [
+				{
+					descricao: 'Fácil',
+					dificuldade: 'F'
+				},
+				{
+					descricao: 'Médio',
+					dificuldade: 'M'
+				},
+				{
+					descricao: 'Difícil',
+					dificuldade: 'D'
+				}
+			];
+		}).finally(function(){
+			angular.forEach(questionsModalCtrl.questionsItems, function(value, key){
+				value.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + value.Questao.codImagem;
+			});
+
+			console.log(questionsModalCtrl.currentGroupInfo.Grupo.questao.dificuldade);
+			questionsModalCtrl.selectionDifficulties.push(questionsModalCtrl.currentGroupInfo.Grupo.questao.dificuldade);
+			questionsModalCtrl.difficultyIncludes.push(questionsModalCtrl.currentGroupInfo.Grupo.questao.dificuldade);
+
+			console.log(questionsModalCtrl.currentGroupInfo.Grupo.assunto.descricao);
+			questionsModalCtrl.selectionThemes.push(questionsModalCtrl.currentGroupInfo.Grupo.assunto.descricao);
+			questionsModalCtrl.themeIncludes.push(questionsModalCtrl.currentGroupInfo.Grupo.assunto.descricao);
+
+			questionsModalCtrl.filtersLoaded = true;
+			$rootScope.dataLoading = false;
+		});
     }

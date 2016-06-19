@@ -67,6 +67,7 @@ angular
         	    	$rootScope.userLoggedIn = null;
             	    SessionService.removeUserData();
             	    $location.path('/login');
+            	    $rootScope.dataLoading = false;
 	            }
 
 	            return $q.reject(response);

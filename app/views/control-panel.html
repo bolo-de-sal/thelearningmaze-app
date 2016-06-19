@@ -113,7 +113,7 @@
       </div>
     </div>
     <div class="col-md-12 card wrap-card-close-event">
-      <button class="close-event" ng-if="controlPane.event.codStatus != 'F'" ng-click="controlPanel.closeEvent()">Encerrar Evento</button>
+      <button class="close-event" ng--disabled="controlPane.event.codStatus == 'F'" ng-click="controlPanel.closeEvent()">Encerrar Evento</button>
     </div>
   </div>
 </div>
@@ -140,12 +140,12 @@
     <form novalidate>
       <div class="questions-filters" ng-show="questionsModal.filtersLoaded">
         <div class="questions-filter questions-difficulty-filter">
-          <label class="difficulty" ng-repeat="difficultyItem in questionsModal.difficultiesItems" ng-class="{current: questionsModal.selectionDifficulties.indexOf(difficultyItem.dificuldade) > -1 || difficultyItem.dificuldade == questionsModal.currentGroupInfo.Grupo.questao.dificuldade}">
+          <label class="difficulty" ng-repeat="difficultyItem in questionsModal.difficultiesItems" ng-class="{current: questionsModal.selectionDifficulties.indexOf(difficultyItem.dificuldade) > -1}" title="{{difficultyItem.descricao}}">
             {{ difficultyItem.descricao }}<input type="checkbox" value="{{difficultyItem.descricao}}" name="questionsModal.selectedDifficulties[]" ng-click="questionsModal.toggleSelectionDifficulty(difficultyItem.dificuldade); questionsModal.includeDifficulty(difficultyItem.dificuldade)" ng-checked="difficultyItem.dificuldade == questionsModal.currentGroupInfo.Grupo.questao.dificuldade">
           </label>
         </div>
         <div class="questions-filter questions-theme-filter">
-          <label class="theme" ng-repeat="theme in questionsModal.themes" ng-class="{current: questionsModal.selectionThemes.indexOf(theme.descricao) > -1 || theme.codAssunto == questionsModal.currentGroupInfo.Grupo.assunto.codAssunto}" title="{{theme.descricao}}">
+          <label class="theme" ng-repeat="theme in questionsModal.themes" ng-class="{current: questionsModal.selectionThemes.indexOf(theme.descricao) > -1}" title="{{theme.descricao}}">
             {{ theme.descricao.substring(0, 5) }} <input type="checkbox" value="{{theme.descricao}}" name="questionsModal.selectedThemes[]" ng-click="questionsModal.toggleSelectionTheme(theme.descricao); questionsModal.includeTheme(theme.descricao)" ng-checked="theme.codAssunto == questionsModal.currentGroupInfo.Grupo.assunto.codAssunto">
           </label>
         </div>
@@ -169,7 +169,7 @@
                 </div>
               </td>
               <td>
-                <a href="{{questionItem.Questao.caminhoImagem}}" data-lightbox="{{questionItem.Questao.codImagem}}" class="btn-question-picture" ng-click="$event.preventDefault()" ng-show="questionItem.Questao.codImagem">
+                <a href="{{questionItem.Questao.caminhoImagem}}" data-lightbox="{{questionItem.Assunto.codAssunto}}" class="btn-question-picture" ng-click="$event.preventDefault()" ng-show="questionItem.Questao.codImagem">
                   <span class="glyphicon glyphicon-picture"></span>
                 </a>
               </td>
