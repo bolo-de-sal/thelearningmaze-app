@@ -55,7 +55,7 @@ angular
 
         $rootScope.evento.client.joinEvento = function (message) {
             console.log("Chamou joinEvento", message);
-            alert('Alguém entrou no lobby. Mensagem SignalR: ');
+            // alert('Alguém entrou no lobby. Mensagem SignalR: ');
         }
 
   //       evento.on("client.joinEvento", function(message){

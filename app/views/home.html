@@ -52,7 +52,7 @@
 				<a href="#" class="list-button green" ng-if="event.codStatus == 'ABERTO'" ng-class="{'disabled': home.disableButtons == true , 'enabled': home.disableButtons == false}" ng-click="$event.preventDefault()">Iniciar</a>
 				<a href="#" class="list-button green" ng-if="event.codStatus == 'EXECUTANDO'" ng-class="{'disabled': home.disableButtons == true , 'enabled': home.disableButtons == false}" ng-click="$event.preventDefault()">Ver</a>
 				<a href="#" class="list-button green" ng-if="event.codStatus == 'CRIADO'" ng-class="{'disabled': home.disableButtons == true , 'enabled': home.disableButtons == false}" ng-click="$event.preventDefault()">Abrir</a>
-				<a href="#" class="list-button gray enabled" ng-if="event.codStatus == 'FECHADO'" ng-click="$event.preventDefault()">Ver</a>
+				<a href="#/control-panel/{{event.codEvento}}" class="list-button gray enabled" ng-if="event.codStatus == 'FECHADO'">Ver</a>
 			</div>
 		</div>
 	</div>

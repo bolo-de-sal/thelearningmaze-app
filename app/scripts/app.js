@@ -173,8 +173,8 @@ angular
       $rootScope.CloseAlert = AlertService.CloseAlert;
       $rootScope.imagesUrl = AppConfig.api.endpoint + AppConfig.api.identifier + '/Imagens';
 
-      // $rootScope.evento.client.joinEvento = function (message) {
-      //       console.log("Chamou joinEvento", message);
-      //       alert('Alguém entrou no lobby. Mensagem SignalR: ');
-      //   }
+      $rootScope.evento.client.joinEvento = function (message) {
+            console.log("Chamou joinEvento", message);
+            alert('Alguém entrou no lobby. Mensagem SignalR: ');
+        }
   });

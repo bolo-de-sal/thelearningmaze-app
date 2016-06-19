@@ -11,8 +11,8 @@ angular
     .module('thelearningmaze')
     .controller('ProjectorController', ProjectorController);
 
-    ProjectorController.$inject = ['$routeParams', '$q', '$filter', /*'AuthenticationService', 'SessionService',*/ '$location', '$rootScope', "EventService"];
-    function ProjectorController($routeParams, $q, $filter, /*AuthenticationService, SessionService,*/ $location, $rootScope, EventService) {
+    ProjectorController.$inject = ['$routeParams', '$q', '$filter', /*'AuthenticationService', 'SessionService',*/ '$location', '$rootScope', "EventService", "GroupService"];
+    function ProjectorController($routeParams, $q, $filter, /*AuthenticationService, SessionService,*/ $location, $rootScope, EventService, GroupService) {
 
     	var projectorCtrl = this;
 
@@ -301,9 +301,11 @@ angular
         $q.all([
             EventService.getEventGroups(eventId).then(getEventGroupsSuccess, getEventGroupsFailure),
             EventService.getEventThemes(eventId).then(getEventSubjectsSuccess, getEventSubjectsFailure),
-            EventService.getEventCurrentGroupInfo(eventId).then(getEventCurrentGroupInfoSuccess, getEventCurrentGroupInfoFailure)
+            EventService.getEventCurrentGroupInfo(eventId).then(getEventCurrentGroupInfoSuccess, getEventCurrentGroupInfoFailure),
+            GroupService.getGroupsByEventId(eventId)
         ]).then(function(response){
             console.log(response);
+            projectorCtrl.groupsInfo = response[3];
         }).finally(function(){
             // Close dataLoading after all requests are finished
             $rootScope.dataLoading = false;
@@ -428,7 +430,7 @@ angular
                     });
 
                     if(qtdInPos > 1){
-                        alert(qtdInPos + " grupos na posição: " + projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pos);                        
+                        // alert(qtdInPos + " grupos na posição: " + projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pos);                        
                     }
 
                     // // $("#ppg-group" + codGrupo).toggleClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos - 1].ppg, 4000, "easeOutSine");
@@ -497,7 +499,12 @@ angular
 
                 if(result.acertou){
                     adjustHits(codGrupo, result.acertos);
-                    $('.modal-question.hit').toggleClass('modal-show', 'modal-hide');
+                    if(!response.campeao){
+                        $('.modal-question.hit').toggleClass('modal-show', 'modal-hide');                        
+                    }
+                    else{
+                        $('.modal-winner').toggleClass('modal-show', 'modal-hide');                        
+                    }
                 }
                 else{
                     $('.modal-question.error').toggleClass('modal-show', 'modal.hide');
@@ -519,7 +526,7 @@ angular
 
         $rootScope.evento.client.joinEvento = function (message) {
             console.log("Chamou joinEvento", message);
-            alert('Alguém entrou no lobby. Mensagem SignalR: ');
+            // alert('Alguém entrou no lobby. Mensagem SignalR: ');
         }
 
         $rootScope.evento.client.iniciarJogo = function () {
@@ -531,8 +538,12 @@ angular
 
         $rootScope.evento.client.lancarPergunta = function(response){
             console.log("Perugnta lançada: ", response);
+
+            projectorCtrl.Questao = response.Questao;
+            projectorCtrl.Assunto = response.Assunto;
+            projectorCtrl.alternativas = response.Alternativas;
             console.log("Chamou lancarPergunta");
-            alert('Chamou o lancarPergunta');
+            // alert('Chamou o lancarPergunta');
             
             $(".question-content").removeClass("question-close");
             $(".question-content").addClass("question-open");
@@ -540,7 +551,7 @@ angular
 
         $rootScope.evento.client.responderPergunta = function(response){
             console.log("Chamou responderPergunta", message);
-            alert('Chamou o responderPergunta');
+            // alert('Chamou o responderPergunta');
 
             callbackOnQuestionResponse(response);
         }

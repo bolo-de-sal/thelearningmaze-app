@@ -611,7 +611,7 @@
 
 	.wrap-card-question{
 		margin-left: 66px;
-        width: 720;
+        width: 720px;
 	}
 }
 
@@ -813,4 +813,10 @@ vermelho tem que definir melhor a cor
 .veja:focus{
 	color: white;
 	text-decoration: none;
+}
+
+.lm{
+    height: 100px;
+    position: absolute;
+    top: 30px;
 }
