@@ -21,7 +21,6 @@ angular
         if(!$localStorage.memberGroupId || otherGroup){
         	var groupId = parseInt($location.search().codGrupo);
         	var memberId = parseInt($location.search().codParticipante);
-        	console.log($location.search());
 	        $localStorage.groupId = $base64.encode(groupId);
 	        $localStorage.memberGroupId = 'lm' + $base64.encode(memberId);
         }
@@ -38,21 +37,22 @@ angular
 		   GroupService.getGroupById(studentCtrl.groupId)
 		]).then(function(response){
 			studentCtrl.event = response[0];
-			studentCtrl.studentGroup = response[1];
+			studentCtrl.Group = response[1];
 		}, function(error){
 			$rootScope.dataLoading = false;
 			AlertService.Add('danger', error.data.message, true);
 		}).finally(function(){
 			$q.all([
-			   GroupService.getCurrentGroupInfo(studentCtrl.studentGroup.codEvento),
-			   GroupService.getGroupsByEventId(studentCtrl.studentGroup.codEvento)
+			   GroupService.getCurrentGroupInfo(studentCtrl.Group.codEvento),
+			   GroupService.getGroupsByEventId(studentCtrl.Group.codEvento)
 			]).then(function(response){
 				studentCtrl.current = response[0];
 				studentCtrl.currentInitialized = true;
 				if(!studentCtrl.current.Grupo){
-					studentCtrl.current.Grupo = studentCtrl.studentGroup;
+					studentCtrl.current.Grupo = studentCtrl.Group;
 				}
 				studentCtrl.groupsInfo = response[1];
+				console.log(response[1]);
 			}, function(error){
 				$rootScope.dataLoading = false;
 			}).finally(function(){
@@ -76,14 +76,14 @@ angular
 		studentCtrl.sendSelectedAnsawer = function(ansawerText, ansawerAlternative, ansawerIsTrue, questionTimerFinished){
 			$rootScope.dataLoading = true;
 			document.getElementById('timer-question').stop();
-			QuestionService.sendAnsawer(studentCtrl.studentGroup.codEvento, studentCtrl.current.Questao.codTipoQuestao, ansawerAlternative, ansawerIsTrue, ansawerText, questionTimerFinished).then(function(response){
+			QuestionService.sendAnsawer(studentCtrl.Group.codEvento, studentCtrl.current.Questao.codTipoQuestao, ansawerAlternative, ansawerIsTrue, ansawerText, questionTimerFinished).then(function(response){
 				if(response.correta){
 					AlertService.Add('success', 'Resposta correta', true);
 				}else{
 					AlertService.Add('danger', 'Resposta errada', true);
 				}
 				$.connection.hub.start().done(function () {
-		            $rootScope.evento.server.responderPergunta(studentCtrl.studentGroup.codEvento, studentCtrl.current.Grupo.codGrupo, response.correta);
+		            $rootScope.evento.server.responderPergunta(studentCtrl.Group.codEvento, studentCtrl.current.Grupo.codGrupo, response.correta);
 		        })
 		        .fail(function (reason) {
 		            console.log("SignalR connection failed: " + reason);
@@ -102,8 +102,8 @@ angular
 		function updateStudentInfo(fn){
 			$rootScope.dataLoading = true;
 			$q.all([
-			   // GroupService.getCurrentGroupInfo(studentCtrl.studentGroup.codEvento),
-			   GroupService.getCurrentGroupInfo(studentCtrl.studentGroup.codEvento),
+			   // GroupService.getCurrentGroupInfo(studentCtrl.Group.codEvento),
+			   GroupService.getCurrentGroupInfo(studentCtrl.Group.codEvento),
 			   EventService.getEventByGroupIdAndMemberGroupId(studentCtrl.groupId, studentCtrl.memberGroupId)
 			]).then(function(response){
 				updateCurrentStudentInfo(response[0]);
@@ -132,7 +132,7 @@ angular
 
 				if(studentCtrl.enabledSendAnsawer && studentCtrl.event.codStatus == 'E'){
 					$.connection.hub.start().done(function () {
-					    $rootScope.evento.server.ativarTimer(studentCtrl.studentGroup.codEvento);
+					    $rootScope.evento.server.ativarTimer(studentCtrl.Group.codEvento);
 					})
 					.fail(function (reason) {
 					    console.log("SignalR connection failed: " + reason);

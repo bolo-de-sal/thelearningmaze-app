@@ -54,13 +54,5 @@ angular
         $rootScope.evento.client.joinEvento = function (message) {
             console.log("Chamou joinEvento", message);
             alert('Alguém entrou no lobby. Mensagem SignalR: ');
-        }
-
-        // Abre conexão com o servidor
-        $.connection.hub.start().done(function (message) {
-            console.log("Conexão com o SignalR aberta com sucesso!");
-            $rootScope.evento.server.joinEventoProfessor(eventId.toString());
-        }).fail(function (reason) {
-            console.log("SignalR connection failed: " + reason);
-        });        
+        }     
     }

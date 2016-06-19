@@ -35,7 +35,7 @@
 		    position: relative;
 			display: inline-block;
 		    width: 100%;
-		    height: 50px;
+		    height: 75px;
 		    margin: 15px 0 0 0;
 		    overflow: hidden;
 
@@ -46,12 +46,15 @@
 	    	    transform: translateX(-50%);
 	    	    transition: all .3s ease-in-out;
 	    	    z-index: 9;
+	    	    padding: 10px 20px;
+	    	    background-color: $white;
 	    	    &.current{
     	    	    top: 0;
 				    z-index: 10;
 	    	    }
 
 	    	    .group-name{
+	    	    	display: inline;
 	    	    	line-height: 55px;
 	    	    }
 
@@ -67,6 +70,7 @@
 
 		@for $i from 1 through length($group-colors) {
 			.group-box-name:nth-child(20n+#{$i}){
+				border-top: 5px solid nth($group-colors, $i);
 				.group-icon{
 					background: nth($group-colors, $i) url('../images/groups/icons/#{$i}.png') center center no-repeat;
 					background-size: 60%;
