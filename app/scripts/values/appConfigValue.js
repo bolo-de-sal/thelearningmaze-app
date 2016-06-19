@@ -8,7 +8,7 @@ angular.module('thelearningmaze')
 			// endpoint: 'http://localhost/TheLearningMaze-API'
 		},
 		signalr:{
-			// endpoint: 'http://tlm-api-dev.azurewebsites.net/signalr'
-			endpoint: 'http://localhost/TheLearningMaze-API/signalr'
+			endpoint: 'http://tlm-api-dev.azurewebsites.net/signalr'
+			// endpoint: 'http://localhost/TheLearningMaze-API/signalr'
 		}
 	});

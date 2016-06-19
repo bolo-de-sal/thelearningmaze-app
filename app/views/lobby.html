@@ -15,7 +15,7 @@
 				<p>Formação</p>
 				<p>Alunos: {{group.ParticipantesGrupo.length}}</p>
 				<div class="students">
-					<div class="student" ng-repeat="student in group.ParticipantesGrupo">
+					<div class="student" ng-repeat="student in group.ParticipantesGrupo" ng-class="{online: student.online}">
 						<img src="images/pu.jpg" alt="Professor Utonio">
 						<p title="{{student.nmParticipante}}">{{student.nmParticipante}}</p>				
 					</div>

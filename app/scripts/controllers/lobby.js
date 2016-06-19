@@ -11,8 +11,8 @@ angular
     .module('thelearningmaze')
     .controller('LobbyController', LobbyController);
 
-    LobbyController.$inject = ['$routeParams', '$q', 'AuthenticationService', 'SessionService', '$location', '$rootScope', 'EventService', 'AlertService'];
-    function LobbyController($routeParams, $q, AuthenticationService, SessionService, $location, $rootScope, EventService, AlertService) {
+    LobbyController.$inject = ['$scope', '$routeParams', '$q', 'AuthenticationService', 'SessionService', '$location', '$rootScope', 'EventService', 'AlertService'];
+    function LobbyController($scope, $routeParams, $q, AuthenticationService, SessionService, $location, $rootScope, EventService, AlertService) {
     	var lobbyCtrl = this;
 
         lobbyCtrl.joinedGroups = [];
@@ -33,6 +33,11 @@ angular
             AlertService.Add('danger', error.data.message);
         })
         .finally(function(){
+            angular.forEach(lobbyCtrl.joinedGroups, function(memberId, key){
+                console.log('Membro', memberId);
+                setOnlineMember(lobbyCtrl.groups, memberId);
+            });
+            
             $rootScope.dataLoading = false;
         });
 
@@ -54,8 +59,29 @@ angular
             });
         }
 
-        $rootScope.evento.client.joinEvento = function (group) {
-            lobbyCtrl.joinedGroups.push(group);
+        function setOnlineMember(groups, memberId){
+            angular.forEach(groups, function(group, key){
+                console.log('Grupo', group);
+                angular.forEach(group.ParticipantesGrupo, function(member, key){
+                    console.log('Membro', member);
+                    if(member.codParticipante == memberId){
+                        member.online = true;                        
+                    }
+                });
+            });
+
+            if(!$scope.$$phase) {
+                $scope.$apply();
+            }
+        }
+
+        $rootScope.evento.client.joinEvento = function (memberGroup) {
+            if($.inArray(memberGroup.Participante.codParticipante, lobbyCtrl.joinedGroups)){
+                lobbyCtrl.joinedGroups.push(memberGroup.Participante.codParticipante);
+            }
+            
+            setOnlineMember(lobbyCtrl.groups, memberGroup.Participante.codParticipante);
+            
             console.log(lobbyCtrl.joinedGroups);
         }
     }

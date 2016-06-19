@@ -3,9 +3,9 @@
 		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h1>
 		<p id="waiting-start-event" class="student-text">Aguarde enquanto o jogo é iniciado</p>
 		<div class="groups-box">
-		  <div class="group-box-name current">
-		    <span class="group-icon" title="{{ student.Group.nmGrupo }}"></span>
-		    <span class="group-name">{{ student.Group.nmGrupo }}</span>
+		  <div class="group-box-name" ng-repeat="groupInfo in student.groupsInfo" ng-class="{current: student.Group.codGrupo == groupInfo.Grupo.codGrupo}">
+		    <span class="group-icon" title="{{ groupInfo.Grupo.nmGrupo }}"></span>
+		    <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
 		  </div>
 		</div>
 	</div>
@@ -15,6 +15,7 @@
 		<div class="groups-box">
 		  <div class="group-box-name" ng-repeat="groupInfo in student.groupsInfo" ng-class="{current: student.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
 		    <span class="group-icon" title="{{ groupInfo.Grupo.nmGrupo }}"></span>
+		    <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
 		  </div>
 		</div>
 	</div>

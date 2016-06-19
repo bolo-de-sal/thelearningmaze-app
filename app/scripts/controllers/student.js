@@ -35,6 +35,7 @@ angular
         $q.all([
 		   EventService.getEventByGroupIdAndMemberGroupId(studentCtrl.groupId, studentCtrl.memberGroupId),
 		   GroupService.getGroupById(studentCtrl.groupId)
+		   
 		]).then(function(response){
 			studentCtrl.event = response[0];
 			studentCtrl.Group = response[1];
@@ -44,7 +45,7 @@ angular
 		}).finally(function(){
 			$q.all([
 			   GroupService.getCurrentGroupInfo(studentCtrl.Group.codEvento),
-			   GroupService.getGroupsByEventId(studentCtrl.Group.codEvento)
+			   GroupService.getGroupsByEventId(studentCtrl.Group.codEvento)				   
 			]).then(function(response){
 				studentCtrl.current = response[0];
 				studentCtrl.currentInitialized = true;
@@ -67,6 +68,7 @@ angular
 				}
 
 				updateCurrentStudentInfo(studentCtrl.current);
+
 				$rootScope.dataLoading = false;
 			});
 		});
@@ -158,10 +160,6 @@ angular
 			return time;
 		}
 
-		$rootScope.evento.client.joinEvento = function (group) {
-        	
-        } 
-
 		$rootScope.evento.client.iniciarJogo = function () {
           console.log("## JOGO INICIADO ##");
           updateStudentInfo(function(){
@@ -196,6 +194,7 @@ angular
         	  studentCtrl.gameStarted = false;
         	  studentCtrl.questionAnswered = false;
         	  studentCtrl.receivedQuestion = true;
+        	  $scope.$apply();
           });
         }
 
@@ -205,6 +204,7 @@ angular
         	  studentCtrl.receivedQuestion = false;
         	  studentCtrl.questionAnswered = !isChampion;
         	  studentCtrl.hasChampion = isChampion;
+        	  $scope.$apply();
           });
         }
 
@@ -215,6 +215,7 @@ angular
         	  studentCtrl.questionAnswered = false;
         	  studentCtrl.hasChampion = false;
         	  studentCtrl.closeEvent = true;
+        	  $scope.$apply();
           });
         }		
     }
