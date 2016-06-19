@@ -11,9 +11,9 @@ angular
     .module('thelearningmaze')
     .controller('StudentController', StudentController);
 
-    StudentController.$inject = ['$scope', '$rootScope', '$location', '$q', 'GroupService', 'EventService', 'QuestionService', 'QuestionDifficultyConfig', 'AlertService', '$localStorage', '$base64'];
+    StudentController.$inject = ['$scope', '$rootScope', '$location', '$timeout', '$q', 'GroupService', 'EventService', 'QuestionService', 'QuestionDifficultyConfig', 'AlertService', '$localStorage', '$base64'];
 
-    function StudentController($scope, $rootScope, $location, $q, GroupService, EventService, QuestionService, QuestionDifficultyConfig, AlertService, $localStorage, $base64) {
+    function StudentController($scope, $rootScope, $location, $timeout, $q, GroupService, EventService, QuestionService, QuestionDifficultyConfig, AlertService, $localStorage, $base64) {
         var studentCtrl = this;
         var groupIdDecoded = $localStorage.groupId ? $base64.decode($localStorage.groupId) : 0;
         var otherGroup = groupIdDecoded != $location.search().codGrupo;
@@ -96,7 +96,8 @@ angular
 		}
 
 		studentCtrl.timerFinished = function(){
-			this.sendSelectedAnsawer('', 0, false, true);
+			console.log('Questao enviada de forma automática');
+			// this.sendSelectedAnsawer('', 0, false, true);
 		}
 
 		function updateStudentInfo(fn){
@@ -130,21 +131,35 @@ angular
 				studentCtrl.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + studentCtrl.current.Questao.codImagem;
 				studentCtrl.enabledSendAnsawer = studentCtrl.memberGroupId == studentCtrl.current.Grupo.codLider;
 
-				if(studentCtrl.enabledSendAnsawer && studentCtrl.event.codStatus == 'E'){
+				if(studentCtrl.enabledSendAnsawer && studentCtrl.event.codStatus == 'E' && studentCtrl.receivedQuestion){
 					$.connection.hub.start().done(function () {
 					    $rootScope.evento.server.ativarTimer(studentCtrl.Group.codEvento);
+					        console.log('timer not started');
+					        studentCtrl.countdown = getTimerDifficultyQuestion();
+					        console.log('não caiu no apply');
+					        if(!$scope.$$phase){
+					    	    console.log('caiu no apply');
+					        	$scope.$apply();
+					        }
+
+					        // Elemento não está no DOM
+					        $timeout(function(){
+						        var timer = document.getElementById('timer-question');
+						        console.log('achou o elemento', timer);
+						        timer.start();
+						        console.log('timer started');
+					        }, 100);
 					})
 					.fail(function (reason) {
 					    console.log("SignalR connection failed: " + reason);
-					});
-
-					studentCtrl.countdown = getTimerDifficultyQuestion();
+					});					
 				}
 			}
 		}
 
 		function getTimerDifficultyQuestion(){
 			var time = 0;
+			console.log('vai pegar tempo');
 			switch(studentCtrl.current.Questao.dificuldade){
 				case 'F':
 			    	time = QuestionDifficultyConfig.difficulties.time.F;
@@ -156,6 +171,7 @@ angular
 			  		time = QuestionDifficultyConfig.difficulties.time.D;
 			  		break;
 			}
+			console.log('pegou tempo');
 
 			return time;
 		}
@@ -164,28 +180,31 @@ angular
           console.log("## JOGO INICIADO ##");
           updateStudentInfo(function(){
           	studentCtrl.gameStarted = true;
+          	if(!$scope.$$phase) {
+          	  $scope.$apply();
+          	}
           });
         }
 
         $rootScope.evento.client.ativarTimer = function () {
 			console.log("## TIMER ATIVADO ##");
+			var timer = document.getElementById('timer-question');
 
 			if(studentCtrl.current){
-				console.log('ativado 1');
 				studentCtrl.countdown = getTimerDifficultyQuestion();
-				$scope.$apply();
-				console.log(getTimerDifficultyQuestion());
+			  	$scope.$apply();
+				timer.start();
+				console.log('start-1');
 			}else{
-				console.log('ativado 2');
 				$scope.$watch('studentCtrl.current', function(newValue, oldValue){
 					if(studentCtrl.currentInitialized){
 						studentCtrl.countdown = getTimerDifficultyQuestion();
-			      	console.log(getTimerDifficultyQuestion());
+					  	$scope.$apply();
+						timer.start();
+						console.log('start-1');
 					}
 				});
-			}
-			var timer = document.getElementById('timer-question');
-	      	timer.start();
+			}   	
         }
 
         $rootScope.evento.client.lancarPergunta = function (response) {
@@ -194,7 +213,9 @@ angular
         	  studentCtrl.gameStarted = false;
         	  studentCtrl.questionAnswered = false;
         	  studentCtrl.receivedQuestion = true;
-        	  $scope.$apply();
+        	  if(!$scope.$$phase) {
+	        	  $scope.$apply();
+        	  }
           });
         }
 
@@ -204,7 +225,9 @@ angular
         	  studentCtrl.receivedQuestion = false;
         	  studentCtrl.questionAnswered = !isChampion;
         	  studentCtrl.hasChampion = isChampion;
-        	  $scope.$apply();
+        	  if(!$scope.$$phase) {
+	        	  $scope.$apply();
+        	  }
           });
         }
 
@@ -215,7 +238,9 @@ angular
         	  studentCtrl.questionAnswered = false;
         	  studentCtrl.hasChampion = false;
         	  studentCtrl.closeEvent = true;
-        	  $scope.$apply();
+          	  if(!$scope.$$phase) {
+  	        	  $scope.$apply();
+          	  }
           });
         }		
     }

@@ -11,55 +11,19 @@ angular
     .module('thelearningmaze')
     .controller('ControlPanelController', ControlPanelController);
 
-    ControlPanelController.$inject = ['$routeParams', '$rootScope', '$q', '$timeout', '$uibModal', 'EventService', 'QuestionService', 'GroupService', 'QuestionDifficultyConfig'];
+    ControlPanelController.$inject = ['$scope', '$routeParams', '$rootScope', '$q', '$timeout', '$uibModal', 'EventService', 'QuestionService', 'GroupService', 'QuestionDifficultyConfig'];
 
-    function ControlPanelController($routeParams, $rootScope, $q, $timeout, $uibModal, EventService, QuestionService, GroupService, QuestionDifficultyConfig) {
+    function ControlPanelController($scope, $routeParams, $rootScope, $q, $timeout, $uibModal, EventService, QuestionService, GroupService, QuestionDifficultyConfig) {
         var controlPanelCtrl = this;
-        controlPanelCtrl.questions = {};
-
-        controlPanelCtrl.countdown = 0;
 
         $rootScope.dataLoading = true;
 
         var eventId = $routeParams.eventId;
 
+        controlPanelCtrl.questions = {};
+        controlPanelCtrl.currentInitialized = false;
+
         $rootScope.selectedEvent = $routeParams.eventId;
-
-        // All requests
-        $q.all([
-		   EventService.getEventById(eventId),
-		   GroupService.getCurrentGroupInfo(eventId),
-		   GroupService.getGroupsByEventId(eventId),
-		   GroupService.getGroupsQuestions(eventId)
-		]).then(function(response){
-			controlPanelCtrl.event = response[0];
-			controlPanelCtrl.questions.current = response[1];
-			controlPanelCtrl.groupsInfo = response[2];
-			controlPanelCtrl.groupsQuestions = response[3];
-		}).finally(function(){
-			if(!controlPanelCtrl.questions.current.Questao){
-				controlPanelCtrl.questions.current.Questao = {};
-				controlPanelCtrl.questions.current.Questao.textoQuestao = 'Sem pergunta no momento';
-				if(!controlPanelCtrl.questions.current.Questao.assunto){
-					controlPanelCtrl.questions.current.Questao.assunto = controlPanelCtrl.questions.current.Grupo.assunto;
-
-				}
-			}
-			controlPanelCtrl.event.dataFormatada = new Date(controlPanelCtrl.event.data).getTime();
-			controlPanelCtrl.questions.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + controlPanelCtrl.questions.current.Questao.codImagem;
-			controlPanelCtrl.maxQtdQuestions = 0;
-			angular.forEach(controlPanelCtrl.groupsQuestions, function(groupQuestion, key){
-				if(groupQuestion.Questoes.length > controlPanelCtrl.maxQtdQuestions){
-					controlPanelCtrl.maxQtdQuestions = groupQuestion.Questoes.length;
-				}
-			});
-
-			$timeout(function(){
-				document.getElementById('event-time').start();
-			}, 100);
-
-			$rootScope.dataLoading = false;
-		});
 
         controlPanelCtrl.closeOthers = false;
 
@@ -74,7 +38,55 @@ angular
         		  controllerAs: 'questionsModal',
         		  size: size
         		});
+
+        		modalInstance.result.then(function (selectedItem) {
+			      alert('1');
+			      loadControlPanel();
+			    });
         	}
+        }
+
+        function loadControlPanel(){
+	        // All requests
+	        $q.all([
+			   EventService.getEventById(eventId),
+			   GroupService.getCurrentGroupInfo(eventId),
+			   GroupService.getGroupsByEventId(eventId),
+			   GroupService.getGroupsQuestions(eventId)
+			]).then(function(response){
+				controlPanelCtrl.event = response[0];
+				controlPanelCtrl.questions.current = response[1];
+				controlPanelCtrl.currentInitialized = true;
+				controlPanelCtrl.groupsInfo = response[2];
+				controlPanelCtrl.groupsQuestions = response[3];
+			}).finally(function(){
+				if(!controlPanelCtrl.questions.current.Questao){
+					controlPanelCtrl.questions.current.Questao = {};
+					controlPanelCtrl.questions.current.Questao.textoQuestao = 'Sem pergunta no momento';
+					if(!controlPanelCtrl.questions.current.Questao.assunto){
+						controlPanelCtrl.questions.current.Questao.assunto = controlPanelCtrl.questions.current.Grupo.assunto;
+
+					}
+				}
+				controlPanelCtrl.event.dataFormatada = new Date(controlPanelCtrl.event.data).getTime();
+				controlPanelCtrl.questions.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + controlPanelCtrl.questions.current.Questao.codImagem;
+				controlPanelCtrl.maxQtdQuestions = 0;
+				angular.forEach(controlPanelCtrl.groupsQuestions, function(groupQuestion, key){
+					if(groupQuestion.Questoes.length > controlPanelCtrl.maxQtdQuestions){
+						controlPanelCtrl.maxQtdQuestions = groupQuestion.Questoes.length;
+					}
+				});
+
+				$timeout(function(){
+					document.getElementById('event-time').start();
+				}, 100);
+
+				if(!$scope.$$phase) {
+	          	  $scope.$apply();
+	          	}
+
+				$rootScope.dataLoading = false;
+			});
         }
 
         controlPanelCtrl.getMaxQtdQuestions = function(qtd){
@@ -98,75 +110,55 @@ angular
         	});
         }
 
-        $.connection.hub.start().done(function () {
-            $rootScope.evento.client.ativarTimer = function () {
-              console.log("## TIMER ATIVADO ##");
+        function getTimerDifficultyQuestion(){
+			var time = 0;
+			switch(controlPanelCtrl.questions.current.Questao.dificuldade){
+				case 'F':
+			    	time = QuestionDifficultyConfig.difficulties.time.F;
+			   		break;
+			 	case 'M':
+			   		time = QuestionDifficultyConfig.difficulties.time.M;
+			   		break;
+			  	default:
+			  		time = QuestionDifficultyConfig.difficulties.time.D;
+			  		break;
+			}
 
-              switch(controlPanelCtrl.current.Questao.dificuldade){
-              	case 'F':
-	              	controlPanelCtrl.countdown = QuestionDifficultyConfig.F;
-	             	break;
-	            case 'M':
-	             	controlPanelCtrl.countdown = QuestionDifficultyConfig.M;
-	             	break;
-	            default:
-	            	controlPanelCtrl.countdown = QuestionDifficultyConfig.D;
-	            	break;
-              }
-            }
-        })
-        .fail(function (reason) {
-            console.log("SignalR connection failed: " + reason);
-        });
+			return time;
+		}
 
-        $.connection.hub.start().done(function () {
-	        $rootScope.evento.client.responderPergunta = function (ok, isChampion, groupIdChampion, qtdQuestionsOk) {
-	          console.log("## PERGUNTA RESPONDIDA ##");
-              $rootScope.dataLoading = true;
+        $rootScope.evento.client.ativarTimer = function () {
+			console.log("## TIMER ATIVADO ##");
+			var timer = document.getElementById('timer-question');
 
-	          controlPanelCtrl.countdown = 0;
+			if(controlPanelCtrl.questions.current){
+          	  	controlPanelCtrl.countdown = getTimerDifficultyQuestion();
+  				$scope.$apply();
+  	          	console.log('start-1');
+          	  	timer.start();
+			}else{
+				$scope.$watch('controlPanelCtrl.questions.current', function(newValue, oldValue){
+					if(controlPanelCtrl.currentInitialized){
+		          		controlPanelCtrl.countdown = getTimerDifficultyQuestion();
+	  	  	          	$scope.$apply();
+		  	          	console.log('start-2');
+		          	  	timer.start();
+					}
+				});
+			}
+	      	//timer.start();
+        }
 
-              // All requests
-              $q.all([
-      		   EventService.getEventById(eventId),
-      		   GroupService.getCurrentGroupInfo(eventId),
-      		   GroupService.getGroupsByEventId(eventId),
-      		   GroupService.getGroupsQuestions(eventId)
-      		]).then(function(response){
-      			controlPanelCtrl.event = response[0];
-      			controlPanelCtrl.questions.current = response[1];
-      			controlPanelCtrl.groupsInfo = response[2];
-      			controlPanelCtrl.groupsQuestions = response[3];
-      		}).finally(function(){      
-	      		controlPanelCtrl.event.dataFormatada = new Date(controlPanelCtrl.event.data).getTime();			
-      			if(!controlPanelCtrl.questions.current.Questao){
-      				controlPanelCtrl.questions.current.Questao = {};
-      				controlPanelCtrl.questions.current.Questao.textoQuestao = 'Sem pergunta no momento';
-      				if(!controlPanelCtrl.questions.current.Questao.assunto){
-      					controlPanelCtrl.questions.current.Questao.assunto = controlPanelCtrl.questions.current.Questao.Grupo.assunto;
-      				}
-      			}      			
-      			controlPanelCtrl.questions.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + controlPanelCtrl.questions.current.Questao.codImagem;
-      			controlPanelCtrl.maxQtdQuestions = 0;
-      			angular.forEach(controlPanelCtrl.groupsQuestions, function(groupQuestion, key){
-      				if(groupQuestion.Questoes.length > controlPanelCtrl.maxQtdQuestions){
-      					controlPanelCtrl.maxQtdQuestions = groupQuestion.Questoes.length;
-      				}
-      			});
+        $rootScope.evento.client.responderPergunta = function (ok, isChampion, groupIdChampion, qtdQuestionsOk) {
+	        console.log("## PERGUNTA RESPONDIDA ##");
+            $rootScope.dataLoading = true;
 
-      			setTimeout(function(){
-      				document.getElementById('event-time').start();
-      				alert('start');
-      			}, 3000);   			
-      			
-      			// Close dataLoading after all requests are finished
-      			$rootScope.dataLoading = false;
-      		});
-	        }
-	    })
-	    .fail(function (reason) {
-	        console.log("SignalR connection failed: " + reason);
-	    });
+        	controlPanelCtrl.countdown = 0;
+
+            loadControlPanel();
+        }                
+
+        loadControlPanel();
     }
 
 /**
@@ -330,11 +322,9 @@ angular
 				value.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + value.Questao.codImagem;
 			});
 
-			console.log(questionsModalCtrl.currentGroupInfo.Grupo.questao.dificuldade);
 			questionsModalCtrl.selectionDifficulties.push(questionsModalCtrl.currentGroupInfo.Grupo.questao.dificuldade);
 			questionsModalCtrl.difficultyIncludes.push(questionsModalCtrl.currentGroupInfo.Grupo.questao.dificuldade);
 
-			console.log(questionsModalCtrl.currentGroupInfo.Grupo.assunto.descricao);
 			questionsModalCtrl.selectionThemes.push(questionsModalCtrl.currentGroupInfo.Grupo.assunto.descricao);
 			questionsModalCtrl.themeIncludes.push(questionsModalCtrl.currentGroupInfo.Grupo.assunto.descricao);
 
