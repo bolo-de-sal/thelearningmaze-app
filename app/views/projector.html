@@ -1,4 +1,5 @@
 <div class="svg">
+	<img class="lm" src="images/learning-maze.png" alt="Learning Maze">
 	<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 750 750" viewBox="0 0 750 750" x="0px" y="0px" xmlns:xml="http://www.w3.org/XML/1998/namespace" xml:space="preserve" version="1.1">
 			<filter id="blur-filter" x="-2" y="-2" width="400" height="400">
 				<feGaussianBlur in="SourceGraphic" stdDeviation="30" />
@@ -137,13 +138,14 @@
 	</div> -->
 
 	<div class="controls groups-to-play" ng-show="projector.groups.length > 0">
-		<div ng-repeat="group in projector.groups" ng-click="projector.acertar(group.Grupo.codGrupo)">
+		<!-- <div ng-repeat="group in projector.groups" ng-click="projector.acertar(group.Grupo.codGrupo)">
 			<p>Acertar grupo {{group.Grupo.codGrupo}}</p>
-		</div>
+		</div> -->
 
 		<div class="row">
 	      <div class="col-md-12 card wrap-card-score">
 	        <h3 class="title">Grupos a jogar</h3>
+
 	        <!-- <button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button> -->
 	        <div class="groups-box">
 	          <div class="group-box" ng-repeat="group in projector.groups">
@@ -174,16 +176,16 @@
 				  <div class="content-question-theme">
 				    <div class="content-question">
 				      <p class="question">
-				        {{ student.current.Questao.textoQuestao }}
-				        <a href="{{student.current.Questao.caminhoImagem}}" data-lightbox="{{student.current.Questao.codImagem}}" class="btn-question-picture" ng-click="$event.preventDefault()" ng-show="student.current.Questao.codImagem">
+				        {{ projector.Questao.textoQuestao }}
+				        <a href="{{projector.Questao.caminhoImagem}}" data-lightbox="{{projector.Questao.codImagem}}" class="btn-question-picture" ng-click="$event.preventDefault()" ng-show="projector.Questao.codImagem">
 				          <span class="glyphicon glyphicon-picture"></span>
 				        </a>
 				      </p>
 				    </div>
-				    <p class="theme">Assunto: {{ student.current.Questao.assunto.descricao }}</p>
+				    <p class="theme">Assunto: {{ projector.Assunto.descricao }}</p>
 				  </div>
 				  <div class="groups-box">
-				    <div class="group-box-name" ng-repeat="groupInfo in student.groupsInfo" ng-class="{current: student.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
+				    <div class="group-box-name" ng-repeat="groupInfo in projector.groupsInfo" ng-class="{current: projector.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
 				      <span class="group-icon"></span>
 				      <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
 				    </div>
@@ -192,31 +194,31 @@
 				</div>
 				<div class="col-md-12 card wrap-card-question">
 				  <h3 class="title">Resposta</h3>
-				  <div class="content-ansawer ansawer-plain-text" ng-if="student.current.Questao.codTipoQuestao == 'T'">
-			  		<textarea model="student.ansawerText" class="plain-text" cols="30" rows="5" ng-disabled="!student.enabledSendAnsawer"></textarea>
+				  <div class="content-ansawer ansawer-plain-text" ng-if="projector.Questao.codTipoQuestao == 'T'">
+			  		<textarea class="plain-text" cols="30" rows="5" ng-disabled="true"></textarea>
 				  </div>
-				  <div class="content-ansawer ansawer-alternative" ng-if="student.current.Questao.codTipoQuestao == 'A'">
-					  <div class="radio" ng-class="{disabled: !student.enabledSendAnsawer}" ng-repeat="alternative in student.current.Alternativas">
+				  <div class="content-ansawer ansawer-alternative" ng-if="projector.Questao.codTipoQuestao == 'A'">
+					  <div class="radio left" ng-class="{disabled: true}" ng-repeat="alternative in projector.Alternativas">
 					  	<label>
-					  		<input type="radio" value="{{alternative.codAlternativa}}" ng-model="student.ansawerAlternative" ng-disabled="!student.enabledSendAnsawer"> {{alternative.textoAlternativa}}
+					  		<input type="radio" value="{{alternative.codAlternativa}}" ng-disabled="true"> {{alternative.textoAlternativa}}
 					  	</label>
 					  </div>
 				  </div>
-				  <div class="content-ansawer ansawer-alternative" ng-if="student.current.Questao.codTipoQuestao == 'V'">
-					  <div class="radio" ng-class="{disabled: !student.enabledSendAnsawer}">
+				  <div class="content-ansawer ansawer-alternative" ng-if="projector.Questao.codTipoQuestao == 'V'">
+					  <div class="radio left" ng-class="{disabled: true}">
 					  	<label>
-					  		<input type="radio" value="true" ng-model="student.ansawer.isTrue" ng-disabled="!student.enabledSendAnsawer"> Verdadeiro
+					  		<input type="radio" value="true" ng-disabled="true"> Verdadeiro
 					  	</label>
 					  </div>
-					  <div class="radio" ng-class="{disabled: !student.enabledSendAnsawer}">
+					  <div class="radio left" ng-class="true">
 					  	<label>
-					  		<input type="radio" value="false" ng-model="student.ansawer.isTrue" ng-disabled="!student.enabledSendAnsawer"> Falso
+					  		<input type="radio" value="false" ng-disabled="true"> Falso
 					  	</label>
 					  </div>
 				  </div>
-				  <div class="content-ansawer-buttons">
+				  <!-- <div class="content-ansawer-buttons">
 				  	<button class="btn btn-primary btn-lg btn-send-selected-question" ng-click="student.sendSelectedAnsawer(student.ansawerText, student.ansawerAlternative, student.ansawer.isTrue, false)" ng-disabled="!student.ansawer || !student.enabledSendAnsawer">Enviar</button>
-				  </div>
+				  </div> -->
 				</div>
 			</div>
 		</div>

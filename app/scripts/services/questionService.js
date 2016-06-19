@@ -12,6 +12,7 @@ angular
         questions.getQuestionsByEvent = getQuestionsByEvent;
         questions.getCurrentQuestionByEventId = getCurrentQuestionByEventId;
         questions.sendQuestion = sendQuestion;
+        questions.sendAnsawer = sendAnsawer;
 
         return questions;
 

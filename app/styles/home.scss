@@ -39,9 +39,9 @@
         margin: 0 0 16px;
     }
 
-    .events{
+    /*.events{
         height: 440px;
-    }
+    }*/
 
     .title-columns{
         background: $lightblue;
@@ -133,4 +133,8 @@
     .pagination{
         margin: 0;
     }
+}
+
+.fix-heigth{
+    height: 440px;
 }
