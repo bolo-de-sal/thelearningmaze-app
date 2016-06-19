@@ -39,15 +39,17 @@ angular
         		  size: size
         		});
 
-        		modalInstance.result.then(function (selectedItem) {
-			      alert('1');
-			      loadControlPanel();
+        		modalInstance.result.then(function () {
+        			$rootScope.dataLoading = true;
+			    	controlPanelCtrl.loadControlPanel();
+			    }, function () {
 			    });
         	}
         }
 
-        function loadControlPanel(){
-	        // All requests
+        controlPanelCtrl.loadControlPanel = function(){
+        	controlPanelCtrl.currentInitialized = false;
+
 	        $q.all([
 			   EventService.getEventById(eventId),
 			   GroupService.getCurrentGroupInfo(eventId),
@@ -65,7 +67,16 @@ angular
 					controlPanelCtrl.questions.current.Questao.textoQuestao = 'Sem pergunta no momento';
 					if(!controlPanelCtrl.questions.current.Questao.assunto){
 						controlPanelCtrl.questions.current.Questao.assunto = controlPanelCtrl.questions.current.Grupo.assunto;
-
+					}
+				}else{
+					if(controlPanelCtrl.questions.current.Questao.tempo > 0){
+						var timer = document.getElementById('timer-question');
+						controlPanelCtrl.countdown = controlPanelCtrl.questions.current.Questao.tempo
+			          	$timeout(function(){
+					        timer.start();
+					    }, 0);
+					}else{
+						sendAnsawer();
 					}
 				}
 				controlPanelCtrl.event.dataFormatada = new Date(controlPanelCtrl.event.data).getTime();
@@ -110,55 +121,73 @@ angular
         	});
         }
 
-        function getTimerDifficultyQuestion(){
-			var time = 0;
-			switch(controlPanelCtrl.questions.current.Questao.dificuldade){
-				case 'F':
-			    	time = QuestionDifficultyConfig.difficulties.time.F;
-			   		break;
-			 	case 'M':
-			   		time = QuestionDifficultyConfig.difficulties.time.M;
-			   		break;
-			  	default:
-			  		time = QuestionDifficultyConfig.difficulties.time.D;
-			  		break;
-			}
+        function sendAnsawer(){
+        	$rootScope.dataLoading = true;
+        	QuestionService.sendAnsawer(eventId, controlPanelCtrl.questions.current.Grupo.codGrupo, '', 0, false, true, true).then(function(response){
+        		$.connection.hub.start().done(function () {
+                    $rootScope.evento.server.responderPergunta(eventId, controlPanelCtrl.questions.current.Grupo.codGrupo, response.correta);
+                })
+                .fail(function (reason) {
+                    console.log("SignalR connection failed: " + reason);
+                });
+                controlPanelCtrl.loadControlPanel();
+        	}).finally(function(){
+        		$rootScope.dataLoading = false;
+        	});
+        }
 
-			return time;
-		}
-
-        $rootScope.evento.client.ativarTimer = function () {
+        $rootScope.evento.client.ativarTimer = function (time) {
 			console.log("## TIMER ATIVADO ##");
 			var timer = document.getElementById('timer-question');
 
-			if(controlPanelCtrl.questions.current){
+			controlPanelCtrl.countdown = time;
+
+			if(!$scope.$$phase){
+          		$scope.$apply();
+          	}
+
+          	$timeout(function(){
+		        timer.start();
+		    }, 0);
+
+			time += 5;
+
+		    $timeout(function(){
+		        sendAnsawer();
+		    }, time);
+
+			/*console.log('Questions Current', controlPanelCtrl.questions.current);
+			if(controlPanelCtrl.questions.current.Questao.dificuldade){
           	  	controlPanelCtrl.countdown = getTimerDifficultyQuestion();
   				$scope.$apply();
-  	          	console.log('start-1');
+  	          	console.log('start-1', controlPanelCtrl.countdown);
           	  	timer.start();
 			}else{
-				$scope.$watch('controlPanelCtrl.questions.current', function(newValue, oldValue){
+				$scope.$watch('controlPanelCtrl.questions.current.Questao.dificuldade', function(newValue, oldValue){
 					if(controlPanelCtrl.currentInitialized){
 		          		controlPanelCtrl.countdown = getTimerDifficultyQuestion();
-	  	  	          	$scope.$apply();
-		  	          	console.log('start-2');
-		          	  	timer.start();
+		          		console.log(controlPanelCtrl.countdown);
+	  	  	          	if(!$scope.$$phase){
+	  	  	          		$scope.$apply();
+	  	  	          	}
+
+	  	  	          	$timeout(function(){
+					        timer.start();
+			  	          	console.log('start-2', controlPanelCtrl.questions.current);
+				        }, 0);
 					}
 				});
-			}
-	      	//timer.start();
+			}*/
         }
 
         $rootScope.evento.client.responderPergunta = function (ok, isChampion, groupIdChampion, qtdQuestionsOk) {
 	        console.log("## PERGUNTA RESPONDIDA ##");
             $rootScope.dataLoading = true;
 
-        	controlPanelCtrl.countdown = 0;
-
-            loadControlPanel();
+            controlPanelCtrl.loadControlPanel();
         }                
 
-        loadControlPanel();
+        controlPanelCtrl.loadControlPanel();
     }
 
 /**
@@ -172,9 +201,9 @@ angular
     .module('thelearningmaze')
     .controller('QuestionsModalController', QuestionsModalController);
 
-    QuestionsModalController.$inject = ['$routeParams', '$rootScope', '$q', '$uibModalInstance', 'AlertService', 'QuestionService', 'ThemeService', 'GroupService'];
+    QuestionsModalController.$inject = ['$timeout', '$routeParams', '$rootScope', '$q', '$uibModalInstance', 'AlertService', 'QuestionService', 'ThemeService', 'GroupService'];
 
-    function QuestionsModalController($routeParams, $rootScope, $q, $uibModalInstance, AlertService, QuestionService, ThemeService, GroupService){
+    function QuestionsModalController($timeout, $routeParams, $rootScope, $q, $uibModalInstance, AlertService, QuestionService, ThemeService, GroupService){
     	var questionsModalCtrl = this;
 
     	$rootScope.dataLoading = true;
@@ -292,7 +321,7 @@ angular
 		}
 
     	questionsModalCtrl.close = function(){
-    		$uibModalInstance.dismiss();
+    		$uibModalInstance.close();
     	}
 
     	$q.all([
@@ -318,8 +347,13 @@ angular
 				}
 			];
 		}).finally(function(){
+			var found = false;
 			angular.forEach(questionsModalCtrl.questionsItems, function(value, key){
 				value.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + value.Questao.codImagem;
+				if(!found && value.Questao.dificuldade == questionsModalCtrl.currentGroupInfo.Grupo.questao.dificuldade && value.Assunto.codAssunto == questionsModalCtrl.currentGroupInfo.Grupo.assunto.codAssunto){
+					found = true;
+					questionsModalCtrl.questionsEnabled = true;
+				}
 			});
 
 			questionsModalCtrl.selectionDifficulties.push(questionsModalCtrl.currentGroupInfo.Grupo.questao.dificuldade);

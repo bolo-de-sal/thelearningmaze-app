@@ -180,8 +180,8 @@
     </form>
   </div>
   <div class="modal-footer modal-questions-footer">
-    <button type="button" class="btn btn-primary btn-lg btn-send-selected-question" ng-click="questionsModal.sendQuestion(questionsModal.selectedQuestion)" ng-disabled="!questionsModal.selectedQuestion">Lançar</button>{{questionsModal.questionsEnabled}}
-    <button type="button" class="btn btn-warning btn-lg btn-send-random-question" ng-click="questionsModal.sendQuestion()" ng-disabled="!questionsModal.selectedQuestion">Sortear</button>
+    <button type="button" class="btn btn-primary btn-lg btn-send-selected-question" ng-click="questionsModal.sendQuestion(questionsModal.selectedQuestion)" ng-disabled="!questionsModal.selectedQuestion">Lançar</button>
+    <button type="button" class="btn btn-warning btn-lg btn-send-random-question" ng-click="questionsModal.sendQuestion()" ng-disabled="!questionsModal.questionsEnabled">Sortear</button>
   </div>
 </script>
 <!--END TEMPLATES-->

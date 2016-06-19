@@ -56,17 +56,6 @@ angular
 			}, function(error){
 				$rootScope.dataLoading = false;
 			}).finally(function(){
-				if(studentCtrl.event.codStatus == "E" && !studentCtrl.current.Questao){
-					studentCtrl.gameStarted = true;
-				}else if(studentCtrl.event.codStatus == "E" && studentCtrl.current && studentCtrl.current.Questao){
-					studentCtrl.gameStarted = false;
-					studentCtrl.receivedQuestion = true;
-				}else if(studentCtrl.event.codStatus == "F"){
-					studentCtrl.gameStarted = false;
-					studentCtrl.receivedQuestion = false;
-					studentCtrl.closeEvent = true;
-				}
-
 				updateCurrentStudentInfo(studentCtrl.current);
 
 				$rootScope.dataLoading = false;
@@ -76,7 +65,7 @@ angular
 		studentCtrl.sendSelectedAnsawer = function(ansawerText, ansawerAlternative, ansawerIsTrue, questionTimerFinished){
 			$rootScope.dataLoading = true;
 			document.getElementById('timer-question').stop();
-			QuestionService.sendAnsawer(studentCtrl.Group.codEvento, studentCtrl.current.Questao.codTipoQuestao, ansawerAlternative, ansawerIsTrue, ansawerText, questionTimerFinished).then(function(response){
+			QuestionService.sendAnsawer(studentCtrl.Group.codEvento, studentCtrl.current.Questao.codGrupo, studentCtrl.current.Questao.codTipoQuestao, ansawerAlternative, ansawerIsTrue, ansawerText, questionTimerFinished).then(function(response){
 				if(response.correta){
 					AlertService.Add('success', 'Resposta correta', true);
 				}else{
@@ -103,7 +92,6 @@ angular
 		function updateStudentInfo(fn){
 			$rootScope.dataLoading = true;
 			$q.all([
-			   // GroupService.getCurrentGroupInfo(studentCtrl.Group.codEvento),
 			   GroupService.getCurrentGroupInfo(studentCtrl.Group.codEvento),
 			   EventService.getEventByGroupIdAndMemberGroupId(studentCtrl.groupId, studentCtrl.memberGroupId)
 			]).then(function(response){
@@ -119,6 +107,18 @@ angular
 
 		function updateCurrentStudentInfo(response){
 			studentCtrl.current = response;
+
+			if(studentCtrl.event.codStatus == "E" && !studentCtrl.current.Questao){
+				studentCtrl.gameStarted = true;
+			}else if(studentCtrl.event.codStatus == "E" && studentCtrl.current && studentCtrl.current.Questao){
+				studentCtrl.gameStarted = false;
+				studentCtrl.receivedQuestion = true;
+			}else if(studentCtrl.event.codStatus == "F"){
+				studentCtrl.gameStarted = false;
+				studentCtrl.receivedQuestion = false;
+				studentCtrl.closeEvent = true;
+			}
+
 			if(studentCtrl.current){
 				if(!studentCtrl.current.Questao){
 					studentCtrl.current.Questao = {};
@@ -130,25 +130,20 @@ angular
 				}
 				studentCtrl.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + studentCtrl.current.Questao.codImagem;
 				studentCtrl.enabledSendAnsawer = studentCtrl.memberGroupId == studentCtrl.current.Grupo.codLider;
-
+				console.log(studentCtrl.receivedQuestion);
 				if(studentCtrl.enabledSendAnsawer && studentCtrl.event.codStatus == 'E' && studentCtrl.receivedQuestion){
 					$.connection.hub.start().done(function () {
-					    $rootScope.evento.server.ativarTimer(studentCtrl.Group.codEvento);
-					        console.log('timer not started');
+					    $rootScope.evento.server.ativarTimer(studentCtrl.Group.codEvento, getTimerDifficultyQuestion());
 					        studentCtrl.countdown = getTimerDifficultyQuestion();
-					        console.log('não caiu no apply');
 					        if(!$scope.$$phase){
-					    	    console.log('caiu no apply');
 					        	$scope.$apply();
 					        }
 
 					        // Elemento não está no DOM
 					        $timeout(function(){
 						        var timer = document.getElementById('timer-question');
-						        console.log('achou o elemento', timer);
 						        timer.start();
-						        console.log('timer started');
-					        }, 100);
+					        }, 0);
 					})
 					.fail(function (reason) {
 					    console.log("SignalR connection failed: " + reason);
@@ -159,7 +154,6 @@ angular
 
 		function getTimerDifficultyQuestion(){
 			var time = 0;
-			console.log('vai pegar tempo');
 			switch(studentCtrl.current.Questao.dificuldade){
 				case 'F':
 			    	time = QuestionDifficultyConfig.difficulties.time.F;
