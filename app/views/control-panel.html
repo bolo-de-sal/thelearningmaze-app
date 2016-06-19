@@ -145,7 +145,7 @@
           </label>
         </div>
         <div class="questions-filter questions-theme-filter">
-          <label class="theme" ng-repeat="theme in questionsModal.themes" ng-class="{current: questionsModal.selectionThemes.indexOf(theme.descricao) > -1 || theme.codAssunto == questionsModal.currentGroupInfo.Grupo.assunto.codAssunto}">
+          <label class="theme" ng-repeat="theme in questionsModal.themes" ng-class="{current: questionsModal.selectionThemes.indexOf(theme.descricao) > -1 || theme.codAssunto == questionsModal.currentGroupInfo.Grupo.assunto.codAssunto}" title="{{theme.descricao}}">
             {{ theme.descricao.substring(0, 5) }} <input type="checkbox" value="{{theme.descricao}}" name="questionsModal.selectedThemes[]" ng-click="questionsModal.toggleSelectionTheme(theme.descricao); questionsModal.includeTheme(theme.descricao)" ng-checked="theme.codAssunto == questionsModal.currentGroupInfo.Grupo.assunto.codAssunto">
           </label>
         </div>

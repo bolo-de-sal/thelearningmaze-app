@@ -80,15 +80,9 @@ angular
 
       /*========Configs signalR=========*/
 
-      // Habilita CORS
       jQuery.support.cors = true;
-
-      // // Declara endereço do servidor
-      $.connection.hub.url = "http://tlm-api-dev.azurewebsites.net/signalr";
-
-      // // chatHub é o nome do Hub definido no código do server
+      $.connection.hub.url = AppConfig.signalr.endpoint;
       $rootScope.evento = $.connection.eventoHub;
-
       $.connection.hub.logging = true;
 
       /*========End Configs signalR=========*/
@@ -121,12 +115,6 @@ angular
 
               if($location.path() != '/student'){
                 $location.url('/student?codGrupo=' + $location.search().codGrupo + '&codParticipante=' + $location.search().codParticipante);
-                // $.connection.hub.start().done(function (response) {
-                //   $rootScope.evento.server.joinEvento($location.search().codGrupo, $location.search().codParticipante);
-                //       console.log("SignalR connection success", response);
-                //   }).fail(function (reason) {
-                //       console.log("SignalR connection failed: " + reason);
-                //   });
               }
             }
           }else if($rootScope.userLoggedIn){
@@ -151,15 +139,6 @@ angular
                 }, function(response){
                   //Error
                 });
-
-                // $.connection.hub.start().done(function (response) {
-                //     $rootScope.evento.server.joinEvento(25, 2);
-                //     console.log("SignalR connection success", response);
-                // }).fail(function (reason) {
-                //     console.log("SignalR connection failed: " + reason);
-                // });
-
-
             }
           }
 

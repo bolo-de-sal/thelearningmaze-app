@@ -145,6 +145,7 @@
 		<div class="row">
 	      <div class="col-md-12 card wrap-card-score">
 	        <h3 class="title">Grupos a jogar</h3>
+
 	        <!-- <button class="fullscreen"><span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span></button> -->
 	        <div class="groups-box">
 	          <div class="group-box" ng-repeat="group in projector.groups">
@@ -194,30 +195,30 @@
 				<div class="col-md-12 card wrap-card-question">
 				  <h3 class="title">Resposta</h3>
 				  <div class="content-ansawer ansawer-plain-text" ng-if="projector.Questao.codTipoQuestao == 'T'">
-			  		<textarea model="student.ansawerText" class="plain-text" cols="30" rows="5" ng-disabled="true"></textarea>
+			  		<textarea class="plain-text" cols="30" rows="5" ng-disabled="true"></textarea>
 				  </div>
 				  <div class="content-ansawer ansawer-alternative" ng-if="projector.Questao.codTipoQuestao == 'A'">
-					  <div class="radio" ng-class="{disabled: !student.enabledSendAnsawer}" ng-repeat="alternative in projector.Alternativas">
+					  <div class="radio left" ng-class="{disabled: true}" ng-repeat="alternative in projector.Alternativas">
 					  	<label>
-					  		<input type="radio" value="{{alternative.codAlternativa}}" ng-model="student.ansawerAlternative" ng-disabled="!student.enabledSendAnsawer"> {{alternative.textoAlternativa}}
+					  		<input type="radio" value="{{alternative.codAlternativa}}" ng-disabled="true"> {{alternative.textoAlternativa}}
 					  	</label>
 					  </div>
 				  </div>
 				  <div class="content-ansawer ansawer-alternative" ng-if="projector.Questao.codTipoQuestao == 'V'">
-					  <div class="radio" ng-class="{disabled: !student.enabledSendAnsawer}">
+					  <div class="radio left" ng-class="{disabled: true}">
 					  	<label>
-					  		<input type="radio" value="true" ng-model="student.ansawer.isTrue" ng-disabled="!student.enabledSendAnsawer"> Verdadeiro
+					  		<input type="radio" value="true" ng-disabled="true"> Verdadeiro
 					  	</label>
 					  </div>
-					  <div class="radio" ng-class="{disabled: !student.enabledSendAnsawer}">
+					  <div class="radio left" ng-class="true">
 					  	<label>
-					  		<input type="radio" value="false" ng-model="student.ansawer.isTrue" ng-disabled="!student.enabledSendAnsawer"> Falso
+					  		<input type="radio" value="false" ng-disabled="true"> Falso
 					  	</label>
 					  </div>
 				  </div>
-				  <div class="content-ansawer-buttons">
+				  <!-- <div class="content-ansawer-buttons">
 				  	<button class="btn btn-primary btn-lg btn-send-selected-question" ng-click="student.sendSelectedAnsawer(student.ansawerText, student.ansawerAlternative, student.ansawer.isTrue, false)" ng-disabled="!student.ansawer || !student.enabledSendAnsawer">Enviar</button>
-				  </div>
+				  </div> -->
 				</div>
 			</div>
 		</div>

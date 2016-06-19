@@ -11,41 +11,24 @@ angular
     .module('thelearningmaze')
     .controller('StudentController', StudentController);
 
-    StudentController.$inject = ['$rootScope', '$location', '$q', 'GroupService', 'EventService', 'QuestionService', 'QuestionDifficultyConfig', 'AlertService', '$localStorage', '$base64'];
+    StudentController.$inject = ['$scope', '$rootScope', '$location', '$q', 'GroupService', 'EventService', 'QuestionService', 'QuestionDifficultyConfig', 'AlertService', '$localStorage', '$base64'];
 
-    function StudentController($rootScope, $location, $q, GroupService, EventService, QuestionService, QuestionDifficultyConfig, AlertService, $localStorage, $base64) {
+    function StudentController($scope, $rootScope, $location, $q, GroupService, EventService, QuestionService, QuestionDifficultyConfig, AlertService, $localStorage, $base64) {
         var studentCtrl = this;
         var groupIdDecoded = $localStorage.groupId ? $base64.decode($localStorage.groupId) : 0;
         var otherGroup = groupIdDecoded != $location.search().codGrupo;
 
         if(!$localStorage.memberGroupId || otherGroup){
-	        $localStorage.memberGroupId = 'lm' + $base64.encode($location.search().codParticipante);
-	        $localStorage.groupId = $base64.encode($location.search().codGrupo);
+        	var groupId = parseInt($location.search().codGrupo);
+        	var memberId = parseInt($location.search().codParticipante);
+	        $localStorage.groupId = $base64.encode(groupId);
+	        $localStorage.memberGroupId = 'lm' + $base64.encode(memberId);
         }
 
         studentCtrl.groupId = $base64.decode($localStorage.groupId);
         studentCtrl.memberGroupId = $base64.decode($localStorage.memberGroupId.substring(2));
 
-        // $.connection.hub.start().done(function () {
-        //     $rootScope.evento.client.ativarTimer = function () {
-        //       console.log("## TIMER ATIVADO ##");
-
-        //       switch(studentCtrl.current.Questao.dificuldade){
-        //       	case 'F':
-	       //        	studentCtrl.countdown = QuestionDifficultyConfig.F;
-	       //       	break;
-	       //      case 'M':
-	       //       	studentCtrl.countdown = QuestionDifficultyConfig.M;
-	       //       	break;
-	       //      default:
-	       //      	studentCtrl.countdown = QuestionDifficultyConfig.D;
-	       //      	break;
-        //       }
-        //     }
-        // })
-        // .fail(function (reason) {
-        //     console.log("SignalR connection failed: " + reason);
-        // });
+        studentCtrl.currentInitialized = false;
 
         $rootScope.dataLoading = true;
 
@@ -54,49 +37,53 @@ angular
 		   GroupService.getGroupById(studentCtrl.groupId)
 		]).then(function(response){
 			studentCtrl.event = response[0];
-			studentCtrl.studentGroup = response[1];
+			studentCtrl.Group = response[1];
 		}, function(error){
+			$rootScope.dataLoading = false;
 			AlertService.Add('danger', error.data.message, true);
 		}).finally(function(){
-			console.log("Event: ", studentCtrl.event);
-			console.log("StudentGroup: ", studentCtrl.studentGroup);
-
-			if(studentCtrl.event.codStatus == "E"){
-				studentCtrl.gameStarted = true;
-			}
-
 			$q.all([
-			   // GroupService.getCurrentGroupInfo(studentCtrl.studentGroup.codEvento),
-			   GroupService.getGroupsByEventId(studentCtrl.studentGroup.codEvento)
+			   GroupService.getCurrentGroupInfo(studentCtrl.Group.codEvento),
+			   GroupService.getGroupsByEventId(studentCtrl.Group.codEvento)
 			]).then(function(response){
-				studentCtrl.current = {};
-				studentCtrl.current.Grupo = studentCtrl.studentGroup;
-				studentCtrl.groupsInfo = response[0];
+				studentCtrl.current = response[0];
+				studentCtrl.currentInitialized = true;
+				if(!studentCtrl.current.Grupo){
+					studentCtrl.current.Grupo = studentCtrl.Group;
+				}
+				studentCtrl.groupsInfo = response[1];
+				console.log(response[1]);
 			}, function(error){
-				AlertService.Add('danger', error.data.message, true);
-			}).finally(function(){
-				console.log("current.Grupo: ", studentCtrl.current.Grupo);
-				console.log("groupsInfo: ", studentCtrl.groupsInfo);
-
-				updateCurrentStudentInfo(studentCtrl.current || {});
 				$rootScope.dataLoading = false;
+			}).finally(function(){
+				if(studentCtrl.event.codStatus == "E" && !studentCtrl.current.Questao){
+					studentCtrl.gameStarted = true;
+				}else if(studentCtrl.event.codStatus == "E" && studentCtrl.current && studentCtrl.current.Questao){
+					studentCtrl.gameStarted = false;
+					studentCtrl.receivedQuestion = true;
+				}else if(studentCtrl.event.codStatus == "F"){
+					studentCtrl.gameStarted = false;
+					studentCtrl.receivedQuestion = false;
+					studentCtrl.closeEvent = true;
+				}
 
-				console.log("Entrou no finally...");
+				updateCurrentStudentInfo(studentCtrl.current);
 
+				$rootScope.dataLoading = false;
 			});
 		});
 
 		studentCtrl.sendSelectedAnsawer = function(ansawerText, ansawerAlternative, ansawerIsTrue, questionTimerFinished){
 			$rootScope.dataLoading = true;
 			document.getElementById('timer-question').stop();
-			QuestionService.sendAnsawer(studentCtrl.studentGroup.codEvento, studentCtrl.current.Questao.codTipoQuestao, ansawerAlternative, ansawerIsTrue, ansawerText, questionTimerFinished).then(function(response){
+			QuestionService.sendAnsawer(studentCtrl.Group.codEvento, studentCtrl.current.Questao.codTipoQuestao, ansawerAlternative, ansawerIsTrue, ansawerText, questionTimerFinished).then(function(response){
 				if(response.correta){
 					AlertService.Add('success', 'Resposta correta', true);
 				}else{
 					AlertService.Add('danger', 'Resposta errada', true);
 				}
 				$.connection.hub.start().done(function () {
-		            $rootScope.evento.server.responderPergunta(studentCtrl.studentGroup.codEvento, studentCtrl.current.Grupo.codGrupo, response.correta);
+		            $rootScope.evento.server.responderPergunta(studentCtrl.Group.codEvento, studentCtrl.current.Grupo.codGrupo, response.correta);
 		        })
 		        .fail(function (reason) {
 		            console.log("SignalR connection failed: " + reason);
@@ -115,56 +102,62 @@ angular
 		function updateStudentInfo(fn){
 			$rootScope.dataLoading = true;
 			$q.all([
-			   // GroupService.getCurrentGroupInfo(studentCtrl.studentGroup.codEvento),
-			   GroupService.getCurrentGroupInfo(studentCtrl.studentGroup.codEvento),
+			   // GroupService.getCurrentGroupInfo(studentCtrl.Group.codEvento),
+			   GroupService.getCurrentGroupInfo(studentCtrl.Group.codEvento),
 			   EventService.getEventByGroupIdAndMemberGroupId(studentCtrl.groupId, studentCtrl.memberGroupId)
 			]).then(function(response){
 				updateCurrentStudentInfo(response[0]);
-				studentCtrl.evemt = response[1];
+				studentCtrl.event = response[1];
 			}, function(error){
 				AlertService.Add('danger', error.data.message, true);
 			}).finally(function(){
-				console.log("studentCtrl.event: ", studentCtrl.event);
-
 				fn();
-
 				$rootScope.dataLoading = false;
 			});
-
-			// GroupService.getCurrentGroupInfo(studentCtrl.studentGroup.codEvento).then(function(response){
-			// 	updateCurrentStudentInfo(response);
-			// }, function(error){
-			// 	AlertService.Add('danger', error.data.message, true);
-			// }).finally(function(){
-			// 	fn();
-			// 	studentCtrl.event.codStatus = "E";
-			// 	$rootScope.dataLoading = false;
-			// });
 		}
 
 		function updateCurrentStudentInfo(response){
 			studentCtrl.current = response;
-			if(studentCtrl.current.lenght > 0){
+			if(studentCtrl.current){
 				if(!studentCtrl.current.Questao){
 					studentCtrl.current.Questao = {};
 					studentCtrl.current.Questao.textoQuestao = 'Sem pergunta no momento';
-					if(!controlPanelCtrl.questions.current.Questao.assunto){
-						controlPanelCtrl.questions.current.Questao.assunto = {};
+					if(!studentCtrl.current.Questao.assunto){
+						studentCtrl.current.Questao.assunto = {};
 					}
 					studentCtrl.current.Questao.assunto.descricao = 'Sem assunto';
 				}
 				studentCtrl.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + studentCtrl.current.Questao.codImagem;
-				studentCtrl.enabledSendAnsawer = studentCtrl.groupId == studentCtrl.current.Grupo.codLider;
+				studentCtrl.enabledSendAnsawer = studentCtrl.memberGroupId == studentCtrl.current.Grupo.codLider;
 
-				if(studentCtrl.enabledSendAnsawer){
+				if(studentCtrl.enabledSendAnsawer && studentCtrl.event.codStatus == 'E'){
 					$.connection.hub.start().done(function () {
-					    $rootScope.evento.server.ativarTimer(studentCtrl.studentGroup.codEvento);
+					    $rootScope.evento.server.ativarTimer(studentCtrl.Group.codEvento);
 					})
 					.fail(function (reason) {
 					    console.log("SignalR connection failed: " + reason);
 					});
+
+					studentCtrl.countdown = getTimerDifficultyQuestion();
 				}
 			}
+		}
+
+		function getTimerDifficultyQuestion(){
+			var time = 0;
+			switch(studentCtrl.current.Questao.dificuldade){
+				case 'F':
+			    	time = QuestionDifficultyConfig.difficulties.time.F;
+			   		break;
+			 	case 'M':
+			   		time = QuestionDifficultyConfig.difficulties.time.M;
+			   		break;
+			  	default:
+			  		time = QuestionDifficultyConfig.difficulties.time.D;
+			  		break;
+			}
+
+			return time;
 		}
 
 		$rootScope.evento.client.iniciarJogo = function () {
@@ -175,22 +168,27 @@ angular
         }
 
         $rootScope.evento.client.ativarTimer = function () {
-          console.log("## TIMER ATIVADO ##");
+			console.log("## TIMER ATIVADO ##");
 
-          switch(studentCtrl.current.Questao.dificuldade){
-          	case 'F':
-              	studentCtrl.countdown = QuestionDifficultyConfig.F;
-             	break;
-            case 'M':
-             	studentCtrl.countdown = QuestionDifficultyConfig.M;
-             	break;
-            default:
-            	studentCtrl.countdown = QuestionDifficultyConfig.D;
-            	break;
-          }
+			if(studentCtrl.current){
+				console.log('ativado 1');
+				studentCtrl.countdown = getTimerDifficultyQuestion();
+				$scope.$apply();
+				console.log(getTimerDifficultyQuestion());
+			}else{
+				console.log('ativado 2');
+				$scope.$watch('studentCtrl.current', function(newValue, oldValue){
+					if(studentCtrl.currentInitialized){
+						studentCtrl.countdown = getTimerDifficultyQuestion();
+			      	console.log(getTimerDifficultyQuestion());
+					}
+				});
+			}
+			var timer = document.getElementById('timer-question');
+	      	timer.start();
         }
 
-        $rootScope.evento.client.lancarPergunta = function () {
+        $rootScope.evento.client.lancarPergunta = function (response) {
           console.log("## PERGUNTA LANÇADA ##");
           updateStudentInfo(function(){
         	  studentCtrl.gameStarted = false;

@@ -1,16 +1,17 @@
 <section id="student">
 	<div id="student-waiting-start-event" class="col-xs-12 col-sm-12 col-md-12 student" ng-if="student.event.codStatus == 'A'">
 		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h1>
-		<p id="waiting-start-event">Aguarde enquanto o jogo é iniciado</p>
+		<p id="waiting-start-event" class="student-text">Aguarde enquanto o jogo é iniciado</p>
 		<div class="groups-box">
-		  <div class="group-box-name" ng-repeat="groupInfo in student.groupsInfo" ng-class="{current: student.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
-		    <span class="group-icon" title="{{ groupInfo.Grupo.nmGrupo }}"></span>
+		  <div class="group-box-name current">
+		    <span class="group-icon" title="{{ student.Group.nmGrupo }}"></span>
+		    <span class="group-name">{{ student.Group.nmGrupo }}</span>
 		  </div>
 		</div>
 	</div>
 	<div id="student-waiting-question-event" class="col-xs-12 col-sm-12 col-md-12 student" ng-if="student.event.codStatus == 'E' && (student.gameStarted || student.questionAnswered)">
 		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h1>
-		<p id="waiting-question-event" ng-if="student.gameStarted">Aguarde o professor lançar uma pergunta</p>
+		<p id="waiting-question-event" class="student-text" ng-if="student.gameStarted">Aguarde o professor lançar uma pergunta</p>
 		<div class="groups-box">
 		  <div class="group-box-name" ng-repeat="groupInfo in student.groupsInfo" ng-class="{current: student.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
 		    <span class="group-icon" title="{{ groupInfo.Grupo.nmGrupo }}"></span>
@@ -19,7 +20,7 @@
 	</div>
 	<div id="student-waiting-close-event" class="col-xs-12 col-sm-12 col-md-12 student" ng-if="student.event.codStatus == 'F' && student.closeEvent">
 		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h1>
-		<p id="waiting-close-event" ng-if="student.closeEvent">O professor encerrou o jogo</p>
+		<p id="waiting-close-event" class="student-text" ng-if="student.closeEvent">O professor encerrou o jogo</p>
 		<div class="groups-box">
 		  <div class="group-box-name" ng-repeat="groupInfo in student.groupsInfo" ng-class="{current: student.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
 		    <span class="group-icon" title="{{ groupInfo.Grupo.nmGrupo }}"></span>
@@ -28,15 +29,22 @@
 	</div>
 	<div id="student-waiting-champion-event" class="col-xs-12 col-sm-12 col-md-12 student" ng-if="student.event.codStatus == 'F' && student.hasChampion">
 		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h1>
-		<p id="waiting-question-event" ng-if="student.gameStarted">CAMPEÃO</p>
+		<p id="waiting-question-event" class="student-text" ng-if="student.gameStarted">CAMPEÃO</p>
 		<div class="groups-box">
 		  <div class="group-box-name" ng-repeat="groupInfo in student.groupsInfo" ng-class="{current: student.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
 		    <span class="group-icon" title="{{ groupInfo.Grupo.nmGrupo }}"></span>
+		    <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
 		  </div>
 		</div>
 	</div>
 	<div id="student-event-started" class="col-xs-12 col-sm-12 col-md-12 student" ng-if="student.event.codStatus == 'E' && student.receivedQuestion">
 		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h2>
+		<div class="groups-box">
+		  <div class="group-box-name" ng-repeat="groupInfo in student.groupsInfo" ng-class="{current: student.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
+		    <span class="group-icon" title="{{ groupInfo.Grupo.nmGrupo }}"></span>
+		    <span class="group-name">{{ groupInfo.Grupo.nmGrupo }} - {{ student.countdown }}</span>
+		  </div>
+		</div>
 		<div class="col-md-12 card wrap-card-question">
 		  <h3 class="title">Pergunta</h3>
 		  <div class="content-question-theme">
@@ -49,14 +57,8 @@
 		      </p>
 		    </div>
 		    <p class="theme">Assunto: {{ student.current.Questao.assunto.descricao }}</p>
-		  </div>
-		  <div class="groups-box">
-		    <div class="group-box-name" ng-repeat="groupInfo in student.groupsInfo" ng-class="{current: student.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
-		      <span class="group-icon"></span>
-		      <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
-		    </div>
-		  </div>
-		  <timer countdown="student.countdown" finish-callback="student.timerFinished()" max-time-unit="'minute'" interval="1000" id="timer-question" class="time">{{mminutes}}:{{sseconds}}</timer>
+		  </div>		  
+		  <timer countdown="student.countdown" autostart="false" finish-callback="student.timerFinished()" max-time-unit="'minute'" interval="1000" id="timer-question" class="time">{{mminutes}}:{{sseconds}}</timer>
 		</div>
 		<div class="col-md-12 card wrap-card-question">
 		  <h3 class="title">Resposta</h3>
@@ -83,7 +85,7 @@
 			  </div>
 		  </div>
 		  <div class="content-ansawer-buttons">
-		  	<button class="btn btn-primary btn-lg btn-send-selected-question" ng-click="student.sendSelectedAnsawer(student.ansawerText, student.ansawerAlternative, student.ansawer.isTrue, false)" ng-disabled="!student.ansawer || !student.enabledSendAnsawer">Enviar</button>
+		  	<button class="btn btn-primary btn-lg btn-send-selected-question" ng-click="student.sendSelectedAnsawer(student.ansawerText, student.ansawerAlternative, student.ansawer.isTrue, false)" ng-disabled="(!student.ansawerText || !student.ansawer.isTrue || !student.ansawerAlternative) && !student.enabledSendAnsawer">Enviar</button>
 		  </div>
 		</div>
 	</div>

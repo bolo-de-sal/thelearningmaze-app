@@ -6,5 +6,8 @@ angular.module('thelearningmaze')
 			identifier: '/api',
 			endpoint: 'http://tlm-api-dev.azurewebsites.net'
 			// endpoint: 'http://localhost/TheLearningMaze-API'
-		} 
+		},
+		signalr:{
+			endpoint: 'http://tlm-api-dev.azurewebsites.net/signalr'
+		}
 	});

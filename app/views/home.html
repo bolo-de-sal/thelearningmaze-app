@@ -4,7 +4,7 @@
 	<div ng-show="home.disableButtons == true">
 		<div class="title-columns">
 			<p>CÓDIGO</p>
-			<p>DATA</p>
+			<p>Nome</p>
 			<p>INICIO</p>
 			<p>STATUS</p>
 			<!-- <p>QTD GRUPOS</p> -->
@@ -13,8 +13,8 @@
 
 		<div class="events">
 			<div class="event">
-				<p>{{home.activeEvent.codEvento}}</p>
-				<p>{{home.activeEvent.data}}</p>
+				<p>{{home.activeEvent.identificador}}</p>
+				<p>{{home.activeEvent.descricao}}</p>
 				<p>{{home.activeEvent.inicio}}</p>
 				<p>{{home.activeEvent.codStatus}}</p>
 				<div class="btns">
@@ -32,29 +32,36 @@
 
 <div class="card all-events">
 	<h3 class="title">Eventos</h3>
-	<div class="title-columns">
-		<p>CÓDIGO</p>
-		<p>DATA</p>
-		<p>INICIO</p>
-		<p>STATUS</p>
-		<!-- <p>QTD GRUPOS</p> -->
-		<p>DETALHES</p>
-	</div>
 
-	<div class="events">
-		<div class="event" ng-repeat="event in home.events.slice(((home.currentPage-1)*home.itemsPerPage), ((home.currentPage)*home.itemsPerPage))">
-			<p>{{event.codEvento}}</p>
-			<p>{{event.data}}</p>
-			<p>{{event.inicio}}</p>
-			<p>{{event.codStatus}}</p>
-			<!-- <p>4</p> -->
-			<div class="btns">
-				<a href="#" class="list-button green" ng-if="event.codStatus == 'ABERTO'" ng-class="{'disabled': home.disableButtons == true , 'enabled': home.disableButtons == false}" ng-click="$event.preventDefault()">Iniciar</a>
-				<a href="#" class="list-button green" ng-if="event.codStatus == 'EXECUTANDO'" ng-class="{'disabled': home.disableButtons == true , 'enabled': home.disableButtons == false}" ng-click="$event.preventDefault()">Ver</a>
-				<a href="#" class="list-button green" ng-if="event.codStatus == 'CRIADO'" ng-class="{'disabled': home.disableButtons == true , 'enabled': home.disableButtons == false}" ng-click="$event.preventDefault()">Abrir</a>
-				<a href="#/control-panel/{{event.codEvento}}" class="list-button gray enabled" ng-if="event.codStatus == 'FECHADO'">Ver</a>
+	<div ng-show="home.events.length > 0">
+		<div class="title-columns">
+			<p>CÓDIGO</p>
+			<p>NOME</p>
+			<p>INICIO</p>
+			<p>STATUS</p>
+			<!-- <p>QTD GRUPOS</p> -->
+			<p>DETALHES</p>
+		</div>
+
+		<div class="events" ng-class="{'fix-heigth': events.length >= 10}">
+			<div class="event" ng-repeat="event in home.events.slice(((home.currentPage-1)*home.itemsPerPage), ((home.currentPage)*home.itemsPerPage))">
+				<p>{{event.identificador}}</p>
+				<p>{{event.descricao}}</p>
+				<p>{{event.inicio}}</p>
+				<p>{{event.codStatus}}</p>
+				<!-- <p>4</p> -->
+				<div class="btns">
+					<a href="#" class="list-button green" ng-if="event.codStatus == 'ABERTO'" ng-class="{'disabled': home.disableButtons == true , 'enabled': home.disableButtons == false}" ng-click="$event.preventDefault()">Iniciar</a>
+					<a href="#" class="list-button green" ng-if="event.codStatus == 'EXECUTANDO'" ng-class="{'disabled': home.disableButtons == true , 'enabled': home.disableButtons == false}" ng-click="$event.preventDefault()">Ver</a>
+					<a href="#" class="list-button green" ng-if="event.codStatus == 'CRIADO'" ng-class="{'disabled': home.disableButtons == true , 'enabled': home.disableButtons == false}" ng-click="$event.preventDefault()">Abrir</a>
+					<a href="#/control-panel/{{event.codEvento}}" class="list-button gray enabled" ng-if="event.codStatus == 'FECHADO'">Ver</a>
+				</div>
 			</div>
 		</div>
+	</div>
+
+	<div class="none-event" ng-show="home.events.length == 0">
+		<p>Nenhum evento para ser exibido</p>
 	</div>
 
 	<div class="pag" ng-show="home.numPages.length > 0">

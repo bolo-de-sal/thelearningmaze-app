@@ -11,12 +11,20 @@ angular
     .module('thelearningmaze')
     .controller('ProjectorController', ProjectorController);
 
-    ProjectorController.$inject = ['$routeParams', '$q', '$filter', /*'AuthenticationService', 'SessionService',*/ '$location', '$rootScope', "EventService", "GroupService"];
-    function ProjectorController($routeParams, $q, $filter, /*AuthenticationService, SessionService,*/ $location, $rootScope, EventService, GroupService) {
+    ProjectorController.$inject = ['$scope', '$routeParams', '$q', '$filter', /*'AuthenticationService', 'SessionService',*/ '$location', '$rootScope', "EventService", "GroupService"];
+    function ProjectorController($scope, $routeParams, $q, $filter, /*AuthenticationService, SessionService,*/ $location, $rootScope, EventService, GroupService) {
 
     	var projectorCtrl = this;
 
         projectorCtrl.acertar = acertar;
+
+        projectorCtrl.Questao = {
+            textoQuestao: "Sem pergunta no momento"
+        }
+        projectorCtrl.Assunto = {
+            descricao: "Sem assunto no momento"
+        }
+        projectorCtrl.alternativas = "";
 
         console.log("--->ProjectorController init");
 
@@ -541,7 +549,9 @@ angular
 
             projectorCtrl.Questao = response.Questao;
             projectorCtrl.Assunto = response.Assunto;
-            projectorCtrl.alternativas = response.Alternativas;
+            projectorCtrl.Alternativas = response.Alternativas;
+            $scope.$apply();
+
             console.log("Chamou lancarPergunta");
             // alert('Chamou o lancarPergunta');
             
