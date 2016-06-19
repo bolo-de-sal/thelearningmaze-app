@@ -517,9 +517,7 @@ angular
             });
         }
 
-        $rootScope.evento.client.joinEvento = function (message) {
-            console.log("Chamou joinEvento", message);
-            alert('Alguém entrou no lobby. Mensagem SignalR: ');
+        $rootScope.evento.client.joinEvento = function (group) {
         }
 
         $rootScope.evento.client.iniciarJogo = function () {

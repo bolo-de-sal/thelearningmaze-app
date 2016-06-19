@@ -52,7 +52,6 @@ angular
 					studentCtrl.current.Grupo = studentCtrl.Group;
 				}
 				studentCtrl.groupsInfo = response[1];
-				console.log(response[1]);
 			}, function(error){
 				$rootScope.dataLoading = false;
 			}).finally(function(){
@@ -68,7 +67,6 @@ angular
 				}
 
 				updateCurrentStudentInfo(studentCtrl.current);
-
 				$rootScope.dataLoading = false;
 			});
 		});
@@ -160,6 +158,10 @@ angular
 			return time;
 		}
 
+		$rootScope.evento.client.joinEvento = function (group) {
+        	
+        } 
+
 		$rootScope.evento.client.iniciarJogo = function () {
           console.log("## JOGO INICIADO ##");
           updateStudentInfo(function(){
@@ -214,5 +216,5 @@ angular
         	  studentCtrl.hasChampion = false;
         	  studentCtrl.closeEvent = true;
           });
-        }
+        }		
     }

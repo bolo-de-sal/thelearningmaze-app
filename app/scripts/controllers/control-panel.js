@@ -19,6 +19,81 @@ angular
 
         controlPanelCtrl.countdown = 0;
 
+        $rootScope.dataLoading = true;
+
+        var eventId = $routeParams.eventId;
+
+        $rootScope.selectedEvent = $routeParams.eventId;
+
+        // All requests
+        $q.all([
+		   EventService.getEventById(eventId),
+		   GroupService.getCurrentGroupInfo(eventId),
+		   GroupService.getGroupsByEventId(eventId),
+		   GroupService.getGroupsQuestions(eventId)
+		]).then(function(response){
+			controlPanelCtrl.event = response[0];
+			controlPanelCtrl.questions.current = response[1];
+			controlPanelCtrl.groupsInfo = response[2];
+			controlPanelCtrl.groupsQuestions = response[3];
+		}).finally(function(){
+			if(!controlPanelCtrl.questions.current.Questao){
+				controlPanelCtrl.questions.current.Questao = {};
+				controlPanelCtrl.questions.current.Questao.textoQuestao = 'Sem pergunta no momento';
+				if(!controlPanelCtrl.questions.current.Questao.assunto){
+					controlPanelCtrl.questions.current.Questao.assunto = {};
+				}
+				controlPanelCtrl.questions.current.Questao.assunto.descricao = 'Sem assunto';
+			}
+			controlPanelCtrl.event.dataFormatada = new Date(controlPanelCtrl.event.data).getTime();
+			controlPanelCtrl.questions.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + controlPanelCtrl.questions.current.Questao.codImagem;
+			controlPanelCtrl.maxQtdQuestions = 0;
+			angular.forEach(controlPanelCtrl.groupsQuestions, function(groupQuestion, key){
+				if(groupQuestion.Questoes.length > controlPanelCtrl.maxQtdQuestions){
+					controlPanelCtrl.maxQtdQuestions = groupQuestion.Questoes.length;
+				}
+			});
+
+			$rootScope.dataLoading = false;
+		});
+
+        controlPanelCtrl.closeOthers = false;
+
+        // Config questions modal
+        controlPanelCtrl.questionsModal = {
+        	animationsEnabled: true,
+        	open: function(size){
+        		var modalInstance = $uibModal.open({
+        		  animation: controlPanelCtrl.questionsModal.animationsEnabled,
+        		  templateUrl: 'questions-modal.html',
+        		  controller: 'QuestionsModalController',
+        		  controllerAs: 'questionsModal',
+        		  size: size
+        		});
+        	}
+        }
+
+        controlPanelCtrl.getMaxQtdQuestions = function(qtd){
+        	return new Array(qtd);
+        }
+
+        controlPanelCtrl.closeEvent = function(){
+        	$rootScope.dataLoading = true;
+        	EventService.closeEvent(eventId).then(function(){
+        		AlertService.Add('success', 'Evento encerrado com sucesso', true);
+				$.connection.hub.start().done(function () {
+		            $rootScope.evento.server.encerrarJogo(eventId);
+		        })
+		        .fail(function (reason) {
+		            console.log("SignalR connection failed: " + reason);
+		        });
+        	}, function(error){
+        		AlertService.Add('danger', error.data.message, true);
+        	}).finally(function(){
+        		$rootScope.dataLoading = false;
+        	});
+        }
+
         $.connection.hub.start().done(function () {
             $rootScope.evento.client.ativarTimer = function () {
               console.log("## TIMER ATIVADO ##");
@@ -83,81 +158,6 @@ angular
 	    .fail(function (reason) {
 	        console.log("SignalR connection failed: " + reason);
 	    });
-
-        $rootScope.dataLoading = true;
-
-        var eventId = $routeParams.eventId;
-
-        $rootScope.selectedEvent = $routeParams.eventId;
-
-        // All requests
-        $q.all([
-		   EventService.getEventById(eventId),
-		   GroupService.getCurrentGroupInfo(eventId),
-		   GroupService.getGroupsByEventId(eventId),
-		   GroupService.getGroupsQuestions(eventId)
-		]).then(function(response){
-			controlPanelCtrl.event = response[0];
-			controlPanelCtrl.questions.current = response[1];
-			controlPanelCtrl.groupsInfo = response[2];
-			controlPanelCtrl.groupsQuestions = response[3];
-		}).finally(function(){
-			if(!controlPanelCtrl.questions.current.Questao){
-				controlPanelCtrl.questions.current.Questao = {};
-				controlPanelCtrl.questions.current.Questao.textoQuestao = 'Sem pergunta no momento';
-				if(!controlPanelCtrl.questions.current.Questao.assunto){
-					controlPanelCtrl.questions.current.Questao.assunto = {};
-				}
-				controlPanelCtrl.questions.current.Questao.assunto.descricao = 'Sem assunto';
-			}
-			controlPanelCtrl.event.dataFormatada = new Date(controlPanelCtrl.event.data).getTime();
-			controlPanelCtrl.questions.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + controlPanelCtrl.questions.current.Questao.codImagem;
-			controlPanelCtrl.maxQtdQuestions = 0;
-			angular.forEach(controlPanelCtrl.groupsQuestions, function(groupQuestion, key){
-				if(groupQuestion.Questoes.length > controlPanelCtrl.maxQtdQuestions){
-					controlPanelCtrl.maxQtdQuestions = groupQuestion.Questoes.length;
-				}
-			});
-			// Close dataLoading after all requests are finished
-			$rootScope.dataLoading = false;
-		});
-
-        controlPanelCtrl.closeOthers = false;
-
-        // Config questions modal
-        controlPanelCtrl.questionsModal = {
-        	animationsEnabled: true,
-        	open: function(size){
-        		var modalInstance = $uibModal.open({
-        		  animation: controlPanelCtrl.questionsModal.animationsEnabled,
-        		  templateUrl: 'questions-modal.html',
-        		  controller: 'QuestionsModalController',
-        		  controllerAs: 'questionsModal',
-        		  size: size
-        		});
-        	}
-        }
-
-        controlPanelCtrl.getMaxQtdQuestions = function(qtd){
-        	return new Array(qtd);
-        }
-
-        controlPanelCtrl.closeEvent = function(){
-        	$rootScope.dataLoading = true;
-        	EventService.closeEvent(eventId).then(function(){
-        		AlertService.Add('success', 'Evento encerrado com sucesso', true);
-				$.connection.hub.start().done(function () {
-		            $rootScope.evento.server.encerrarJogo(eventId);
-		        })
-		        .fail(function (reason) {
-		            console.log("SignalR connection failed: " + reason);
-		        });
-        	}, function(error){
-        		AlertService.Add('danger', error.data.message, true);
-        	}).finally(function(){
-        		$rootScope.dataLoading = false;
-        	});
-        }
     }
 
 /**

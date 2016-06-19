@@ -63,7 +63,7 @@ angular
         redirectTo: '/404'
       });
   })
-  .run(function ($rootScope, $location, AppConfig, RestrictedPagesConfig, AuthenticationService, SessionService, AlertService, EventService) {
+  .run(function ($rootScope, $location, $routeParams, AppConfig, RestrictedPagesConfig, AuthenticationService, SessionService, AlertService, EventService) {
 
       angular.element(document).ready(function () {
         lightbox.option({
@@ -107,7 +107,7 @@ angular
               $location.path('/');
             }else if($location.search().codGrupo && $location.search().codParticipante){
               $.connection.hub.start().done(function (response) {
-                  $rootScope.evento.server.joinEvento($location.search().codGrupo, $location.search().codParticipante);
+                  $rootScope.evento.server.joinEvento(parseInt($location.search().codGrupo), parseInt($location.search().codParticipante));
                   console.log("Aluno: " + $location.search().codParticipante + " do grupo: " + $location.search().codGrupo + " entrou no evento", response);
               }).fail(function (reason) {
                   console.log("SignalR connection failed: " + reason);
@@ -123,27 +123,17 @@ angular
               case '/student':
                 $location.path('/');
                 break;
-
               default:
-                EventService.getActiveEvent().then(function(response){
-                  var codEvento = response.codEvento;
-
-                  $.connection.hub.start().done(function () {
-                      // evento.server.joinEventoProfessor(homeCtrl.activeEvent.identificador);
-                      console.log("Professor entrou no grupo do evento: " + codEvento.toString());
-                      $rootScope.evento.server.joinEventoProfessor(codEvento.toString());
-                  })
-                  .fail(function (reason) {
-                      console.log("SignalR connection failed: " + reason);
-                  });
-                }, function(response){
-                  //Error
+                $.connection.hub.start().done(function () {
+                    console.log("Professor entrou no grupo do evento: " + $routeParams.eventId);
+                    $rootScope.evento.server.joinEventoProfessor($routeParams.eventId);
+                })
+                .fail(function (reason) {
+                    console.log("SignalR connection failed: " + reason);
                 });
+                break;
             }
           }
-
-          // $location.path('/');
-
       });
 
       // Global
@@ -151,9 +141,4 @@ angular
       $rootScope.Logout = AuthenticationService.Logout;
       $rootScope.CloseAlert = AlertService.CloseAlert;
       $rootScope.imagesUrl = AppConfig.api.endpoint + AppConfig.api.identifier + '/Imagens';
-
-      // $rootScope.evento.client.joinEvento = function (message) {
-      //       console.log("Chamou joinEvento", message);
-      //       alert('Alguém entrou no lobby. Mensagem SignalR: ');
-      //   }
   });

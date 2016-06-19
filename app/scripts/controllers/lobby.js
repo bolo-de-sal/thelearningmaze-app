@@ -15,10 +15,13 @@ angular
     function LobbyController($routeParams, $q, AuthenticationService, SessionService, $location, $rootScope, EventService, AlertService) {
     	var lobbyCtrl = this;
 
+        lobbyCtrl.joinedGroups = [];
+
         var eventId = $routeParams.eventId;
+
         $rootScope.selectedEvent = $routeParams.eventId;
 
-        $rootScope.dataLoading = true;
+        $rootScope.dataLoading = true;         
 
         $q.all([
             EventService.getEventById(eventId),
@@ -26,7 +29,7 @@ angular
         ]).then(function(response){
             lobbyCtrl.event = response[0];
             lobbyCtrl.groups = response[1];
-        }, function(error){
+        },function(error){
             AlertService.Add('danger', error.data.message);
         })
         .finally(function(){
@@ -51,8 +54,8 @@ angular
             });
         }
 
-        $rootScope.evento.client.joinEvento = function (message) {
-            console.log("Chamou joinEvento", message);
-            alert('Alguém entrou no lobby. Mensagem SignalR: ');
-        }     
+        $rootScope.evento.client.joinEvento = function (group) {
+            lobbyCtrl.joinedGroups.push(group);
+            console.log(lobbyCtrl.joinedGroups);
+        }
     }
