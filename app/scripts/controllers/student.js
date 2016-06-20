@@ -94,15 +94,6 @@ angular
 		        .fail(function (reason) {
 		            console.log("SignalR connection failed: " + reason);
 		        });
-
-	         	/*updateStudentInfo(function(){
-	        		studentCtrl.receivedQuestion = false;
-	        		studentCtrl.questionAnswered = !isChampion;
-	        	  	studentCtrl.hasChampion = isChampion;
-	        	  	if(!$scope.$$phase) {
-	        	  		$scope.$apply();
-	        	  	}
-	        	});*/
 			}, function(error){
 				AlertService.Add('danger', 'Não foi possível responder a questão', true);
 			}).finally(function(){
@@ -111,7 +102,9 @@ angular
 		}
 
 		studentCtrl.timerFinished = function(){
-			studentCtrl.sendSelectedAnsawer('', 0, false, true);
+			if(studentCtrl.enabledSendAnsawer){
+				studentCtrl.sendSelectedAnsawer('', 0, false, true);
+			}
 		}
 
 		function updateStudentInfo(fn){
@@ -153,8 +146,19 @@ angular
 					}
 					studentCtrl.current.Questao.assunto.descricao = 'Sem assunto';
 				}
+
+				if(studentCtrl.current.Questao.tempo > 0){
+					studentCtrl.countdown = studentCtrl.current.Questao.tempo;
+			        $timeout(function(){
+				        var timer = document.getElementById('timer-question');
+				        timer.start();
+			        }, 0);
+				}
+
+
 				studentCtrl.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + studentCtrl.current.Questao.codImagem;
 				studentCtrl.enabledSendAnsawer = studentCtrl.memberGroupId == studentCtrl.current.Grupo.codLider;
+				
 				if(studentCtrl.event.codStatus == 'E' && studentCtrl.receivedQuestion){
 					if(studentCtrl.enabledSendAnsawer){
 						$.connection.hub.start().done(function () {
@@ -164,7 +168,7 @@ angular
 						        	$scope.$apply();
 						        }
 
-						        // Elemento não está no DOM
+						        // Coloca na pilha js de processamento
 						        $timeout(function(){
 							        var timer = document.getElementById('timer-question');
 							        timer.start();
@@ -210,23 +214,22 @@ angular
 
         $rootScope.evento.client.ativarTimer = function (time) {
 			console.log("## TIMER ATIVADO ##");
+			// console.log(studentCtrl.current);
+			// $scope.$watch('studentCtrl.current', function() {
+				
+			// }, true);
+			console.log('ENTROU NO WATCH');
+			var timer = document.getElementById('timer-question');
 
-			console.log(studentCtrl.current);
+			studentCtrl.countdown = time;
 
-			$scope.$watch('studentCtrl.current', function() {
-				console.log('ENTROU NO WATCH');
-				var timer = document.getElementById('timer-question');
+			if(!$scope.$$phase){
+          		$scope.$apply();
+          	}
 
-				studentCtrl.countdown = time;
-
-				if(!$scope.$$phase){
-	          		$scope.$apply();
-	          	}
-
-	          	$timeout(function(){
-			        timer.start();
-			    }, 100);
-			}, true);
+          	$timeout(function(){
+		        timer.start();
+		    }, 100);
         }
 
         $rootScope.evento.client.lancarPergunta = function (response) {

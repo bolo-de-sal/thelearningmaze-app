@@ -320,6 +320,12 @@ angular
 			}
 		};
 
+		questionsModalCtrl.checkInput = function(event){
+        	if(angular.element(event.currentTarget).next().prop('disabled')){
+        		AlertService.Add('danger', 'Só é possível lançar perguntas do nível e assunto do grupo atual', true);
+        	}
+        }
+
 		questionsModalCtrl.sendQuestion = function(questionId){
 			var selectedQuestionId = questionId;
 			var questionsEnabled = $('.radio input[type=radio]:enabled');

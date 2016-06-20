@@ -46,7 +46,7 @@
             <div class="groups-box">
               <div class="group-box" ng-repeat="groupInfo in controlPanel.groupsInfo">
                 <div class="group-box-name">
-                  <span class="group-icon"></span>
+                  <span class="group-icon" title="{{ groupInfo.Grupo.nmGrupo }}"></span>
                   <span class="group-name" title="{{ groupInfo.Grupo.nmGrupo }}">{{ groupInfo.Grupo.nmGrupo }}</span>
                   <div class="group-score">{{ groupInfo.Acertos }}pts.</div>
                 </div>
@@ -82,7 +82,7 @@
     </div>
   </div>
   <div class="col-md-3">
-    <div class="col-md-12 card wrap-card-event-time">
+    <div class="col-md-12 card wrap-card-event-time" title="Tempo decorrido do evento">
       <timer ng-if="controlPanel.event.dataFormatada" autostart="false" start-time="controlPanel.event.dataFormatada" id="event-time" class="event-time-text">{{hhours}}:{{mminutes}}:{{sseconds}}</timer>
     </div>
     <!-- <div class="col-md-12 card wrap-card-sound">
@@ -98,7 +98,7 @@
         <uib-accordion close-others="controlPanel.closeOthers">
           <uib-accordion-group ng-repeat="groupInfo in controlPanel.groupsInfo" template-url="group-template.html">
             <uib-accordion-heading>
-              <span class="group-icon"></span>
+              <span class="group-icon" title="{{ groupInfo.Grupo.nmGrupo }}"></span>
               <span class="group-name" title="{{ groupInfo.Grupo.nmGrupo }}">{{ groupInfo.Grupo.nmGrupo }}</span>
               <i class="pull-right glyphicon" ng-class="{'glyphicon-plus': !controlPanel.groups[$index].open, 'glyphicon-minus': controlPanel.groups[$index].open}"></i>
             </uib-accordion-heading>
@@ -138,13 +138,13 @@
   </div>
   <div class="modal-body modal-questions-body">
     <form novalidate>
-      <div class="questions-filters" ng-show="questionsModal.filtersLoaded">
-        <div class="questions-filter questions-difficulty-filter">
+      <div class="questions-filters">
+        <div class="questions-filter questions-difficulty-filter" ng-show="questionsModal.filtersLoaded">
           <label class="difficulty" ng-repeat="difficultyItem in questionsModal.difficultiesItems" ng-class="{current: questionsModal.selectionDifficulties.indexOf(difficultyItem.dificuldade) > -1}" title="{{difficultyItem.descricao}}">
             {{ difficultyItem.descricao }}<input type="checkbox" value="{{difficultyItem.descricao}}" name="questionsModal.selectedDifficulties[]" ng-click="questionsModal.toggleSelectionDifficulty(difficultyItem.dificuldade); questionsModal.includeDifficulty(difficultyItem.dificuldade)" ng-checked="difficultyItem.dificuldade == questionsModal.currentGroupInfo.Grupo.questao.dificuldade">
           </label>
         </div>
-        <div class="questions-filter questions-theme-filter">
+        <div class="questions-filter questions-theme-filter" ng-show="questionsModal.filtersLoaded">
           <label class="theme" ng-repeat="theme in questionsModal.themes" ng-class="{current: questionsModal.selectionThemes.indexOf(theme.descricao) > -1}" title="{{theme.descricao}}">
             {{ theme.descricao.substring(0, 5) }} <input type="checkbox" value="{{theme.descricao}}" name="questionsModal.selectedThemes[]" ng-click="questionsModal.toggleSelectionTheme(theme.descricao); questionsModal.includeTheme(theme.descricao)" ng-checked="theme.codAssunto == questionsModal.currentGroupInfo.Grupo.assunto.codAssunto">
           </label>
@@ -164,6 +164,7 @@
               <td>
                 <div class="radio">
                   <label>
+                    <div class="input-disabled-overlay" ng-click="questionsModal.checkInput($event)"></div>
                     <input type="radio" value="{{ questionItem.Questao.codQuestao }}" name="question" ng-model="questionsModal.selectedQuestion" ng-disabled="questionItem.Questao.dificuldade != questionsModal.currentGroupInfo.Grupo.questao.dificuldade || questionItem.Assunto.codAssunto != questionsModal.currentGroupInfo.Grupo.assunto.codAssunto"> {{ questionItem.Questao.textoQuestao }}
                   </label>
                 </div>
