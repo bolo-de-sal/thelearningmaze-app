@@ -82,8 +82,8 @@
     </div>
   </div>
   <div class="col-md-3">
-    <div class="col-md-12 card wrap-card-time-event">
-      <timer start-time="controlPanel.event.dataFormatada" auto-start="false" id="event-time" class="time-event-text">{{hhours}}:{{mminutes}}:{{sseconds}}</timer>
+    <div class="col-md-12 card wrap-card-event-time">
+      <timer ng-if="controlPanel.event.dataFormatada" autostart="false" start-time="controlPanel.event.dataFormatada" id="event-time" class="event-time-text">{{hhours}}:{{mminutes}}:{{sseconds}}</timer>
     </div>
     <!-- <div class="col-md-12 card wrap-card-sound">
       <button class="sound active"><span class="sound-text">Som</span></button>
@@ -134,7 +134,7 @@
 <script type="text/ng-template" id="questions-modal.html">
   <div class="modal-header modal-questions-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="questionsModal.cancel()"><span aria-hidden="true">×</span></button>
-    <h3 class="modal-title">Perguntas</h3>
+    <h3 class="modal-title">Lançar Pergunta</h3>
   </div>
   <div class="modal-body modal-questions-body">
     <form novalidate>

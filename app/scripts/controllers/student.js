@@ -87,12 +87,22 @@ angular
 				}else{
 					AlertService.Add('danger', 'Resposta errada', true);
 				}
+
 				$.connection.hub.start().done(function () {
 		            $rootScope.evento.server.responderPergunta(studentCtrl.Group.codEvento, studentCtrl.current.Grupo.codGrupo, response.correta);
 		        })
 		        .fail(function (reason) {
 		            console.log("SignalR connection failed: " + reason);
 		        });
+
+	         	/*updateStudentInfo(function(){
+	        		studentCtrl.receivedQuestion = false;
+	        		studentCtrl.questionAnswered = !isChampion;
+	        	  	studentCtrl.hasChampion = isChampion;
+	        	  	if(!$scope.$$phase) {
+	        	  		$scope.$apply();
+	        	  	}
+	        	});*/
 			}, function(error){
 				AlertService.Add('danger', 'Não foi possível responder a questão', true);
 			}).finally(function(){
@@ -146,23 +156,27 @@ angular
 				}
 				studentCtrl.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + studentCtrl.current.Questao.codImagem;
 				studentCtrl.enabledSendAnsawer = studentCtrl.memberGroupId == studentCtrl.current.Grupo.codLider;
-				if(studentCtrl.enabledSendAnsawer && studentCtrl.event.codStatus == 'E' && studentCtrl.receivedQuestion){
-					$.connection.hub.start().done(function () {
-					    $rootScope.evento.server.ativarTimer(studentCtrl.Group.codEvento, getTimerDifficultyQuestion());
-					        studentCtrl.countdown = getTimerDifficultyQuestion();
-					        if(!$scope.$$phase){
-					        	$scope.$apply();
-					        }
+				if(studentCtrl.event.codStatus == 'E' && studentCtrl.receivedQuestion){
+					if(studentCtrl.enabledSendAnsawer){
+						$.connection.hub.start().done(function () {
+						    $rootScope.evento.server.ativarTimer(studentCtrl.Group.codEvento, getTimerDifficultyQuestion());
+						        studentCtrl.countdown = getTimerDifficultyQuestion();
+						        if(!$scope.$$phase){
+						        	$scope.$apply();
+						        }
 
-					        // Elemento não está no DOM
-					        $timeout(function(){
-						        var timer = document.getElementById('timer-question');
-						        timer.start();
-					        }, 0);
-					})
-					.fail(function (reason) {
-					    console.log("SignalR connection failed: " + reason);
-					});					
+						        // Elemento não está no DOM
+						        $timeout(function(){
+							        var timer = document.getElementById('timer-question');
+							        timer.start();
+						        }, 0);
+						})
+						.fail(function (reason) {
+						    console.log("SignalR connection failed: " + reason);
+						});					
+					}else{
+						studentCtrl.countdown = getTimerDifficultyQuestion();
+					}
 				}
 			}
 		}
@@ -239,14 +253,14 @@ angular
         }
 
         $rootScope.evento.client.responderPergunta = function (ok, isChampion, groupIdChampion, qtdQuestionsOk) {
-          console.log("## PERGUNTA RESPONDIDA ##");
-          updateStudentInfo(function(){
-        	  studentCtrl.receivedQuestion = false;
-        	  studentCtrl.questionAnswered = !isChampion;
-        	  studentCtrl.hasChampion = isChampion;
-        	  if(!$scope.$$phase) {
-	        	  $scope.$apply();
-        	  }
+        	console.log("## PERGUNTA RESPONDIDA ##");
+        	updateStudentInfo(function(){
+        	studentCtrl.receivedQuestion = false;
+        	studentCtrl.questionAnswered = !isChampion;
+        	studentCtrl.hasChampion = isChampion;
+        	if(!$scope.$$phase) {
+	        	$scope.$apply();
+    		}
           });
         }
 

@@ -48,7 +48,7 @@ angular
         }
 
         controlPanelCtrl.loadControlPanel = function(){
-        	controlPanelCtrl.currentInitialized = false;
+        	controlPanelCtrl.currentInitialized = false;        	
 
 	        $q.all([
 			   EventService.getEventById(eventId),
@@ -92,6 +92,9 @@ angular
 					document.getElementById('event-time').start();
 				}, 100);
 
+				console.log('RESETOU O TIMER');
+	          	$scope.countdown = 0;
+
 				if(!$scope.$$phase) {
 	          	  $scope.$apply();
 	          	}
@@ -122,19 +125,40 @@ angular
         }
 
         function sendAnsawer(){
-        	$rootScope.dataLoading = true;
-        	QuestionService.sendAnsawer(eventId, controlPanelCtrl.questions.current.Grupo.codGrupo, '', 0, false, '', true).then(function(response){
-        		$.connection.hub.start().done(function () {
-                    $rootScope.evento.server.responderPergunta(eventId, controlPanelCtrl.questions.current.Grupo.codGrupo, response.correta);
-                })
-                .fail(function (reason) {
-                    console.log("SignalR connection failed: " + reason);
-                });
-                controlPanelCtrl.loadControlPanel();
-        	}, function(error){
-        		controlPanelCtrl.loadControlPanel();
-        	});
+        	if(!controlPanelCtrl.studentQuestionAnswered){
+	        	$rootScope.dataLoading = true;
+	        	QuestionService.sendAnsawer(eventId, controlPanelCtrl.questions.current.Grupo.codGrupo, '', 0, false, '', true).then(function(response){
+	        		$.connection.hub.start().done(function () {
+	                    $rootScope.evento.server.responderPergunta(eventId, controlPanelCtrl.questions.current.Grupo.codGrupo, response.correta);
+	                })
+	                .fail(function (reason) {
+	                    console.log("SignalR connection failed: " + reason);
+	                });
+	                controlPanelCtrl.loadControlPanel();
+	                controlPanelCtrl.studentQuestionAnswered = false;
+	        	}, function(error){
+	        		controlPanelCtrl.loadControlPanel();
+	        	});
+        	}
         }
+
+        function getTimerDifficultyQuestion(){
+			var time = 0;
+			switch(studentCtrl.current.Questao.dificuldade){
+				case 'F':
+			    	time = QuestionDifficultyConfig.difficulties.time.F;
+			   		break;
+			 	case 'M':
+			   		time = QuestionDifficultyConfig.difficulties.time.M;
+			   		break;
+			  	default:
+			  		time = QuestionDifficultyConfig.difficulties.time.D;
+			  		break;
+			}
+			console.log('pegou tempo');
+
+			return time;
+		}
 
         $rootScope.evento.client.ativarTimer = function (time) {
 			console.log("## TIMER ATIVADO ##");
@@ -155,6 +179,8 @@ angular
 		    $timeout(function(){
 		        sendAnsawer();
 		    }, time);
+
+		    console.log("## EXECUTOU TIMER ATIVADO ##");
 
 			/*console.log('Questions Current', controlPanelCtrl.questions.current);
 			if(controlPanelCtrl.questions.current.Questao.dificuldade){
@@ -182,8 +208,10 @@ angular
 
         $rootScope.evento.client.responderPergunta = function (ok, isChampion, groupIdChampion, qtdQuestionsOk) {
 	        console.log("## PERGUNTA RESPONDIDA ##");
+	        document.getElementById('timer-question').stop();
             $rootScope.dataLoading = true;
-
+            controlPanelCtrl.studentQuestionAnswered = true;
+            $scope.$apply();
             controlPanelCtrl.loadControlPanel();
         }                
 

@@ -12,7 +12,7 @@ angular
 	function ApiInterceptor($q, AppConfig){
 		var apiInterceptor = {
 			request: function(config) {
-				if(config.url.startsWith(AppConfig.api.identifier)){
+				if(new RegExp('^' + AppConfig.api.identifier).test(config.url)){
 					config.url = AppConfig.api.endpoint + config.url;
 				}
 				
