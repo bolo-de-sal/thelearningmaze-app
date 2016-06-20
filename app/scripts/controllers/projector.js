@@ -11,8 +11,8 @@ angular
     .module('thelearningmaze')
     .controller('ProjectorController', ProjectorController);
 
-    ProjectorController.$inject = ['$scope', '$routeParams', '$q', '$filter', /*'AuthenticationService', 'SessionService',*/ '$location', '$rootScope', "EventService", "GroupService"];
-    function ProjectorController($scope, $routeParams, $q, $filter, /*AuthenticationService, SessionService,*/ $location, $rootScope, EventService, GroupService) {
+    ProjectorController.$inject = ['$scope', '$routeParams', '$q', '$filter', /*'AuthenticationService', 'SessionService',*/ '$location', '$rootScope', "EventService", "GroupService", "$timeout"];
+    function ProjectorController($scope, $routeParams, $q, $filter, /*AuthenticationService, SessionService,*/ $location, $rootScope, EventService, GroupService, $timeout) {
 
     	var projectorCtrl = this;
 
@@ -420,13 +420,13 @@ angular
 
                     group.pos = projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pos;
 
-                    $("#ppg-group" + codGrupo).removeClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos - 1].ppg);
-                    $("#parent-group" + codGrupo).removeClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos - 1].parent);
-                    $("#pin-group" + codGrupo).removeClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos - 1].pin);
+                    $("#ppg-group" + codGrupo).removeClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].ppg);
+                    $("#parent-group" + codGrupo).removeClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].parent);
+                    $("#pin-group" + codGrupo).removeClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pin);
 
-                    $("#ppg-group" + codGrupo).addClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].ppg);
-                    $("#parent-group" + codGrupo).addClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].parent);
-                    $("#pin-group" + codGrupo).addClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pin);
+                    $("#ppg-group" + codGrupo).addClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos + 1].ppg);
+                    $("#parent-group" + codGrupo).addClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos + 1].parent);
+                    $("#pin-group" + codGrupo).addClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos + 1].pin);
 
                     angular.forEach(projectorCtrl.groups, function(group2, key2){
                         if(group.Grupo.codGrupo != group2.Grupo.codGrupo){
@@ -498,7 +498,7 @@ angular
 
             EventService.getEventCurrentGroupInfo(eventId).then(function(response){
 
-                $rootScope.dataLoading = true;
+                $rootScope.dataLoading = false;
 
                 var currentGroup = response;
                 
@@ -507,19 +507,30 @@ angular
 
                 if(result.acertou){
                     adjustHits(codGrupo, result.acertos);
-                    if(!response.campeao){
-                        $('.modal-question.hit').toggleClass('modal-show', 'modal-hide');                        
+                    if(!result.campeao){
+                        // $('.modal-question.hit').removeClass('modal-hide');
+                        // $('.modal-question.hit').addClass('modal-show');
+
+                        projectorCtrl.hitShow = true;                  
                     }
                     else{
-                        $('.modal-winner').toggleClass('modal-show', 'modal-hide');                        
+                        $('.modal-winner').removeClass('modal-hide');                        
+                        $('.modal-winner').addClass('modal-show');
+
+                        projectorCtrl.winnerShow = true;          
                     }
                 }
                 else{
-                    $('.modal-question.error').toggleClass('modal-show', 'modal.hide');
+                    // $('.modal-question.error').removeClass('modal.hide');
+                    // $('.modal-question.error').addClass('modal-show');
+
+                    projectorCtrl.errorShow = true;
                 }
 
                 $timeout(function(){
-                    $('.modal-question').removeClass('modal-show').addClass('modal-hide');
+                    // $('.modal-question').removeClass('modal-show').addClass('modal-hide');
+                    projectorCtrl.hitShow = false;
+                    projectorCtrl.errorShow = false;
                 }, 3000);
 
                 // var oldPosition = projectorCtrl.boardMap[codAssunto][result.acertos].pos;
@@ -558,8 +569,16 @@ angular
             $(".question-content").addClass("question-open");
         }
 
-        $rootScope.evento.client.responderPergunta = function(response){
-            console.log("Chamou responderPergunta", message);
+        $rootScope.evento.client.responderPergunta = function(acertou, campeao, codGrupoCampeao, acertos){
+
+            var response = {
+                acertou: acertou,
+                campeao: campeao,
+                codGrupoCampeao: codGrupoCampeao,
+                acertos: acertos
+            }
+
+            console.log("Chamou responderPergunta", response);
             // alert('Chamou o responderPergunta');
 
             callbackOnQuestionResponse(response);
