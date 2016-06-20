@@ -86,15 +86,12 @@ angular
 
 						    $timeout(function(){
 						    	controlPanelCtrl.sendAnsawer();
-						    	console.log('Question ansawered from timeout', timeoutSendQuestion);
 						    }, timeoutSendQuestion);							
 						}else{
-							console.log('Question no received');
 							controlPanelCtrl.countdown = getTimerDifficultyQuestion();
 							$timeout(function(){
 						        timer.reset();
 						    }, 0);
-							console.log('Question no received', controlPanelCtrl.countdown);
 						}
 					}else{
 						controlPanelCtrl.sendAnsawer();
@@ -347,7 +344,7 @@ angular
 				}
 
 				QuestionService.sendQuestion(eventId, selectedQuestionId).then(function(response){
-					AlertService.Add('success', 'Pergunta lançada com sucesso.');
+					AlertService.Add('success', 'Pergunta lançada com sucesso.', true);
 					$.connection.hub.start().done(function () {
 			            $rootScope.evento.server.lancarPergunta(eventId, selectedQuestionId);
 			        })

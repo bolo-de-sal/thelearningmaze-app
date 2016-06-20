@@ -102,6 +102,7 @@ angular
 		}
 
 		studentCtrl.timerFinished = function(){
+			console.log(studentCtrl.enabledSendAnsawer);
 			if(studentCtrl.enabledSendAnsawer){
 				studentCtrl.sendSelectedAnsawer('', 0, false, true);
 			}
@@ -147,12 +148,20 @@ angular
 					studentCtrl.current.Questao.assunto.descricao = 'Sem assunto';
 				}
 
+		        var timer = document.getElementById('timer-question');
+
 				if(studentCtrl.current.Questao.tempo > 0){
-					studentCtrl.countdown = studentCtrl.current.Questao.tempo;
-			        $timeout(function(){
-				        var timer = document.getElementById('timer-question');
-				        timer.start();
-			        }, 0);
+					if(!studentCtrl.studentReceivedQuestion){
+						studentCtrl.countdown = studentCtrl.current.Questao.tempo;
+				        $timeout(function(){
+					        timer.start();
+				        }, 0);
+					}else{
+						studentCtrl.countdown = getTimerDifficultyQuestion();
+						$timeout(function(){
+					        timer.reset();
+					    }, 0);
+					}
 				}
 
 
@@ -218,10 +227,11 @@ angular
 			// $scope.$watch('studentCtrl.current', function() {
 				
 			// }, true);
-			console.log('ENTROU NO WATCH');
 			var timer = document.getElementById('timer-question');
 
 			studentCtrl.countdown = time;
+
+			console.log('Tempo', time);
 
 			if(!$scope.$$phase){
           		$scope.$apply();
@@ -234,6 +244,7 @@ angular
 
         $rootScope.evento.client.lancarPergunta = function (response) {
           console.log("## PERGUNTA LANÇADA ##");
+          studentCtrl.studentReceivedQuestion = true;
           updateStudentInfo(function(){
         	  studentCtrl.gameStarted = false;
         	  studentCtrl.questionAnswered = false;
@@ -246,6 +257,9 @@ angular
 
         $rootScope.evento.client.responderPergunta = function (ok, isChampion, groupIdChampion, qtdQuestionsOk) {
         	console.log("## PERGUNTA RESPONDIDA ##");
+        	studentCtrl.studentReceivedQuestion = false;
+        	var timer = document.getElementById('timer-question');
+        	timer.stop();
         	updateStudentInfo(function(){
 	        	studentCtrl.receivedQuestion = false;
 	        	studentCtrl.questionAnswered = !isChampion;

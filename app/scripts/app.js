@@ -77,15 +77,15 @@ angular
 
       // jQuery.support.cors = true;
       $.connection.hub.url = AppConfig.signalr.endpoint;
-      $rootScope.evento = $.connection.eventoHub;
+      $rootScope.evento = $.connection.eventoHub;      
       $.connection.hub.logging = true;
 
       $.connection.hub.connectionSlow(function () {
-          alert('Sua internet está lenta');
+          alert('Detectamos que sua conexão com a internet está lenta');
       });
 
       $.connection.hub.error(function (error) {
-          console.log('SignalR error: ' + error)
+          console.log('Ops! Ocorreu um erro: ' + error)
       });
 
       // $rootScope.evento.client.joinEvento = function(){
