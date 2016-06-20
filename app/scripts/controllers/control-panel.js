@@ -216,7 +216,6 @@ angular
 	            	controlPanelCtrl.countdown = 0;
 	            	$scope.$apply();
 	            	document.getElementById('timer-question').reset();
-			        // document.getElementById('timer-question').stop();
 			        console.log('timer stoped');
 				});
             });

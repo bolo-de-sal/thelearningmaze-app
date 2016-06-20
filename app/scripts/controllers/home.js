@@ -24,18 +24,11 @@ angular
         // Variável para desabilitar botões
         homeCtrl.disableButtons;
 
-        // EventService.closeEvent(); 
-        // EventService.openEvent(); 
-
         // All requests
         $q.all([
             EventService.getEvents(0).then(getEventsSuccess, getEventsError),
             EventService.getActiveEvent().then(getActiveEventSuccess, getActiveEventError)
         ]).then(function(response){
-            console.log(response);
-            // controlPanelCtrl.event = response[0];
-            // controlPanelCtrl.questions.current = response[1];
-            // controlPanelCtrl.groupsInfo = response[2];
         }).finally(function(){
             // Close dataLoading after all requests are finished
             $rootScope.dataLoading = false;
@@ -44,9 +37,7 @@ angular
         
 
         // Get Events
-
         function getEventsSuccess(response){
-            // console.log("Eventos: ", response);
             var eventos = response.Eventos;
             angular.forEach(eventos, function(evento, key){
                 evento = homeCtrl.adaptEvent(evento);
@@ -61,9 +52,6 @@ angular
             homeCtrl.maxSize = 5; //Number of pager buttons to show
             homeCtrl.numPages = parseInt(homeCtrl.totalItems / homeCtrl.itemsPerPage);
 
-            // console.log("homeCtrl.totalItems ", homeCtrl.totalItems);
-            // console.log("homeCtrl.itemsPerPage: ", homeCtrl.itemsPerPage);
-            // console.log("homeCtrl.numPages: ", homeCtrl.numPages);
 
             //Completa o tamanho do array com objetos em vazios
             for(var i = homeCtrl.viewby - 1; i < homeCtrl.totalItems - 1; i++){
@@ -73,10 +61,7 @@ angular
             //Iteração do array de com a quantidade total de páginas
             for(var i = 1; i <= homeCtrl.numPages; i++){
                 pageContentControl.push({loaded: false});
-                // console.log("pageContentControl: ", pageContentControl);
             }
-
-            // $rootScope.dataLoading = false;
         }
 
         function getEventsError(error){
@@ -86,9 +71,7 @@ angular
         }
 
         // Get Active Events
-
         function getActiveEventSuccess(response){
-            // console.log("Evento aberto: ", response);
             if(response){
                 homeCtrl.activeEvent = homeCtrl.adaptEvent(response);
                 homeCtrl.disableButtons = true;
@@ -96,8 +79,6 @@ angular
             else{
                 homeCtrl.disableButtons = false;
             }
-
-            // $rootScope.dataLoading = false;
         }
 
         function getActiveEventError(error){
@@ -139,10 +120,8 @@ angular
             var inicio = homeCtrl.itemsPerPage * (homeCtrl.currentPage - 1);
             if(pageContentControl[homeCtrl.currentPage - 1].loaded){
                 $rootScope.dataLoading = false;
-                // console.log("Dados já carregados!");
             }
             else{
-                // $('.event').hide();
                 EventService.getEvents(homeCtrl.currentPage - 1).then(function(response){
                     var eventos = response.Eventos;
                     angular.forEach(eventos, function(evento, key){
@@ -152,8 +131,6 @@ angular
                     pageContentControl[homeCtrl.currentPage - 1].loaded = true;
 
                     $rootScope.dataLoading = false;
-
-                    // $('.event').show();
                 });
             }
             console.log('Page changed to: ' + homeCtrl.currentPage);
@@ -167,25 +144,4 @@ angular
             homeCtrl.itemsPerPage = num;
             homeCtrl.currentPage = 1; //reset to first paghe
         }
-        
-        $rootScope.evento.client.joinEvento = function (message) {
-            console.log("Chamou joinEvento", message);
-            // alert('Alguém entrou no lobby. Mensagem SignalR: ');
-        }
-
-        // homeCtrl.openConnectionSignlR = function() {
-
-        //     // $location.path("/lobby/" + homeCtrl.activeEvent.codEvento);
-
-
-        //     // $.connection.hub.start().done(function () {
-        //     //     // evento.server.joinEventoProfessor(homeCtrl.activeEvent.identificador);
-        //     //     $rootScope.evento.server.joinEventoProfessor("10");
-        //     // })
-        //     // .fail(function (reason) {
-        //     //     console.log("SignalR connection failed: " + reason);
-        //     // });
-        // }
-
-        // homeCtrl.openConnectionSignlR();
     }
