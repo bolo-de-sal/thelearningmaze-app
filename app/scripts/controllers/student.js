@@ -65,7 +65,23 @@ angular
 		studentCtrl.sendSelectedAnsawer = function(ansawerText, ansawerAlternative, ansawerIsTrue, questionTimerFinished){
 			$rootScope.dataLoading = true;
 			document.getElementById('timer-question').stop();
-			QuestionService.sendAnsawer(studentCtrl.Group.codEvento, studentCtrl.current.Questao.codGrupo, studentCtrl.current.Questao.codTipoQuestao, ansawerAlternative, ansawerIsTrue, ansawerText, questionTimerFinished).then(function(response){
+			if(studentCtrl.current.Questao.codTipoQuestao == 'A'){
+				ansawerAlternative = parseInt(ansawerAlternative);
+			}
+
+			if(!ansawerText){
+				ansawerText = '';
+			}
+
+			if(!ansawerAlternative){
+				ansawerAlternative = 0;
+			}
+
+			if(!ansawerIsTrue){
+				ansawerIsTrue = false;
+			}
+			
+			QuestionService.sendAnsawer(studentCtrl.Group.codEvento, studentCtrl.current.Grupo.codGrupo, studentCtrl.current.Questao.codTipoQuestao, ansawerAlternative, ansawerIsTrue, ansawerText, questionTimerFinished).then(function(response){
 				if(response.correta){
 					AlertService.Add('success', 'Resposta correta', true);
 				}else{
@@ -78,7 +94,7 @@ angular
 		            console.log("SignalR connection failed: " + reason);
 		        });
 			}, function(error){
-				AlertService.Add('danger', error.data.message, true);
+				AlertService.Add('danger', 'Não foi possível responder a questão', true);
 			}).finally(function(){
 				$rootScope.dataLoading = false;
 			});
@@ -130,7 +146,6 @@ angular
 				}
 				studentCtrl.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + studentCtrl.current.Questao.codImagem;
 				studentCtrl.enabledSendAnsawer = studentCtrl.memberGroupId == studentCtrl.current.Grupo.codLider;
-				console.log(studentCtrl.receivedQuestion);
 				if(studentCtrl.enabledSendAnsawer && studentCtrl.event.codStatus == 'E' && studentCtrl.receivedQuestion){
 					$.connection.hub.start().done(function () {
 					    $rootScope.evento.server.ativarTimer(studentCtrl.Group.codEvento, getTimerDifficultyQuestion());
@@ -180,11 +195,21 @@ angular
           });
         }
 
-        $rootScope.evento.client.ativarTimer = function () {
+        $rootScope.evento.client.ativarTimer = function (time) {
 			console.log("## TIMER ATIVADO ##");
 			var timer = document.getElementById('timer-question');
 
-			if(studentCtrl.current){
+			controlPanelCtrl.countdown = time;
+
+			if(!$scope.$$phase){
+          		$scope.$apply();
+          	}
+
+          	$timeout(function(){
+		        timer.start();
+		    }, 0);
+
+			/*if(studentCtrl.current){
 				studentCtrl.countdown = getTimerDifficultyQuestion();
 			  	$scope.$apply();
 				timer.start();
@@ -198,7 +223,7 @@ angular
 						console.log('start-1');
 					}
 				});
-			}   	
+			} */	
         }
 
         $rootScope.evento.client.lancarPergunta = function (response) {

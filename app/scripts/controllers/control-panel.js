@@ -123,7 +123,7 @@ angular
 
         function sendAnsawer(){
         	$rootScope.dataLoading = true;
-        	QuestionService.sendAnsawer(eventId, controlPanelCtrl.questions.current.Grupo.codGrupo, '', 0, false, true, true).then(function(response){
+        	QuestionService.sendAnsawer(eventId, controlPanelCtrl.questions.current.Grupo.codGrupo, '', 0, false, '', true).then(function(response){
         		$.connection.hub.start().done(function () {
                     $rootScope.evento.server.responderPergunta(eventId, controlPanelCtrl.questions.current.Grupo.codGrupo, response.correta);
                 })
@@ -131,8 +131,8 @@ angular
                     console.log("SignalR connection failed: " + reason);
                 });
                 controlPanelCtrl.loadControlPanel();
-        	}).finally(function(){
-        		$rootScope.dataLoading = false;
+        	}, function(error){
+        		controlPanelCtrl.loadControlPanel();
         	});
         }
 
@@ -150,7 +150,7 @@ angular
 		        timer.start();
 		    }, 0);
 
-			time += 5;
+			time = (time + 5) * 1000;
 
 		    $timeout(function(){
 		        sendAnsawer();
@@ -322,6 +322,10 @@ angular
 
     	questionsModalCtrl.close = function(){
     		$uibModalInstance.close();
+    	}
+
+    	questionsModalCtrl.cancel = function(){
+    		$uibModalInstance.dismiss();
     	}
 
     	$q.all([
