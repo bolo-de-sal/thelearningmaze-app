@@ -75,10 +75,26 @@ angular
 
       /*========Configs signalR=========*/
 
-      jQuery.support.cors = true;
+      // jQuery.support.cors = true;
       $.connection.hub.url = AppConfig.signalr.endpoint;
       $rootScope.evento = $.connection.eventoHub;
       $.connection.hub.logging = true;
+
+      $.connection.hub.connectionSlow(function () {
+          alert('Sua internet está lenta');
+      });
+
+      $.connection.hub.error(function (error) {
+          console.log('SignalR error: ' + error)
+      });
+
+      // $rootScope.evento.client.joinEvento = function(){
+      //   console.log('join evento cliente chamado');
+      // }
+
+      // $rootScope.evento.client.lancarPergunta = function(){
+      //   console.log('lancar pergunta chamado');
+      // }
 
       /*========End Configs signalR=========*/
 
@@ -101,13 +117,6 @@ angular
             if($rootScope.userLoggedIn){
               $location.path('/');
             }else if($location.search().codGrupo && $location.search().codParticipante){
-              $.connection.hub.start().done(function (response) {
-                  $rootScope.evento.server.joinEvento(parseInt($location.search().codGrupo), parseInt($location.search().codParticipante));
-                  console.log("Aluno: " + $location.search().codParticipante + " do grupo: " + $location.search().codGrupo + " entrou no evento", response);
-              }).fail(function (reason) {
-                  console.log("SignalR connection failed: " + reason);
-              });
-
               if($location.path() != '/student'){
                 $location.url('/student?codGrupo=' + $location.search().codGrupo + '&codParticipante=' + $location.search().codParticipante);
               }
@@ -118,25 +127,6 @@ angular
               case '/student':
                 $location.path('/');
                 break;
-              default:
-                if($routeParams.eventId){
-                  joinEventoProfessor($routeParams.eventId);
-                }else{
-                  EventService.getActiveEvent().then(function(response){
-                    joinEventoProfessor(response.codEvento);
-                  });
-                }
-                break;
-            }
-
-            function joinEventoProfessor(eventId){
-              $.connection.hub.start().done(function () {
-                  console.log("Professor entrou no grupo do evento: " + eventId);
-                  $rootScope.evento.server.joinEventoProfessor(eventId);
-              })
-              .fail(function (reason) {
-                  console.log("SignalR connection failed: " + reason);
-              });
             }
           }
       });

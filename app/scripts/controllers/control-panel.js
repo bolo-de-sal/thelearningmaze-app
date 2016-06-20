@@ -19,6 +19,7 @@ angular
         $rootScope.dataLoading = true;
 
         var eventId = $routeParams.eventId;
+        var addCountdownDelay = 5;
 
         controlPanelCtrl.questions = {};
         controlPanelCtrl.currentInitialized = false;
@@ -47,7 +48,7 @@ angular
         	}
         }
 
-        controlPanelCtrl.loadControlPanel = function(){
+        controlPanelCtrl.loadControlPanel = function(fn){
         	controlPanelCtrl.currentInitialized = false;        	
 
 	        $q.all([
@@ -69,14 +70,34 @@ angular
 						controlPanelCtrl.questions.current.Questao.assunto = controlPanelCtrl.questions.current.Grupo.assunto;
 					}
 				}else{
+					console.log('Current Question Time From API', controlPanelCtrl.questions.current.Questao.tempo);
+					console.log('Student Received Question', controlPanelCtrl.studentReceivedQuestion);
+					var timer = document.getElementById('timer-question');
+
 					if(controlPanelCtrl.questions.current.Questao.tempo > 0){
-						var timer = document.getElementById('timer-question');
-						controlPanelCtrl.countdown = controlPanelCtrl.questions.current.Questao.tempo
-			          	$timeout(function(){
-					        timer.start();
-					    }, 0);
+						if(controlPanelCtrl.studentReceivedQuestion){							
+							controlPanelCtrl.countdown = controlPanelCtrl.questions.current.Questao.tempo
+
+				          	$timeout(function(){
+						        timer.start();
+						    }, 0);
+
+						    var timeoutSendQuestion = (controlPanelCtrl.questions.current.Questao.tempo + addCountdownDelay) * 1000;
+
+						    $timeout(function(){
+						    	controlPanelCtrl.sendAnsawer();
+						    	console.log('Question ansawered from timeout', timeoutSendQuestion);
+						    }, timeoutSendQuestion);							
+						}else{
+							console.log('Question no received');
+							controlPanelCtrl.countdown = getTimerDifficultyQuestion();
+							$timeout(function(){
+						        timer.reset();
+						    }, 0);
+							console.log('Question no received', controlPanelCtrl.countdown);
+						}
 					}else{
-						sendAnsawer();
+						controlPanelCtrl.sendAnsawer();
 					}
 				}
 				controlPanelCtrl.event.dataFormatada = new Date(controlPanelCtrl.event.data).getTime();
@@ -90,13 +111,14 @@ angular
 
 				$timeout(function(){
 					document.getElementById('event-time').start();
-				}, 100);
-
-				console.log('RESETOU O TIMER');
-	          	$scope.countdown = 0;
+				}, 100);				
 
 				if(!$scope.$$phase) {
 	          	  $scope.$apply();
+	          	}
+
+	          	if(fn){
+	          		fn();
 	          	}
 
 				$rootScope.dataLoading = false;
@@ -124,7 +146,7 @@ angular
         	});
         }
 
-        function sendAnsawer(){
+        controlPanelCtrl.sendAnsawer = function (){
         	if(!controlPanelCtrl.studentQuestionAnswered){
 	        	$rootScope.dataLoading = true;
 	        	QuestionService.sendAnsawer(eventId, controlPanelCtrl.questions.current.Grupo.codGrupo, '', 0, false, '', true).then(function(response){
@@ -144,7 +166,7 @@ angular
 
         function getTimerDifficultyQuestion(){
 			var time = 0;
-			switch(studentCtrl.current.Questao.dificuldade){
+			switch(controlPanelCtrl.questions.current.Questao.dificuldade){
 				case 'F':
 			    	time = QuestionDifficultyConfig.difficulties.time.F;
 			   		break;
@@ -155,13 +177,15 @@ angular
 			  		time = QuestionDifficultyConfig.difficulties.time.D;
 			  		break;
 			}
-			console.log('pegou tempo');
+			console.log('getTimerDifficultyQuestion');
 
 			return time;
 		}
 
         $rootScope.evento.client.ativarTimer = function (time) {
 			console.log("## TIMER ATIVADO ##");
+			controlPanelCtrl.studentReceivedQuestion = true;
+
 			var timer = document.getElementById('timer-question');
 
 			controlPanelCtrl.countdown = time;
@@ -174,36 +198,13 @@ angular
 		        timer.start();
 		    }, 0);
 
-			time = (time + 5) * 1000;
+			time = (time + addCountdownDelay) * 1000;
 
 		    $timeout(function(){
-		        sendAnsawer();
+		        controlPanelCtrl.sendAnsawer();
 		    }, time);
 
 		    console.log("## EXECUTOU TIMER ATIVADO ##");
-
-			/*console.log('Questions Current', controlPanelCtrl.questions.current);
-			if(controlPanelCtrl.questions.current.Questao.dificuldade){
-          	  	controlPanelCtrl.countdown = getTimerDifficultyQuestion();
-  				$scope.$apply();
-  	          	console.log('start-1', controlPanelCtrl.countdown);
-          	  	timer.start();
-			}else{
-				$scope.$watch('controlPanelCtrl.questions.current.Questao.dificuldade', function(newValue, oldValue){
-					if(controlPanelCtrl.currentInitialized){
-		          		controlPanelCtrl.countdown = getTimerDifficultyQuestion();
-		          		console.log(controlPanelCtrl.countdown);
-	  	  	          	if(!$scope.$$phase){
-	  	  	          		$scope.$apply();
-	  	  	          	}
-
-	  	  	          	$timeout(function(){
-					        timer.start();
-			  	          	console.log('start-2', controlPanelCtrl.questions.current);
-				        }, 0);
-					}
-				});
-			}*/
         }
 
         $rootScope.evento.client.responderPergunta = function (ok, isChampion, groupIdChampion, qtdQuestionsOk) {
@@ -211,9 +212,26 @@ angular
 	        document.getElementById('timer-question').stop();
             $rootScope.dataLoading = true;
             controlPanelCtrl.studentQuestionAnswered = true;
+            controlPanelCtrl.studentReceivedQuestion = false;
             $scope.$apply();
-            controlPanelCtrl.loadControlPanel();
-        }                
+            controlPanelCtrl.loadControlPanel(function(){
+            	$timeout(function() {
+	            	controlPanelCtrl.countdown = 0;
+	            	$scope.$apply();
+	            	document.getElementById('timer-question').reset();
+			        // document.getElementById('timer-question').stop();
+			        console.log('timer stoped');
+				});
+            });
+        }
+
+    	$.connection.hub.start().done(function () {
+			console.log("Professor entrou no grupo do evento: " + eventId);
+			$rootScope.evento.server.joinEventoProfessor(eventId);
+		})
+		.fail(function (reason) {
+			console.log("SignalR connection failed: " + reason);
+		});              
 
         controlPanelCtrl.loadControlPanel();
     }
@@ -354,7 +372,7 @@ angular
 
     	questionsModalCtrl.cancel = function(){
     		$uibModalInstance.dismiss();
-    	}
+    	}    	
 
     	$q.all([
 		   GroupService.getCurrentGroupInfo(eventId),

@@ -111,8 +111,7 @@ angular
 		}
 
 		studentCtrl.timerFinished = function(){
-			console.log('Questao enviada de forma automática');
-			// this.sendSelectedAnsawer('', 0, false, true);
+			studentCtrl.sendSelectedAnsawer('', 0, false, true);
 		}
 
 		function updateStudentInfo(fn){
@@ -169,7 +168,7 @@ angular
 						        $timeout(function(){
 							        var timer = document.getElementById('timer-question');
 							        timer.start();
-						        }, 0);
+						        }, 100);
 						})
 						.fail(function (reason) {
 						    console.log("SignalR connection failed: " + reason);
@@ -211,33 +210,23 @@ angular
 
         $rootScope.evento.client.ativarTimer = function (time) {
 			console.log("## TIMER ATIVADO ##");
-			var timer = document.getElementById('timer-question');
 
-			controlPanelCtrl.countdown = time;
+			console.log(studentCtrl.current);
 
-			if(!$scope.$$phase){
-          		$scope.$apply();
-          	}
+			$scope.$watch('studentCtrl.current', function() {
+				console.log('ENTROU NO WATCH');
+				var timer = document.getElementById('timer-question');
 
-          	$timeout(function(){
-		        timer.start();
-		    }, 0);
+				studentCtrl.countdown = time;
 
-			/*if(studentCtrl.current){
-				studentCtrl.countdown = getTimerDifficultyQuestion();
-			  	$scope.$apply();
-				timer.start();
-				console.log('start-1');
-			}else{
-				$scope.$watch('studentCtrl.current', function(newValue, oldValue){
-					if(studentCtrl.currentInitialized){
-						studentCtrl.countdown = getTimerDifficultyQuestion();
-					  	$scope.$apply();
-						timer.start();
-						console.log('start-1');
-					}
-				});
-			} */	
+				if(!$scope.$$phase){
+	          		$scope.$apply();
+	          	}
+
+	          	$timeout(function(){
+			        timer.start();
+			    }, 100);
+			}, true);
         }
 
         $rootScope.evento.client.lancarPergunta = function (response) {
@@ -255,13 +244,13 @@ angular
         $rootScope.evento.client.responderPergunta = function (ok, isChampion, groupIdChampion, qtdQuestionsOk) {
         	console.log("## PERGUNTA RESPONDIDA ##");
         	updateStudentInfo(function(){
-        	studentCtrl.receivedQuestion = false;
-        	studentCtrl.questionAnswered = !isChampion;
-        	studentCtrl.hasChampion = isChampion;
-        	if(!$scope.$$phase) {
-	        	$scope.$apply();
-    		}
-          });
+	        	studentCtrl.receivedQuestion = false;
+	        	studentCtrl.questionAnswered = !isChampion;
+	        	studentCtrl.hasChampion = isChampion;
+	        	if(!$scope.$$phase) {
+		        	$scope.$apply();
+	    		}
+	          });
         }
 
         $rootScope.evento.client.encerrarJogo = function () {
@@ -275,5 +264,12 @@ angular
   	        	  $scope.$apply();
           	  }
           });
-        }		
+        }
+
+        $.connection.hub.start().done(function (response) {
+            $rootScope.evento.server.joinEvento(parseInt($location.search().codGrupo), parseInt($location.search().codParticipante));
+            console.log("Aluno: " + $location.search().codParticipante + " do grupo: " + $location.search().codGrupo + " entrou no evento", response);
+        }).fail(function (reason) {
+            console.log("SignalR connection failed: " + reason);
+        });
     }
