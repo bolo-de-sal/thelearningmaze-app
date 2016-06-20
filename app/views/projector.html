@@ -225,21 +225,21 @@
 
 	</div>
 
-	<div class="modal-question hit modal-hide">
+	<div class="modal-question hit" ng-class="{'modal-show': projector.hitShow, 'modal-hide': !projector.hitShow}">
 		<div class="card">
 			<img src="images/acerto.png" alt="Acertou">
 			<p class="hit-question">Resposta Certa</p>
 		</div>
 	</div>
 
-	<div class="modal-question error modal-hide">
+	<div class="modal-question error" ng-class="{'modal-show': projector.errorShow, 'modal-hide': !projector.errorShow}">
 		<div class="card">
 			<img src="images/erro.png" alt="Errou">
 			<p class="error-question">Resposta Errada</p>
 		</div>
 	</div>
 
-	<div class="modal-winner modal-hide">
+	<div class="modal-winner" ng-class="{'modal-show': projector.winnerShow, 'modal-hide': !projector.winnerShow}">
 		<img src="images/estrela.png" alt="Estrela">
 
 		<div class="card">
