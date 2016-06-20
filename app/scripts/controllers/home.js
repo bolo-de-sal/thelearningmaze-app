@@ -136,6 +136,12 @@ angular
             console.log('Page changed to: ' + homeCtrl.currentPage);
         };
 
+        homeCtrl.checkBtn = function(event){
+            if(angular.element(event.currentTarget).hasClass('disabled')){
+                AlertService.Add('danger', 'Não é possível ter dois eventos ativos', true);
+            }
+        }
+
         homeCtrl.setPage = function (pageNo) {
             homeCtrl.currentPage = pageNo;
         };

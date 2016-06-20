@@ -66,12 +66,12 @@ angular
 				if(!controlPanelCtrl.questions.current.Questao){
 					controlPanelCtrl.questions.current.Questao = {};
 					controlPanelCtrl.questions.current.Questao.textoQuestao = 'Sem pergunta no momento';
+					console.log('aqui', controlPanelCtrl.questions.current.Questao);
 					if(!controlPanelCtrl.questions.current.Questao.assunto){
-						controlPanelCtrl.questions.current.Questao.assunto = controlPanelCtrl.questions.current.Grupo.assunto;
+						controlPanelCtrl.questions.current.Questao.assunto = controlPanelCtrl.questions.current.Grupo ? controlPanelCtrl.questions.current.Grupo.assunto : {descricao: 'Sem assunto'};
 					}
+					console.log('aqui2');
 				}else{
-					console.log('Current Question Time From API', controlPanelCtrl.questions.current.Questao.tempo);
-					console.log('Student Received Question', controlPanelCtrl.studentReceivedQuestion);
 					var timer = document.getElementById('timer-question');
 
 					if(controlPanelCtrl.questions.current.Questao.tempo > 0){
