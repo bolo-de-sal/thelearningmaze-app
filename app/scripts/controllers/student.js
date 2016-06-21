@@ -283,6 +283,8 @@ angular
           });
         }
 
+        $.connection.hub.stop();
+
         $.connection.hub.start().done(function (response) {
             $rootScope.evento.server.joinEvento(parseInt($location.search().codGrupo), parseInt($location.search().codParticipante));
             console.log("Aluno: " + $location.search().codParticipante + " do grupo: " + $location.search().codGrupo + " entrou no evento", response);

@@ -108,8 +108,11 @@ angular
 				});
 
 				$timeout(function(){
-					document.getElementById('event-time').start();
-				}, 100);				
+					var timer = document.getElementById('event-time');
+					if(timer){
+						timer.start();
+					}
+				}, 200);				
 
 				if(!$scope.$$phase) {
 	          	  $scope.$apply();
@@ -226,6 +229,8 @@ angular
 				});
             });
         }
+
+        $.connection.hub.stop();
 
     	$.connection.hub.start().done(function () {
 			console.log("Professor entrou no grupo do evento: " + eventId);
