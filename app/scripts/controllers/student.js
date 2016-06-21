@@ -222,15 +222,9 @@ angular
 
         $rootScope.evento.client.ativarTimer = function (time) {
 			console.log("## TIMER ATIVADO ##");
-			// console.log(studentCtrl.current);
-			// $scope.$watch('studentCtrl.current', function() {
-				
-			// }, true);
 			var timer = document.getElementById('timer-question');
 
 			studentCtrl.countdown = time;
-
-			console.log('Tempo', time);
 
 			if(!$scope.$$phase){
           		$scope.$apply();
@@ -238,7 +232,7 @@ angular
 
           	$timeout(function(){
 		        timer.start();
-		    }, 100);
+		    }, 200);
         }
 
         $rootScope.evento.client.lancarPergunta = function (response) {
