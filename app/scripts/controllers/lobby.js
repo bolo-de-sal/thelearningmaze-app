@@ -88,4 +88,12 @@ angular
             
             console.log(lobbyCtrl.joinedGroups);
         }
+
+        $.connection.hub.start().done(function () {
+            console.log("Professor entrou no grupo do evento: " + eventId);
+            $rootScope.evento.server.joinEventoProfessor(eventId);
+        })
+        .fail(function (reason) {
+            console.log("SignalR connection failed: " + reason);
+        });  
     }

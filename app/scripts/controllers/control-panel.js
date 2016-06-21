@@ -11,9 +11,9 @@ angular
     .module('thelearningmaze')
     .controller('ControlPanelController', ControlPanelController);
 
-    ControlPanelController.$inject = ['$scope', '$routeParams', '$rootScope', '$q', '$timeout', '$uibModal', 'EventService', 'QuestionService', 'GroupService', 'QuestionDifficultyConfig', 'AlertService'];
+    ControlPanelController.$inject = ['$scope', '$routeParams', '$rootScope', '$q', '$timeout', '$uibModal', '$location', 'EventService', 'QuestionService', 'GroupService', 'QuestionDifficultyConfig', 'AlertService'];
 
-    function ControlPanelController($scope, $routeParams, $rootScope, $q, $timeout, $uibModal, EventService, QuestionService, GroupService, QuestionDifficultyConfig, AlertService) {
+    function ControlPanelController($scope, $routeParams, $rootScope, $q, $timeout, $uibModal, $location, EventService, QuestionService, GroupService, QuestionDifficultyConfig, AlertService) {
         var controlPanelCtrl = this;
 
         $rootScope.dataLoading = true;
@@ -58,6 +58,9 @@ angular
 			   GroupService.getGroupsQuestions(eventId)
 			]).then(function(response){
 				controlPanelCtrl.event = response[0];
+				if(controlPanelCtrl.event.codStatus == 'A'){
+					$location.path('/lobby/' + eventId);
+				}
 				controlPanelCtrl.questions.current = response[1];
 				controlPanelCtrl.currentInitialized = true;
 				controlPanelCtrl.groupsInfo = response[2];
@@ -125,14 +128,10 @@ angular
         }
 
         controlPanelCtrl.closeEvent = function(){
-        	$rootScope.dataLoading = true;
+        	$rootScope.dataLoading = true;  
+        	controlPanelCtrl.studentQuestionAnswered = false;      	
         	EventService.closeEvent(eventId).then(function(){
         		AlertService.Add('success', 'Evento encerrado com sucesso', true);
-            	$timeout(function() {
-	            	controlPanelCtrl.countdown = 0;
-	            	$scope.$apply();
-	            	document.getElementById('timer-question').reset();
-				});
 				$.connection.hub.start().done(function () {
 		            $rootScope.evento.server.encerrarJogo(eventId);
 		        })
@@ -142,7 +141,13 @@ angular
         	}, function(error){
         		AlertService.Add('danger', error.data.message, true);
         	}).finally(function(){
-        		controlPanelCtrl.loadControlPanel();
+        		controlPanelCtrl.loadControlPanel(function(){
+        			$timeout(function() {
+		            	controlPanelCtrl.countdown = 0;
+		            	$scope.$apply();
+		            	document.getElementById('timer-question').reset();
+					});
+        		});
         	});
         }
 
