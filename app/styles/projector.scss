@@ -601,10 +601,6 @@
   }
 }
 
-.content{
-	height: 100%;
-}
-
 .bds{
 	display: none;
 }
@@ -761,6 +757,7 @@ vermelho tem que definir melhor a cor
 
 .full{
 	/*height: 100%;*/
+    height: 100%;
 
 	> div:nth-child(1){
 		height: 100%;
