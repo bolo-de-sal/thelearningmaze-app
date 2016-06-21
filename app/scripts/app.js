@@ -101,6 +101,12 @@ angular
       $rootScope.$on('$locationChangeStart', function (event, next, current) {
           AlertService.Clear();
 
+          if($rootScope.userLoggedIn && !SessionService.getTokenInfo().userToken){
+            $rootScope.userLoggedIn = null;
+            SessionService.removeUserData();
+            $location.path('/login');
+          }
+
           if($rootScope.sessionTimeout){
             AlertService.Add('warning', 'Sua sessão expirou', true);
             $rootScope.sessionTimeout = false;
