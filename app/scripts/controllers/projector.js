@@ -520,6 +520,7 @@ angular
                         projectorCtrl.hitShow = true;
                         $timeout(function(){
                             positionGroupOnHit(codGrupo, result.acertos);
+                            focusCurrentElement();
                         }, 3000);                  
                     }
                     else{
@@ -545,7 +546,7 @@ angular
 
                     projectorCtrl.currentGroupInfo = currentGroup;
 
-                    focusCurrentElement();    
+                    // focusCurrentElement();
                 }, 3000);
 
                 // var oldPosition = projectorCtrl.boardMap[codAssunto][result.acertos].pos;
