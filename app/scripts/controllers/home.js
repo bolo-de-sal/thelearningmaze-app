@@ -66,7 +66,7 @@ angular
 
         function getEventsError(error){
             $rootScope.dataLoading = false;
-            if(error.status != 500){
+            if(error.status != 500 && error.status != 401){
                 AlertService.Add('danger', 'Não existe eventos disponíveis');
             }
         }
