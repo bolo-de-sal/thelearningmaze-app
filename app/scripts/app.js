@@ -22,7 +22,8 @@ angular
     'timer',
     'base64'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $locationProvider) {
+    $locationProvider.html5Mode(true);
     $routeProvider
       .when('/', {
           templateUrl: 'views/home.html',
@@ -77,7 +78,7 @@ angular
 
       // jQuery.support.cors = true;
       $.connection.hub.url = AppConfig.signalr.endpoint;
-      $rootScope.evento = $.connection.eventoHub;      
+      $rootScope.evento = $.connection.eventoHub;
       $.connection.hub.logging = true;
 
       $.connection.hub.connectionSlow(function () {
