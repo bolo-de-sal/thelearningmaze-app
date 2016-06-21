@@ -1,7 +1,7 @@
 <section id="student">
 {{student.event.codStatus}}
 	<div id="student-waiting-start-event" class="col-xs-12 col-sm-12 col-md-12 student" ng-show="student.event.codStatus == 'A' || student.event.codStatus == 'C'">
-		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h1>
+		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h2>
 		<p id="waiting-start-event" class="student-text">Aguarde enquanto o jogo é iniciado</p>
 		<div class="groups-box">
 		  <div class="group-box-name" ng-repeat="groupInfo in student.groupsInfo" ng-class="{current: student.Group.codGrupo == groupInfo.Grupo.codGrupo}">
@@ -11,7 +11,7 @@
 		</div>
 	</div>
 	<div id="student-waiting-question-event" class="col-xs-12 col-sm-12 col-md-12 student" ng-show="student.event.codStatus == 'E' && (student.gameStarted || student.questionAnswered) && !student.hasChampion">
-		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h1>
+		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h2>
 		<p id="waiting-question-event" class="student-text" ng-if="student.gameStarted">Aguarde o professor lançar uma pergunta</p>
 		<div class="groups-box">
 		  <div class="group-box-name" ng-repeat="groupInfo in student.groupsInfo" ng-class="{current: student.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
@@ -21,7 +21,7 @@
 		</div>
 	</div>
 	<div id="student-waiting-close-event" class="col-xs-12 col-sm-12 col-md-12 student" ng-show="student.event.codStatus == 'F' && student.closeEvent">
-		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h1>
+		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h2>
 		<p id="waiting-close-event" class="student-text" ng-if="student.closeEvent">O professor encerrou o jogo</p>
 		<div class="groups-box">
 		  <div class="group-box-name" ng-repeat="groupInfo in student.groupsInfo" ng-class="{current: student.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
@@ -31,7 +31,7 @@
 		</div>
 	</div>
 	<div id="student-waiting-champion-event" class="col-xs-12 col-sm-12 col-md-12 student" ng-show="student.event.codStatus == 'E' && student.hasChampion">
-		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h1>
+		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h2>
 		<p id="waiting-question-event" class="student-text" ng-if="student.gameStarted">CAMPEÃO</p>
 		<div class="groups-box">
 		  <div class="group-box-name" ng-repeat="groupInfo in student.groupsInfo" ng-class="{current: student.current.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
@@ -60,7 +60,7 @@
 		      </p>
 		    </div>
 		    <p class="theme">Assunto: {{ student.current.Questao.assunto.descricao }}</p>
-		  </div>		  
+		  </div>
 		  <timer countdown="student.countdown" autostart="false" finish-callback="student.timerFinished()" max-time-unit="'minute'" interval="1000" id="timer-question" class="time">{{mminutes}}:{{sseconds}}</timer>
 		</div>
 		<div class="col-md-12 card wrap-card-question">
