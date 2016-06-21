@@ -413,20 +413,23 @@ angular
             });
         }
 
-        function positionGroupOnHit(codGrupo){
+        function positionGroupOnHit(codGrupo, acertos){
             angular.forEach(projectorCtrl.groups, function(group, key){
+                console.log("Antes do if positionGroupOnHit.");
+                console.log("Grupo: ", group.Grupo.codGrupo);
+                console.log("codGroup: ", codGrupo);
                if (group.Grupo.codGrupo == codGrupo){
                     var qtdInPos = 1;
 
                     group.pos = projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pos;
 
-                    $("#ppg-group" + codGrupo).removeClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].ppg);
-                    $("#parent-group" + codGrupo).removeClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].parent);
-                    $("#pin-group" + codGrupo).removeClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pin);
+                    $("#ppg-group" + codGrupo).removeClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos - 1].ppg);
+                    $("#parent-group" + codGrupo).removeClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos - 1].parent);
+                    $("#pin-group" + codGrupo).removeClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos - 1].pin);
 
-                    $("#ppg-group" + codGrupo).addClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos + 1].ppg);
-                    $("#parent-group" + codGrupo).addClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos + 1].parent);
-                    $("#pin-group" + codGrupo).addClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos + 1].pin);
+                    $("#ppg-group" + codGrupo).addClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].ppg);
+                    $("#parent-group" + codGrupo).addClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].parent);
+                    $("#pin-group" + codGrupo).addClass(projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pin);
 
                     angular.forEach(projectorCtrl.groups, function(group2, key2){
                         if(group.Grupo.codGrupo != group2.Grupo.codGrupo){
@@ -451,11 +454,14 @@ angular
         function focusCurrentElement(){
             var codCurrentGroup = null;
 
-            if(projectorCtrl.currentGroup != undefined){
+            if(projectorCtrl.currentGroupInfo != undefined){
                 codCurrentGroup = projectorCtrl.currentGroupInfo.Grupo.codGrupo;
             }
 
             angular.forEach(projectorCtrl.groups, function(group, key){
+                console.log("Antes do if.");
+                console.log("Grupo: ", group.Grupo.codGrupo);
+                console.log("codCurrentGroup: ", codCurrentGroup);
                 if(group.Grupo.codGrupo == codCurrentGroup){
 
                     var pos = projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pos;
@@ -511,7 +517,10 @@ angular
                         // $('.modal-question.hit').removeClass('modal-hide');
                         // $('.modal-question.hit').addClass('modal-show');
 
-                        projectorCtrl.hitShow = true;                  
+                        projectorCtrl.hitShow = true;
+                        $timeout(function(){
+                            positionGroupOnHit(codGrupo, result.acertos);
+                        }, 3000);                  
                     }
                     else{
                         $('.modal-winner').removeClass('modal-hide');                        
@@ -531,15 +540,16 @@ angular
                     // $('.modal-question').removeClass('modal-show').addClass('modal-hide');
                     projectorCtrl.hitShow = false;
                     projectorCtrl.errorShow = false;
+                
+                    // positionGroupOnHit(codGrupo);
+
+                    projectorCtrl.currentGroupInfo = currentGroup;
+
+                    focusCurrentElement();    
                 }, 3000);
 
                 // var oldPosition = projectorCtrl.boardMap[codAssunto][result.acertos].pos;
 
-                positionGroupOnHit(codGrupo);
-
-                projectorCtrl.currentGroupInfo = currentGroup;
-
-                focusCurrentElement();
             });
         }
 
@@ -586,7 +596,7 @@ angular
 
         // Abre conexão com o servidor
         $.connection.hub.start().done(function (response) {
-            // $rootScope.evento.server.joinEvento(25, 2);
+            $rootScope.evento.server.joinEventoProfessor(eventId);
             console.log("SignalR connection success", response);
         }).fail(function (reason) {
             console.log("SignalR connection failed: " + reason);
