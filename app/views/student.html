@@ -1,5 +1,6 @@
 <section id="student">
-	<div id="student-waiting-start-event" class="col-xs-12 col-sm-12 col-md-12 student" ng-show="student.event.codStatus == 'A'">
+{{student.event.codStatus}}
+	<div id="student-waiting-start-event" class="col-xs-12 col-sm-12 col-md-12 student" ng-show="student.event.codStatus == 'A' || student.event.codStatus == 'C'">
 		<h2 class="logo"><img src="images/learning-maze.png" alt="Learning Maze" title="Learning Maze"></h1>
 		<p id="waiting-start-event" class="student-text">Aguarde enquanto o jogo é iniciado</p>
 		<div class="groups-box">

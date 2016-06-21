@@ -43,6 +43,8 @@ angular
 			$rootScope.dataLoading = false;
 			AlertService.Add('danger', error.data.message, true);
 		}).finally(function(){
+			console.log(studentCtrl.event);
+			console.log(studentCtrl.Group);
 			$q.all([
 			   GroupService.getCurrentGroupInfo(studentCtrl.Group.codEvento),
 			   GroupService.getGroupsByEventId(studentCtrl.Group.codEvento)				   
