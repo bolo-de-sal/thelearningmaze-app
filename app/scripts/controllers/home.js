@@ -34,7 +34,7 @@ angular
             $rootScope.dataLoading = false;
         });
 
-        
+
 
         // Get Events
         function getEventsSuccess(response){
@@ -149,5 +149,31 @@ angular
         homeCtrl.setItemsPerPage = function(num) {
             homeCtrl.itemsPerPage = num;
             homeCtrl.currentPage = 1; //reset to first paghe
+        }
+
+        homeCtrl.startEvent = function(){
+            $location.path("/lobby/" + homeCtrl.activeEvent.codEvento);
+        }
+
+        homeCtrl.openEvent = function(eventId){
+            if(angular.element(event.currentTarget).hasClass('disabled')){
+                return;
+            }
+            $rootScope.dataLoading = true;
+            EventService.openEvent(eventId).then(function(){
+                $q.all([
+                    EventService.getEvents(0).then(getEventsSuccess, getEventsError),
+                    EventService.getActiveEvent().then(getActiveEventSuccess, getActiveEventError)
+                ]).then(function(response){
+                }).finally(function(){
+                    // Close dataLoading after all requests are finished
+                    $rootScope.dataLoading = false;
+                });
+            }, function(error){
+                AlertService.Add('danger', error.data.message, true);
+                $rootScope.dataLoading = false;
+            });
+
+
         }
     }

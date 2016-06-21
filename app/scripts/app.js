@@ -138,7 +138,6 @@ angular
 
           var codGrupo = $location.search().codGrupo || QueryString.codGrupo;
           var codParticipante = $location.search().codParticipante ||QueryString.codParticipante;
-          console.log(window.location.href);
           // redirect to login page if not logged in and trying to access a restricted page
           var restrictedPage = $.inArray($location.path(), RestrictedPagesConfig.anonymousAccess) === -1;
           if (restrictedPage && !$rootScope.userLoggedIn) {

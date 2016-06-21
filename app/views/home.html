@@ -18,11 +18,11 @@
 				<p>{{home.activeEvent.inicio}}</p>
 				<p>{{home.activeEvent.codStatus}}</p>
 				<div class="btns">
-					<a href="#/lobby/{{home.activeEvent.codEvento}}" ng-click="home.openConnectionSignlR()" class="list-button green enabled" ng-if="home.activeEvent.codStatus == 'ABERTO'">Iniciar</a>
+					<a href="#/lobby/{{home.activeEvent.codEvento}}" ng-click="home.startEvent()" class="list-button green enabled" ng-if="home.activeEvent.codStatus == 'ABERTO'">Iniciar</a>
 					<a href="#/control-panel/{{home.activeEvent.codEvento}}" class="list-button green enabled" ng-if="home.activeEvent.codStatus == 'EXECUTANDO'">Ver</a>
 				</div>
 			</div>
-		</div>		
+		</div>
 	</div>
 
 	<div class="none-event" ng-show="home.disableButtons == false">
@@ -53,7 +53,7 @@
 				<div class="btns">
 					<a href="#" class="list-button green" ng-if="event.codStatus == 'ABERTO'" ng-disabled="home.disableButtons" ng-click="$event.preventDefault()">Iniciar</a>
 					<a href="#" class="list-button green" ng-if="event.codStatus == 'EXECUTANDO'" ng-disabled="home.disableButtons" ng-click="$event.preventDefault()">Ver</a>
-					<a href="#" class="list-button green" ng-if="event.codStatus == 'CRIADO'" ng-class="{disabled: home.disableButtons}" ng-click="home.checkBtn($event);$event.preventDefault();" ng-disabled="home.disableButtons">Abrir</a>
+					<a href="#" class="list-button green" ng-if="event.codStatus == 'CRIADO'" ng-class="{disabled: home.disableButtons}" ng-click="$event.preventDefault();home.openEvent(event.codEvento)" ng-disabled="home.disableButtons">Abrir</a>
 					<a href="#/control-panel/{{event.codEvento}}" class="list-button gray enabled" ng-if="event.codStatus == 'FECHADO'">Ver</a>
 				</div>
 			</div>
@@ -78,7 +78,7 @@
 					first-text="&laquo;"
 					last-text="&raquo;"
 					direction-links="true">
-		</uib-pagination>		
+		</uib-pagination>
 	</div>
 
 </div>
