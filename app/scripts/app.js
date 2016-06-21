@@ -73,6 +73,27 @@ angular
           });
       });
 
+      var QueryString = function () {
+        var query_string = {};
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+          var pair = vars[i].split("=");
+              // If first entry with this name
+          if (typeof query_string[pair[0]] === "undefined") {
+            query_string[pair[0]] = decodeURIComponent(pair[1]);
+              // If second entry with this name
+          } else if (typeof query_string[pair[0]] === "string") {
+            var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
+            query_string[pair[0]] = arr;
+              // If third or later entry with this name
+          } else {
+            query_string[pair[0]].push(decodeURIComponent(pair[1]));
+          }
+        }
+        return query_string;
+      }();
+
       /*========Configs signalR=========*/
 
       // jQuery.support.cors = true;
@@ -115,6 +136,9 @@ angular
           $rootScope.loginPage = $location.path() == '/login';
           $rootScope.projectorPage = $location.path().split("/")[1] == 'projector';
 
+          var codGrupo = $location.search().codGrupo || QueryString.codGrupo;
+          var codParticipante = $location.search().codParticipante ||QueryString.codParticipante;
+          console.log(window.location.href);
           // redirect to login page if not logged in and trying to access a restricted page
           var restrictedPage = $.inArray($location.path(), RestrictedPagesConfig.anonymousAccess) === -1;
           if (restrictedPage && !$rootScope.userLoggedIn) {
@@ -122,9 +146,10 @@ angular
           }else if(!restrictedPage){
             if($rootScope.userLoggedIn){
               $location.path('/');
-            }else if($location.search().codGrupo && $location.search().codParticipante){
+            }else if(codGrupo && codParticipante){
               if($location.path() != '/student'){
-                $location.url('/student?codGrupo=' + $location.search().codGrupo + '&codParticipante=' + $location.search().codParticipante);
+                window.location = window.location.href.split('?')[0] + '#/student?codGrupo=' + codGrupo + '&codParticipante=' + codParticipante;
+                // $location.url('#/student?codGrupo=' + codGrupo + '&codParticipante=' + codParticipante);
               }
             }
           }else if($rootScope.userLoggedIn){
