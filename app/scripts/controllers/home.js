@@ -138,7 +138,7 @@ angular
 
         homeCtrl.checkBtn = function(event){
             if(angular.element(event.currentTarget).hasClass('disabled')){
-                AlertService.Add('danger', 'Não é possível ter dois eventos ativos', true);
+                AlertService.Add('danger', 'Não é possível ter mais de um evento ativo', true);
             }
         }
 

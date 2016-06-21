@@ -11,9 +11,9 @@ angular
     .module('thelearningmaze')
     .controller('ControlPanelController', ControlPanelController);
 
-    ControlPanelController.$inject = ['$scope', '$routeParams', '$rootScope', '$q', '$timeout', '$uibModal', 'EventService', 'QuestionService', 'GroupService', 'QuestionDifficultyConfig'];
+    ControlPanelController.$inject = ['$scope', '$routeParams', '$rootScope', '$q', '$timeout', '$uibModal', 'EventService', 'QuestionService', 'GroupService', 'QuestionDifficultyConfig', 'AlertService'];
 
-    function ControlPanelController($scope, $routeParams, $rootScope, $q, $timeout, $uibModal, EventService, QuestionService, GroupService, QuestionDifficultyConfig) {
+    function ControlPanelController($scope, $routeParams, $rootScope, $q, $timeout, $uibModal, EventService, QuestionService, GroupService, QuestionDifficultyConfig, AlertService) {
         var controlPanelCtrl = this;
 
         $rootScope.dataLoading = true;
@@ -66,11 +66,9 @@ angular
 				if(!controlPanelCtrl.questions.current.Questao){
 					controlPanelCtrl.questions.current.Questao = {};
 					controlPanelCtrl.questions.current.Questao.textoQuestao = 'Sem pergunta no momento';
-					console.log('aqui', controlPanelCtrl.questions.current.Questao);
 					if(!controlPanelCtrl.questions.current.Questao.assunto){
 						controlPanelCtrl.questions.current.Questao.assunto = controlPanelCtrl.questions.current.Grupo ? controlPanelCtrl.questions.current.Grupo.assunto : {descricao: 'Sem assunto'};
 					}
-					console.log('aqui2');
 				}else{
 					var timer = document.getElementById('timer-question');
 
@@ -130,6 +128,11 @@ angular
         	$rootScope.dataLoading = true;
         	EventService.closeEvent(eventId).then(function(){
         		AlertService.Add('success', 'Evento encerrado com sucesso', true);
+            	$timeout(function() {
+	            	controlPanelCtrl.countdown = 0;
+	            	$scope.$apply();
+	            	document.getElementById('timer-question').reset();
+				});
 				$.connection.hub.start().done(function () {
 		            $rootScope.evento.server.encerrarJogo(eventId);
 		        })
@@ -139,7 +142,7 @@ angular
         	}, function(error){
         		AlertService.Add('danger', error.data.message, true);
         	}).finally(function(){
-        		$rootScope.dataLoading = false;
+        		controlPanelCtrl.loadControlPanel();
         	});
         }
 
@@ -174,7 +177,6 @@ angular
 			  		time = QuestionDifficultyConfig.difficulties.time.D;
 			  		break;
 			}
-			console.log('getTimerDifficultyQuestion');
 
 			return time;
 		}
@@ -216,7 +218,6 @@ angular
 	            	controlPanelCtrl.countdown = 0;
 	            	$scope.$apply();
 	            	document.getElementById('timer-question').reset();
-			        console.log('timer stoped');
 				});
             });
         }

@@ -33,6 +33,10 @@ angular
             AlertService.Add('danger', error.data.message);
         })
         .finally(function(){
+            if(lobbyCtrl.event.codStatus != 'A'){
+                $location.path('/control-panel/' + eventId);
+            }
+
             angular.forEach(lobbyCtrl.joinedGroups, function(memberId, key){
                 console.log('Membro', memberId);
                 setOnlineMember(lobbyCtrl.groups, memberId);

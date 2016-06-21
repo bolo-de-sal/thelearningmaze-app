@@ -102,7 +102,6 @@ angular
 		}
 
 		studentCtrl.timerFinished = function(){
-			console.log(studentCtrl.enabledSendAnsawer);
 			if(studentCtrl.enabledSendAnsawer){
 				studentCtrl.sendSelectedAnsawer('', 0, false, true);
 			}
@@ -272,6 +271,7 @@ angular
 
         $rootScope.evento.client.encerrarJogo = function () {
           console.log("## JOGO ENCERRADO ##");
+          studentCtrl.enabledSendAnsawer = false;
           updateStudentInfo(function(){
         	  studentCtrl.receivedQuestion = false;
         	  studentCtrl.questionAnswered = false;
