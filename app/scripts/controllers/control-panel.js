@@ -49,7 +49,7 @@ angular
         }
 
         controlPanelCtrl.loadControlPanel = function(fn){
-        	controlPanelCtrl.currentInitialized = false;        	
+        	controlPanelCtrl.currentInitialized = false;
 
 	        $q.all([
 			   EventService.getEventById(eventId),
@@ -76,7 +76,7 @@ angular
 					var timer = document.getElementById('timer-question');
 
 					if(controlPanelCtrl.questions.current.Questao.tempo > 0){
-						if(controlPanelCtrl.studentReceivedQuestion){							
+						if(controlPanelCtrl.studentReceivedQuestion){
 							controlPanelCtrl.countdown = controlPanelCtrl.questions.current.Questao.tempo
 
 				          	$timeout(function(){
@@ -87,7 +87,7 @@ angular
 
 						    $timeout(function(){
 						    	controlPanelCtrl.sendAnsawer();
-						    }, timeoutSendQuestion);							
+						    }, timeoutSendQuestion);
 						}else{
 							controlPanelCtrl.countdown = getTimerDifficultyQuestion();
 							$timeout(function(){
@@ -112,7 +112,7 @@ angular
 					if(timer){
 						timer.start();
 					}
-				}, 200);				
+				}, 200);
 
 				if(!$scope.$$phase) {
 	          	  $scope.$apply();
@@ -131,8 +131,8 @@ angular
         }
 
         controlPanelCtrl.closeEvent = function(){
-        	$rootScope.dataLoading = true;  
-        	controlPanelCtrl.studentQuestionAnswered = false;      	
+        	$rootScope.dataLoading = true;
+        	controlPanelCtrl.studentQuestionAnswered = false;
         	EventService.closeEvent(eventId).then(function(){
         		AlertService.Add('success', 'Evento encerrado com sucesso', true);
 				$.connection.hub.start().done(function () {
@@ -238,7 +238,7 @@ angular
 		})
 		.fail(function (reason) {
 			console.log("SignalR connection failed: " + reason);
-		});              
+		});
 
         controlPanelCtrl.loadControlPanel();
     }
@@ -385,7 +385,7 @@ angular
 
     	questionsModalCtrl.cancel = function(){
     		$uibModalInstance.dismiss();
-    	}    	
+    	}
 
     	$q.all([
 		   GroupService.getCurrentGroupInfo(eventId),
@@ -409,6 +409,9 @@ angular
 					dificuldade: 'D'
 				}
 			];
+		}, function(error){
+			$rootScope.dataLoading = false;
+			AlertService.Add('danger', error.data.message, true);
 		}).finally(function(){
 			var found = false;
 			angular.forEach(questionsModalCtrl.questionsItems, function(value, key){
