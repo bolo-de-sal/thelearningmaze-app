@@ -549,7 +549,8 @@ button{
   line-height: 30px;
   text-transform: uppercase;
   vertical-align: top;
-  width: 140px;
+  /*width: 140px;*/
+  max-width: 140px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

@@ -169,6 +169,15 @@
 			
 		</div>
 
+		<div class="col-md-12 card wrap-card-question transp">
+			<div class="groups-box-top">
+			  <div class="group-box-name" ng-repeat="groupInfo in projector.groupsInfo" ng-class="{current: projector.currentGroupInfo.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
+			    <span class="group-icon" title="{{ groupInfo.Grupo.nmGrupo }}"></span>
+			    <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
+			  </div>
+			</div>
+		</div>
+
 		<div class="row">
 			<div class="col-md-8">
 				<div class="col-md-12 card wrap-card-question">
@@ -185,12 +194,13 @@
 				    <p class="theme">Assunto: {{ projector.Assunto.descricao }}</p>
 				  </div>
 				  <div class="groups-box">
-				    <div class="group-box-name" ng-repeat="groupInfo in projector.groupsInfo" ng-class="{current: projector.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
+				    <div class="group-box-name" ng-repeat="groupInfo in projector.groupsInfo" ng-class="{current: projector.currentGroupInfo.Grupo.codGrupo == groupInfo.Grupo.codGrupo}">
 				      <span class="group-icon"></span>
 				      <span class="group-name">{{ groupInfo.Grupo.nmGrupo }}</span>
 				    </div>
 				  </div>
-				  <timer countdown="student.countdown" finish-callback="student.timerFinished()" max-time-unit="'minute'" interval="1000" id="timer-question" class="time">{{mminutes}}:{{sseconds}}</timer>
+				  <!-- <timer countdown="projector.countdown" finish-callback="" max-time-unit="'minute'" interval="1000" id="timer-question" class="time">{{mminutes}}:{{sseconds}}</timer> -->
+				  <timer countdown="projector.countdown" autostart="false" finish-callback="" max-time-unit="'minute'" interval="1000" id="timer-question" class="time">{{mminutes}}:{{sseconds}}</timer>
 				</div>
 				<div class="col-md-12 card wrap-card-question">
 				  <h3 class="title">Resposta</h3>

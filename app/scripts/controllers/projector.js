@@ -16,7 +16,7 @@ angular
 
     	var projectorCtrl = this;
 
-        projectorCtrl.acertar = acertar;
+        // projectorCtrl.acertar = acertar;
 
         projectorCtrl.Questao = {
             textoQuestao: "Sem pergunta no momento"
@@ -401,23 +401,23 @@ angular
 
         }
 
-        function acertar(codGrupo){
-            angular.forEach(projectorCtrl.groups, function(group, key){
-               if (group.Grupo.codGrupo == codGrupo){
-                    console.log("Clicou para acertar no grupo: ", group.Grupo.codGrupo);
-                    if(group.Acertos < 8){
-                        group.Acertos++;
-                        positionGroupOnHit(codGrupo);                        
-                    }
-               } 
-            });
-        }
+        // function acertar(codGrupo){
+        //     angular.forEach(projectorCtrl.groups, function(group, key){
+        //        if (group.Grupo.codGrupo == codGrupo){
+        //             console.log("Clicou para acertar no grupo: ", group.Grupo.codGrupo);
+        //             if(group.Acertos < 8){
+        //                 group.Acertos++;
+        //                 positionGroupOnHit(codGrupo);                        
+        //             }
+        //        } 
+        //     });
+        // }
 
         function positionGroupOnHit(codGrupo, acertos){
             angular.forEach(projectorCtrl.groups, function(group, key){
-                console.log("Antes do if positionGroupOnHit.");
-                console.log("Grupo: ", group.Grupo.codGrupo);
-                console.log("codGroup: ", codGrupo);
+                // console.log("Antes do if positionGroupOnHit.");
+                // console.log("Grupo: ", group.Grupo.codGrupo);
+                // console.log("codGroup: ", codGrupo);
                if (group.Grupo.codGrupo == codGrupo){
                     var qtdInPos = 1;
 
@@ -459,9 +459,9 @@ angular
             }
 
             angular.forEach(projectorCtrl.groups, function(group, key){
-                console.log("Antes do if.");
-                console.log("Grupo: ", group.Grupo.codGrupo);
-                console.log("codCurrentGroup: ", codCurrentGroup);
+                // console.log("Antes do if.");
+                // console.log("Grupo: ", group.Grupo.codGrupo);
+                // console.log("codCurrentGroup: ", codCurrentGroup);
                 if(group.Grupo.codGrupo == codCurrentGroup){
 
                     var pos = projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pos;
@@ -469,8 +469,8 @@ angular
                     $(".svg .color").removeClass("active");
                     $("." + pos).addClass("active");
 
-                    console.log("Entrou if currentElement");
-                    console.log("Posição: ", pos);
+                    // console.log("Entrou if currentElement");
+                    // console.log("Posição: ", pos);
                 }
             });
         }
@@ -520,7 +520,7 @@ angular
                         projectorCtrl.hitShow = true;
                         $timeout(function(){
                             positionGroupOnHit(codGrupo, result.acertos);
-                            focusCurrentElement();
+                            // focusCurrentElement();
                         }, 3000);                  
                     }
                     else{
@@ -546,13 +546,22 @@ angular
 
                     projectorCtrl.currentGroupInfo = currentGroup;
 
-                    // focusCurrentElement();
+                    if(!result.campeao){                        
+                        focusCurrentElement();
+                    }
+
                 }, 3000);
 
                 // var oldPosition = projectorCtrl.boardMap[codAssunto][result.acertos].pos;
 
             });
         }
+
+        // projectorCtrl.timerFinished = function(){
+        //     if(studentCtrl.enabledSendAnsawer){
+        //         studentCtrl.sendSelectedAnsawer('', 0, false, true);
+        //     }
+        // }
 
         $rootScope.evento.client.joinEvento = function (group) {
 
@@ -590,10 +599,41 @@ angular
             }
 
             console.log("Chamou responderPergunta", response);
+
+            var timer = document.getElementById('timer-question');
+
+            $timeout(function() {
+               projectorCtrl.countdown = 0;
+               $scope.$apply();
+               timer.stop();
+               timer.reset();
+            });
+
             // alert('Chamou o responderPergunta');
 
             callbackOnQuestionResponse(response);
         }
+
+        $rootScope.evento.client.ativarTimer = function (time) {
+            console.log("## TIMER ATIVADO ##");
+
+            console.log("time: ", time);
+
+            projectorCtrl.countdown = time;
+
+            if(!$scope.$$phase){
+                $scope.$apply();
+            }
+
+            var timer = document.getElementById('timer-question');
+            timer.reset();
+
+            $timeout(function(){
+                timer.start();
+            }, 200);
+        }
+
+        $.connection.hub.stop();
 
         // Abre conexão com o servidor
         $.connection.hub.start().done(function (response) {
