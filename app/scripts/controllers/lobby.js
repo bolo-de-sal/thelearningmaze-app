@@ -21,7 +21,7 @@ angular
 
         $rootScope.selectedEvent = $routeParams.eventId;
 
-        $rootScope.dataLoading = true;         
+        $rootScope.dataLoading = true;
 
         $q.all([
             EventService.getEventById(eventId),
@@ -30,6 +30,7 @@ angular
             lobbyCtrl.event = response[0];
             lobbyCtrl.groups = response[1];
         },function(error){
+            $rootScope.dataLoading = false;
             AlertService.Add('danger', error.data.message);
         })
         .finally(function(){
@@ -41,7 +42,7 @@ angular
                 console.log('Membro', memberId);
                 setOnlineMember(lobbyCtrl.groups, memberId);
             });
-            
+
             $rootScope.dataLoading = false;
         });
 
@@ -64,7 +65,7 @@ angular
             angular.forEach(groups, function(group, key){
                 angular.forEach(group.ParticipantesGrupo, function(member, key){
                     if(member.codParticipante == memberId){
-                        member.online = true;                        
+                        member.online = true;
                     }
                 });
             });
@@ -78,9 +79,9 @@ angular
             if($.inArray(memberGroup.Participante.codParticipante, lobbyCtrl.joinedGroups)){
                 lobbyCtrl.joinedGroups.push(memberGroup.Participante.codParticipante);
             }
-            
+
             setOnlineMember(lobbyCtrl.groups, memberGroup.Participante.codParticipante);
-            
+
             console.log(lobbyCtrl.joinedGroups);
         }
 
@@ -92,5 +93,5 @@ angular
         })
         .fail(function (reason) {
             console.log("SignalR connection failed: " + reason);
-        });  
+        });
     }
