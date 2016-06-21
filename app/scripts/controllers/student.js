@@ -102,7 +102,6 @@ angular
 		}
 
 		studentCtrl.timerFinished = function(){
-			console.log(studentCtrl.enabledSendAnsawer);
 			if(studentCtrl.enabledSendAnsawer){
 				studentCtrl.sendSelectedAnsawer('', 0, false, true);
 			}
@@ -223,15 +222,9 @@ angular
 
         $rootScope.evento.client.ativarTimer = function (time) {
 			console.log("## TIMER ATIVADO ##");
-			// console.log(studentCtrl.current);
-			// $scope.$watch('studentCtrl.current', function() {
-				
-			// }, true);
 			var timer = document.getElementById('timer-question');
 
 			studentCtrl.countdown = time;
-
-			console.log('Tempo', time);
 
 			if(!$scope.$$phase){
           		$scope.$apply();
@@ -239,7 +232,7 @@ angular
 
           	$timeout(function(){
 		        timer.start();
-		    }, 100);
+		    }, 200);
         }
 
         $rootScope.evento.client.lancarPergunta = function (response) {
@@ -272,6 +265,7 @@ angular
 
         $rootScope.evento.client.encerrarJogo = function () {
           console.log("## JOGO ENCERRADO ##");
+          studentCtrl.enabledSendAnsawer = false;
           updateStudentInfo(function(){
         	  studentCtrl.receivedQuestion = false;
         	  studentCtrl.questionAnswered = false;
@@ -282,6 +276,8 @@ angular
           	  }
           });
         }
+
+        $.connection.hub.stop();
 
         $.connection.hub.start().done(function (response) {
             $rootScope.evento.server.joinEvento(parseInt($location.search().codGrupo), parseInt($location.search().codParticipante));

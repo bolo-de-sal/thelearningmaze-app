@@ -11,9 +11,9 @@ angular
     .module('thelearningmaze')
     .controller('ControlPanelController', ControlPanelController);
 
-    ControlPanelController.$inject = ['$scope', '$routeParams', '$rootScope', '$q', '$timeout', '$uibModal', 'EventService', 'QuestionService', 'GroupService', 'QuestionDifficultyConfig'];
+    ControlPanelController.$inject = ['$scope', '$routeParams', '$rootScope', '$q', '$timeout', '$uibModal', '$location', 'EventService', 'QuestionService', 'GroupService', 'QuestionDifficultyConfig', 'AlertService'];
 
-    function ControlPanelController($scope, $routeParams, $rootScope, $q, $timeout, $uibModal, EventService, QuestionService, GroupService, QuestionDifficultyConfig) {
+    function ControlPanelController($scope, $routeParams, $rootScope, $q, $timeout, $uibModal, $location, EventService, QuestionService, GroupService, QuestionDifficultyConfig, AlertService) {
         var controlPanelCtrl = this;
 
         $rootScope.dataLoading = true;
@@ -58,6 +58,9 @@ angular
 			   GroupService.getGroupsQuestions(eventId)
 			]).then(function(response){
 				controlPanelCtrl.event = response[0];
+				if(controlPanelCtrl.event.codStatus == 'A'){
+					$location.path('/lobby/' + eventId);
+				}
 				controlPanelCtrl.questions.current = response[1];
 				controlPanelCtrl.currentInitialized = true;
 				controlPanelCtrl.groupsInfo = response[2];
@@ -67,11 +70,9 @@ angular
 					controlPanelCtrl.questions.current.Questao = {};
 					controlPanelCtrl.questions.current.Questao.textoQuestao = 'Sem pergunta no momento';
 					if(!controlPanelCtrl.questions.current.Questao.assunto){
-						controlPanelCtrl.questions.current.Questao.assunto = controlPanelCtrl.questions.current.Grupo.assunto;
+						controlPanelCtrl.questions.current.Questao.assunto = controlPanelCtrl.questions.current.Grupo ? controlPanelCtrl.questions.current.Grupo.assunto : {descricao: 'Sem assunto'};
 					}
 				}else{
-					console.log('Current Question Time From API', controlPanelCtrl.questions.current.Questao.tempo);
-					console.log('Student Received Question', controlPanelCtrl.studentReceivedQuestion);
 					var timer = document.getElementById('timer-question');
 
 					if(controlPanelCtrl.questions.current.Questao.tempo > 0){
@@ -107,8 +108,11 @@ angular
 				});
 
 				$timeout(function(){
-					document.getElementById('event-time').start();
-				}, 100);				
+					var timer = document.getElementById('event-time');
+					if(timer){
+						timer.start();
+					}
+				}, 200);				
 
 				if(!$scope.$$phase) {
 	          	  $scope.$apply();
@@ -127,7 +131,8 @@ angular
         }
 
         controlPanelCtrl.closeEvent = function(){
-        	$rootScope.dataLoading = true;
+        	$rootScope.dataLoading = true;  
+        	controlPanelCtrl.studentQuestionAnswered = false;      	
         	EventService.closeEvent(eventId).then(function(){
         		AlertService.Add('success', 'Evento encerrado com sucesso', true);
 				$.connection.hub.start().done(function () {
@@ -139,7 +144,13 @@ angular
         	}, function(error){
         		AlertService.Add('danger', error.data.message, true);
         	}).finally(function(){
-        		$rootScope.dataLoading = false;
+        		controlPanelCtrl.loadControlPanel(function(){
+        			$timeout(function() {
+		            	controlPanelCtrl.countdown = 0;
+		            	$scope.$apply();
+		            	document.getElementById('timer-question').reset();
+					});
+        		});
         	});
         }
 
@@ -174,7 +185,6 @@ angular
 			  		time = QuestionDifficultyConfig.difficulties.time.D;
 			  		break;
 			}
-			console.log('getTimerDifficultyQuestion');
 
 			return time;
 		}
@@ -216,11 +226,11 @@ angular
 	            	controlPanelCtrl.countdown = 0;
 	            	$scope.$apply();
 	            	document.getElementById('timer-question').reset();
-			        // document.getElementById('timer-question').stop();
-			        console.log('timer stoped');
 				});
             });
         }
+
+        $.connection.hub.stop();
 
     	$.connection.hub.start().done(function () {
 			console.log("Professor entrou no grupo do evento: " + eventId);
