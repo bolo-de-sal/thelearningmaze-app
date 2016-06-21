@@ -11,8 +11,8 @@ angular
     .module('thelearningmaze')
     .controller('ProjectorController', ProjectorController);
 
-    ProjectorController.$inject = ['$scope', '$routeParams', '$q', '$filter', /*'AuthenticationService', 'SessionService',*/ '$location', '$rootScope', "EventService", "GroupService", "$timeout", '$sce'];
-    function ProjectorController($scope, $routeParams, $q, $filter, /*AuthenticationService, SessionService,*/ $location, $rootScope, EventService, GroupService, $timeout, $sce){
+    ProjectorController.$inject = ['$scope', '$routeParams', '$q', '$filter', /*'AuthenticationService', 'SessionService',*/ '$location', '$rootScope', "EventService", "GroupService", "$timeout"];
+    function ProjectorController($scope, $routeParams, $q, $filter, /*AuthenticationService, SessionService,*/ $location, $rootScope, EventService, GroupService, $timeout){
 
 
         var projectorCtrl = this;
@@ -57,16 +57,16 @@ angular
 
         //Toggle question content
 
-        $(".bar").click(function(){
-            if($(".question-content").hasClass("question-open")){
-                $(".question-content").removeClass("question-open");
-                $(".question-content").addClass("question-close");
-            }
-            else{
-                $(".question-content").removeClass("question-close");
-                $(".question-content").addClass("question-open");
-            }
-        });
+        // $(".bar").click(function(){
+        //     if($(".question-content").hasClass("question-open")){
+        //         $(".question-content").removeClass("question-open");
+        //         $(".question-content").addClass("question-close");
+        //     }
+        //     else{
+        //         $(".question-content").removeClass("question-close");
+        //         $(".question-content").addClass("question-open");
+        //     }
+        // });
 
         //End Toggle question content
 
@@ -378,24 +378,23 @@ angular
         }
 
         function positionGroups(){
-            projectorCtrl.htmlPopover = $sce.trustAsHtml('<b style="color: red">I can</b> have <div class="label label-success">HTML</div> content');
 
             angular.forEach(projectorCtrl.groups, function(group, key){
                 group.Grupo.codAssunto = group.Assunto.codAssunto;
 
-                    // console.log("Tentativa: ", projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].ppg);
+                // console.log("Tentativa: ", projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].ppg);
 
-                    group.pos = projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pos;
+                group.pos = projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pos;
 
-                    var group = '<div id="ppg-group' + group.Grupo.codGrupo + '" class="easy '+ projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].ppg +'">' +
-                                    '<div id="parent-group' + group.Grupo.codGrupo + '" class="easy '+ projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].parent +'">' +
-                                        '<div id="pin-group' + group.Grupo.codGrupo + '" class="easy '+ projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pin +'" uib-popover-html="projector.htmlPopover" popover-trigger="mouseenter" popover-popup-delay="50">' +
-                                            '<img class="pino" src="images/pino.png" alt="Pino">' +
-                                        ' </div>' +
+                var group = '<div id="ppg-group' + group.Grupo.codGrupo + '" class="easy '+ projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].ppg +'">' +
+                                '<div id="parent-group' + group.Grupo.codGrupo + '" class="easy '+ projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].parent +'">' +
+                                    '<div id="pin-group' + group.Grupo.codGrupo + '" class="easy '+ projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pin +'">' +
+                                        '<img class="pino" src="images/pino.png" alt="Pino">' +
                                     ' </div>' +
-                                ' </div>';
+                                ' </div>' +
+                            ' </div>';
 
-                    $(".svg").append(group);                
+                $(".svg").append(group);
                 
             });
 
@@ -604,6 +603,10 @@ angular
             $(".question-content").addClass("question-open");
         }
 
+        projectorCtrl.timerRunning = true;
+        projectorCtrl.timerConsole = '';
+        projectorCtrl.timerType = '';
+
         $rootScope.evento.client.responderPergunta = function(acertou, campeao, codGrupoCampeao, acertos){
 
             var response = {
@@ -615,6 +618,8 @@ angular
 
             console.log("Chamou responderPergunta", response);
 
+            $scope.$broadcast('timer-stop');
+
             var timer = document.getElementById('timer-question');
 
             $timeout(function() {
@@ -622,6 +627,7 @@ angular
                $scope.$apply();
                timer.stop();
                timer.reset();
+               projectorCtrl.timerRunning = true;
             });
 
             // alert('Chamou o responderPergunta');
@@ -634,6 +640,8 @@ angular
 
             console.log("time: ", time);
 
+            $scope.$broadcast('timer-start');
+
             projectorCtrl.countdown = time;
 
             if(!$scope.$$phase){
@@ -645,6 +653,10 @@ angular
 
             $timeout(function(){
                 timer.start();
+
+                $scope.$on('timer-tick', function (event, args) {
+                    projectorCtrl.timerConsole += projectorCtrl.timerType  + ' - event.name = '+ event.name + ', timeoutId = ' + args.timeoutId + ', millis = ' + args.millis +'\n';
+                });
             }, 200);
         }
 
