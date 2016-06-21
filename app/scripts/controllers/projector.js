@@ -11,10 +11,11 @@ angular
     .module('thelearningmaze')
     .controller('ProjectorController', ProjectorController);
 
-    ProjectorController.$inject = ['$scope', '$routeParams', '$q', '$filter', /*'AuthenticationService', 'SessionService',*/ '$location', '$rootScope', "EventService", "GroupService", "$timeout"];
-    function ProjectorController($scope, $routeParams, $q, $filter, /*AuthenticationService, SessionService,*/ $location, $rootScope, EventService, GroupService, $timeout) {
+    ProjectorController.$inject = ['$scope', '$routeParams', '$q', '$filter', /*'AuthenticationService', 'SessionService',*/ '$location', '$rootScope', "EventService", "GroupService", "$timeout", '$sce'];
+    function ProjectorController($scope, $routeParams, $q, $filter, /*AuthenticationService, SessionService,*/ $location, $rootScope, EventService, GroupService, $timeout, $sce){
 
-    	var projectorCtrl = this;
+
+        var projectorCtrl = this;
 
         // projectorCtrl.acertar = acertar;
 
@@ -377,6 +378,7 @@ angular
         }
 
         function positionGroups(){
+            projectorCtrl.htmlPopover = $sce.trustAsHtml('<b style="color: red">I can</b> have <div class="label label-success">HTML</div> content');
 
             angular.forEach(projectorCtrl.groups, function(group, key){
                 group.Grupo.codAssunto = group.Assunto.codAssunto;
@@ -387,7 +389,7 @@ angular
 
                     var group = '<div id="ppg-group' + group.Grupo.codGrupo + '" class="easy '+ projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].ppg +'">' +
                                     '<div id="parent-group' + group.Grupo.codGrupo + '" class="easy '+ projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].parent +'">' +
-                                        '<div id="pin-group' + group.Grupo.codGrupo + '" class="easy '+ projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pin +'">' +
+                                        '<div id="pin-group' + group.Grupo.codGrupo + '" class="easy '+ projectorCtrl.boardMap[group.Grupo.codAssunto.toString()][group.Acertos].pin +'" uib-popover-html="projector.htmlPopover" popover-trigger="mouseenter" popover-popup-delay="50">' +
                                             '<img class="pino" src="images/pino.png" alt="Pino">' +
                                         ' </div>' +
                                     ' </div>' +
@@ -518,16 +520,26 @@ angular
                         // $('.modal-question.hit').addClass('modal-show');
 
                         projectorCtrl.hitShow = true;
+
+                        var audio = new Audio('sounds/success.mp3');
+                        audio.play();
+
                         $timeout(function(){
                             positionGroupOnHit(codGrupo, result.acertos);
                             // focusCurrentElement();
                         }, 3000);                  
                     }
                     else{
-                        $('.modal-winner').removeClass('modal-hide');                        
-                        $('.modal-winner').addClass('modal-show');
+                        // $('.modal-winner').removeClass('modal-hide');                        
+                        // $('.modal-winner').addClass('modal-show');
 
-                        projectorCtrl.winnerShow = true;          
+                        projectorCtrl.winnerShow = true;
+
+                        EventService.CloseEvent(eventId).then(function(response){
+                            cnosole.log('Response closeEvent: ', response);
+                        }, function(err){
+                            cnosole.log('Error closeEvent: ', err);
+                        });
                     }
                 }
                 else{
@@ -535,6 +547,9 @@ angular
                     // $('.modal-question.error').addClass('modal-show');
 
                     projectorCtrl.errorShow = true;
+
+                    var audio = new Audio('sounds/error.mp3');
+                    audio.play();
                 }
 
                 $timeout(function(){
