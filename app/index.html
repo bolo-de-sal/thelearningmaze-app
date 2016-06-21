@@ -28,7 +28,7 @@
 
   <body ng-class="{bodyLogin: loginPage}">
 
-    <uib-alert class="global-alert" ng-repeat="alert in alerts" type="{{ alert.type }}" close="CloseAlert($index)">{{ alert.msg }}</uib-alert>
+    <uib-alert class="global-alert" ng-repeat="alert in alerts" type="{{ alert.type }}" close="CloseAlert($index)" dismiss-on-timeout="3000">{{ alert.msg }}</uib-alert>
 
     <div class="header" ng-show="userLoggedIn && !projectorPage" ng-class="{show: userLoggedIn && !projectorPage}">
       <div class="navbar navbar-default" role="navigation">
