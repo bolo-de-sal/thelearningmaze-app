@@ -44,7 +44,7 @@ angular
 
             	    }).then(deferred.resolve, deferred.reject);
 
-            	    if(httpStatus === 419){
+            	    if(data === 'Token expirado' || httpStatus === 419){
             	    	$rootScope.sessionTimeout = true;
 	            	    // Limpar os dados
 	            	    if(SessionService.getUser()){

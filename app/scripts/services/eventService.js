@@ -15,6 +15,7 @@ angular
         events.getActiveEvent = getActiveEvent;
         events.closeEvent = closeEvent;
         events.initEvent = initEvent;
+        events.openEvent = openEvent;
         events.getEventGroups = getEventGroups;
         events.getEventThemes = getEventThemes;
         events.getEventCurrentGroupInfo = getEventCurrentGroupInfo;
@@ -71,6 +72,16 @@ angular
             return promise;
         }
 
+        function openEvent(eventId){
+            var promise = $http.post(AppConfig.api.identifier + '/Eventos/Abrir', {'codEvento': eventId } )
+            .then(function (response) {
+                return response.data;
+              // callback(response);
+            });
+
+            return promise;
+        }
+
         function closeEvent(eventId) {
             var promise = $http.post(AppConfig.api.identifier + '/Eventos/Encerrar', {'codEvento': eventId })
             .then(function (response) {
@@ -78,7 +89,7 @@ angular
               // callback(response);
             });
 
-            return promise;           
+            return promise;
         }
 
         function getEventGroups(eventId){
