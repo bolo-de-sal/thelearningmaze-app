@@ -35,7 +35,7 @@ angular
         $q.all([
 		   EventService.getEventByGroupIdAndMemberGroupId(studentCtrl.groupId, studentCtrl.memberGroupId),
 		   GroupService.getGroupById(studentCtrl.groupId)
-		   
+
 		]).then(function(response){
 			studentCtrl.event = response[0];
 			studentCtrl.Group = response[1];
@@ -47,7 +47,7 @@ angular
 			console.log(studentCtrl.Group);
 			$q.all([
 			   GroupService.getCurrentGroupInfo(studentCtrl.Group.codEvento),
-			   GroupService.getGroupsByEventId(studentCtrl.Group.codEvento)				   
+			   GroupService.getGroupsByEventId(studentCtrl.Group.codEvento)
 			]).then(function(response){
 				studentCtrl.current = response[0];
 				studentCtrl.currentInitialized = true;
@@ -82,7 +82,7 @@ angular
 			if(!ansawerIsTrue){
 				ansawerIsTrue = false;
 			}
-			
+
 			QuestionService.sendAnsawer(studentCtrl.Group.codEvento, studentCtrl.current.Grupo.codGrupo, studentCtrl.current.Questao.codTipoQuestao, ansawerAlternative, ansawerIsTrue, ansawerText, questionTimerFinished).then(function(response){
 				if(response.correta){
 					AlertService.Add('success', 'Resposta correta', true);
@@ -168,7 +168,7 @@ angular
 
 				studentCtrl.current.Questao.caminhoImagem = $rootScope.imagesUrl +  '/' + studentCtrl.current.Questao.codImagem;
 				studentCtrl.enabledSendAnsawer = studentCtrl.memberGroupId == studentCtrl.current.Grupo.codLider;
-				
+
 				if(studentCtrl.event.codStatus == 'E' && studentCtrl.receivedQuestion){
 					if(studentCtrl.enabledSendAnsawer){
 						$.connection.hub.start().done(function () {
@@ -186,7 +186,7 @@ angular
 						})
 						.fail(function (reason) {
 						    console.log("SignalR connection failed: " + reason);
-						});					
+						});
 					}else{
 						studentCtrl.countdown = getTimerDifficultyQuestion();
 					}
@@ -224,7 +224,6 @@ angular
 
         $rootScope.evento.client.ativarTimer = function (time) {
 			console.log("## TIMER ATIVADO ##");
-			var timer = document.getElementById('timer-question');
 
 			studentCtrl.countdown = time;
 
@@ -233,7 +232,7 @@ angular
           	}
 
           	$timeout(function(){
-		        timer.start();
+		        document.getElementById('timer-question').start();
 		    }, 200);
         }
 
