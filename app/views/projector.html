@@ -1,5 +1,8 @@
 <div class="svg">
 	<img class="lm" src="images/learning-maze.png" alt="Learning Maze">
+	<div class="timer-top">
+		<timer ng-if="projector.event.dataFormatada" autostart="false" start-time="projector.event.dataFormatada" id="timer-top" class="event-time-text">{{hhours}}:{{mminutes}}:{{sseconds}}</timer>
+	</div>
 	<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 750 750" viewBox="0 0 750 750" x="0px" y="0px" xmlns:xml="http://www.w3.org/XML/1998/namespace" xml:space="preserve" version="1.1">
 			<filter id="blur-filter" x="-2" y="-2" width="400" height="400">
 				<feGaussianBlur in="SourceGraphic" stdDeviation="30" />

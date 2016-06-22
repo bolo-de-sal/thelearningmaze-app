@@ -311,12 +311,20 @@ angular
             EventService.getEventGroups(eventId).then(getEventGroupsSuccess, getEventGroupsFailure),
             EventService.getEventThemes(eventId).then(getEventSubjectsSuccess, getEventSubjectsFailure),
             EventService.getEventCurrentGroupInfo(eventId).then(getEventCurrentGroupInfoSuccess, getEventCurrentGroupInfoFailure),
-            GroupService.getGroupsByEventId(eventId)
+            GroupService.getGroupsByEventId(eventId),
+            EventService.getEventById(eventId)
         ]).then(function(response){
             console.log(response);
             projectorCtrl.groupsInfo = response[3];
+            projectorCtrl.event = response[4];
         }).finally(function(){
             // Close dataLoading after all requests are finished
+            projectorCtrl.event.dataFormatada = new Date(projectorCtrl.event.data).getTime();
+
+            $timeout(function(){
+                document.getElementById("timer-top").start();                
+            });
+
             $rootScope.dataLoading = false;
             animateBoard();
             // focusCurrentElement();
@@ -523,6 +531,8 @@ angular
                         var audio = new Audio('sounds/success.mp3');
                         audio.play();
 
+                        console.log("Tocando audio");
+
                         $timeout(function(){
                             positionGroupOnHit(codGrupo, result.acertos);
                             // focusCurrentElement();
@@ -533,6 +543,11 @@ angular
                         // $('.modal-winner').addClass('modal-show');
 
                         projectorCtrl.winnerShow = true;
+
+                        var audio = new Audio('sounds/tetra.mp3');
+                        audio.play();
+
+                        console.log("Tocando audio");
 
                         EventService.CloseEvent(eventId).then(function(response){
                             cnosole.log('Response closeEvent: ', response);
@@ -549,6 +564,8 @@ angular
 
                     var audio = new Audio('sounds/error.mp3');
                     audio.play();
+
+                    console.log("Tocando audio");
                 }
 
                 $timeout(function(){
