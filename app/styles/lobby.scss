@@ -192,7 +192,28 @@
 					}
 
 					> p:nth-child(2){
+						position: relative;
 						color: nth($group-colors, $i);
+					      &.online{
+							&::after{
+					        	background-color: $lightgreen;
+							}
+					        	
+					      }
+						  &::after{
+							content: '';
+							position: absolute;
+							right: 0;
+							top: 50%;
+							transform: translateY(-50%);
+						  	width: 15px;
+						  	height: 15px;
+						  	-moz-border-radius: 50%;
+						  	-webkit-border-radius: 50%;
+						  	border-radius: 50%;
+						  	background-color: $lightred;
+						  	transition: all .5s ease-in-out;
+						  }
 					}
 
 					> p:last-of-type{
