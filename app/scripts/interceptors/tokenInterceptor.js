@@ -27,7 +27,7 @@ angular
 	            var data = response.data;
 
 	            // Token expirado
-	            if((data == null || data === 'Token expirado' || httpStatus === 419) && !$rootScope.recoveredToken){
+	            if((data == 'Token expirado' || httpStatus === 419 || httpStatus === 408) && !$rootScope.recoveredToken){
 	            	$rootScope.recoveredToken = true;
 	            	// Buscar novo token
 	            	console.log('##TOKEN.INTERCEPTOR.RESPONSEERROR## TOKEN EXPIROU');
@@ -44,7 +44,7 @@ angular
 
             	    }).then(deferred.resolve, deferred.reject);
 
-            	    if(data == null || data === 'Token expirado' || httpStatus === 419){
+            	    if(data === 'Token expirado' || httpStatus === 419 || httpStatus === 408){
             	    	$rootScope.sessionTimeout = true;
 	            	    // Limpar os dados
 	            	    if(SessionService.getUser()){
