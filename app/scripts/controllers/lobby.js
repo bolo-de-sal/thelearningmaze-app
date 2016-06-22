@@ -11,8 +11,8 @@ angular
     .module('thelearningmaze')
     .controller('LobbyController', LobbyController);
 
-    LobbyController.$inject = ['$scope', '$routeParams', '$q', '$interval', 'AuthenticationService', 'SessionService', '$location', '$rootScope', 'EventService', 'AlertService'];
-    function LobbyController($scope, $routeParams, $q, $interval, AuthenticationService, SessionService, $location, $rootScope, EventService, AlertService) {
+    LobbyController.$inject = ['$scope', '$routeParams', '$q', '$interval', 'AuthenticationService', 'SessionService', '$location', '$rootScope', 'EventService', 'AlertService', 'AppConfig'];
+    function LobbyController($scope, $routeParams, $q, $interval, AuthenticationService, SessionService, $location, $rootScope, EventService, AlertService, AppConfig) {
     	var lobbyCtrl = this;
 
         lobbyCtrl.joinedGroups = [];
@@ -23,39 +23,45 @@ angular
 
         $rootScope.dataLoading = true;
 
-        $q.all([
-            EventService.getEventById(eventId),
-            EventService.getEventGroups(eventId)
-        ]).then(function(response){
-            lobbyCtrl.event = response[0];
-            lobbyCtrl.groups = response[1];
-            $interval(function(){
-                EventService.getEventGroups(eventId).then(function(response){
-                    angular.forEach(lobbyCtrl.groups, function(groupItem, key){
-                        angular.forEach(response, function(responseGroupItem, key){
-                            if(groupItem.Grupo.codGrupo == responseGroupItem.Grupo.codGrupo){
-                                groupItem.Grupo.finalizado = responseGroupItem.Grupo.finalizado;
-                            }
-                        });
-                    });
-                });
-            }, 10000);
-        },function(error){
-            $rootScope.dataLoading = false;
-            AlertService.Add('danger', error.data.message);
-        })
-        .finally(function(){
-            if(lobbyCtrl.event.codStatus != 'A'){
-                $location.path('/control-panel/' + eventId);
-            }
-
-            angular.forEach(lobbyCtrl.joinedGroups, function(memberId, key){
-                console.log('Membro', memberId);
-                setOnlineMember(lobbyCtrl.groups, memberId);
-            });
-
-            $rootScope.dataLoading = false;
+        EventService.getEventById(eventId).then(function(response){
+            lobbyCtrl.event = response;
+        }, function(error){
+            AlertService.Add('danger', error.data.message, true);
         });
+
+        $interval(function(){
+            $q.all([
+                EventService.getEventGroups(eventId)
+            ]).then(function(response){
+                lobbyCtrl.groups = response[0];
+            },function(error){
+                $rootScope.dataLoading = false;
+                AlertService.Add('danger', error.data.message);
+            })
+            .finally(function(){
+                if(lobbyCtrl.event.codStatus != 'A'){
+                    $location.path('/control-panel/' + eventId);
+                }
+
+                angular.forEach(lobbyCtrl.joinedGroups, function(memberId, key){
+                    setOnlineMember(lobbyCtrl.groups, memberId);
+                });
+
+                $rootScope.dataLoading = false;
+            });
+        }, AppConfig.app.lobby.time.groups.refresh);
+
+        // $interval(function(){
+        //     EventService.getEventGroups(eventId).then(function(response){
+        //         angular.forEach(lobbyCtrl.groups, function(groupItem, key){
+        //             angular.forEach(response, function(responseGroupItem, key){
+        //                 if(groupItem.Grupo.codGrupo == responseGroupItem.Grupo.codGrupo){
+        //                     groupItem.Grupo.finalizado = responseGroupItem.Grupo.finalizado;
+        //                 }
+        //             });
+        //         });
+        //     });
+        // }, 10000);
 
         lobbyCtrl.initEvent = function(eventId){
         	$rootScope.dataLoading = true;
@@ -80,20 +86,12 @@ angular
                     }
                 });
             });
-
-            if(!$scope.$$phase) {
-                $scope.$apply();
-            }
         }
 
         $rootScope.evento.client.joinEvento = function (memberGroup) {
-            if($.inArray(memberGroup.Participante.codParticipante, lobbyCtrl.joinedGroups)){
+            if($.inArray(memberGroup.Participante.codParticipante, lobbyCtrl.joinedGroups) == -1){
                 lobbyCtrl.joinedGroups.push(memberGroup.Participante.codParticipante);
             }
-
-            setOnlineMember(lobbyCtrl.groups, memberGroup.Participante.codParticipante);
-
-            console.log(lobbyCtrl.joinedGroups);
         }
 
         $.connection.hub.stop();

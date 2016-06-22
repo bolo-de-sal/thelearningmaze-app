@@ -431,6 +431,11 @@ module.exports = function (grunt) {
           cwd: 'bower_components/lightbox2/dist/images',
           src: '**/*',
           dest: '<%= yeoman.dist %>/images'
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.app %>/sounds',
+          src: '**/*',
+          dest: '<%= yeoman.dist %>/sounds'
         }]
       },
       styles: {

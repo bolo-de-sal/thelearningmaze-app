@@ -411,7 +411,7 @@ angular
 			];
 		}, function(error){
 			$rootScope.dataLoading = false;
-			AlertService.Add('danger', error.data.message, true);
+			AlertService.Add('danger', error.data.message || 'Ops! Não foi possível carregar as perguntas', true);
 		}).finally(function(){
 			var found = false;
 			angular.forEach(questionsModalCtrl.questionsItems, function(value, key){
