@@ -11,7 +11,7 @@
 		<div class="col-md-4" ng-repeat="group in lobby.groups">
 			<div class="card group">
 				<p></p>
-				<p title="{{group.Grupo.nmGrupo}}">{{group.Grupo.nmGrupo}}</p>
+				<p title="{{group.Grupo.nmGrupo}}" ng-class="{online: group.Grupo.finalizado}">{{group.Grupo.nmGrupo}}</p>
 				<p>Formação</p>
 				<p>Alunos: {{group.ParticipantesGrupo.length}}</p>
 				<div class="students">

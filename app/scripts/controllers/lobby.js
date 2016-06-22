@@ -11,8 +11,8 @@ angular
     .module('thelearningmaze')
     .controller('LobbyController', LobbyController);
 
-    LobbyController.$inject = ['$scope', '$routeParams', '$q', 'AuthenticationService', 'SessionService', '$location', '$rootScope', 'EventService', 'AlertService'];
-    function LobbyController($scope, $routeParams, $q, AuthenticationService, SessionService, $location, $rootScope, EventService, AlertService) {
+    LobbyController.$inject = ['$scope', '$routeParams', '$q', '$interval', 'AuthenticationService', 'SessionService', '$location', '$rootScope', 'EventService', 'AlertService'];
+    function LobbyController($scope, $routeParams, $q, $interval, AuthenticationService, SessionService, $location, $rootScope, EventService, AlertService) {
     	var lobbyCtrl = this;
 
         lobbyCtrl.joinedGroups = [];
@@ -29,6 +29,17 @@ angular
         ]).then(function(response){
             lobbyCtrl.event = response[0];
             lobbyCtrl.groups = response[1];
+            $interval(function(){
+                EventService.getEventGroups(eventId).then(function(response){
+                    angular.forEach(lobbyCtrl.groups, function(groupItem, key){
+                        angular.forEach(response, function(responseGroupItem, key){
+                            if(groupItem.Grupo.codGrupo == responseGroupItem.Grupo.codGrupo){
+                                groupItem.Grupo.finalizado = responseGroupItem.Grupo.finalizado;
+                            }
+                        });
+                    });
+                });
+            }, 10000);
         },function(error){
             $rootScope.dataLoading = false;
             AlertService.Add('danger', error.data.message);
