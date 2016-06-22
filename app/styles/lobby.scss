@@ -9,7 +9,7 @@
 */
 
 .lobby{
-	
+
 	.top{
 		text-align: center;
 		color: white;
@@ -60,6 +60,11 @@
 			    position: relative;
 			    min-height: 360px;
 			    height: 360px;
+
+			    > p:nth-child(2){
+			    	position: relative;
+			    	padding-right: 15px;
+			    }
 
 				> p:first-child{
 					    height: 60px;
@@ -118,7 +123,7 @@
 							&::after{
 					        	background-color: $lightgreen;
 							}
-				        	
+
 				        }
 
 				        &::after{
@@ -175,11 +180,11 @@
 				    overflow: hidden;
 					white-space: nowrap;
 					text-overflow: ellipsis;
-				}			
+				}
 
 			}
 		}
-		
+
 
 		@for $i from 1 through length($group-colors) {
 			.col-md-4:nth-child(20n+#{$i}){
@@ -192,13 +197,12 @@
 					}
 
 					> p:nth-child(2){
-						position: relative;
 						color: nth($group-colors, $i);
 					      &.online{
 							&::after{
 					        	background-color: $lightgreen;
 							}
-					        	
+
 					      }
 						  &::after{
 							content: '';
