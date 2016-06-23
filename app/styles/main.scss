@@ -151,40 +151,53 @@ button{
     background: white !important;
 }
 
-.navbar-default .navbar-nav > .active > a:hover {
-    color: $lightblue;
-    background: white;
-    opacity: 1;
-}
-
 .navbar-default .navbar-nav > li > a:hover{
-    color: $lightblue;
-    background: white;
-    opacity: .5;
+    color: $white;
 }
 
-.navbar-collapse .navbar-nav:last-of-type{
-    float: right;
+#js-navbar-collapse{
+  &.navbar-collapse.in{
+    overflow: hidden;
+  }
+}
+
+.navbar-collapse .navbar-right{
     cursor: default;
 
-    p{
-        margin: 14px;
-        font-size: 16px;
-        color: white;
+    a{
+      &:hover{
+        color: $white;
+        background: none;
+        opacity: 1;
+      }
     }
 
-    li:nth-child(2) img{
-        border-radius: 50%;
-    }
+    .user-name{
+      position: relative;
+      display: inline-block;
+      padding: 15px 40px;
+      font-size: 16px;
+      color: $white;      
 
-    li:last-of-type{
-        cursor: pointer;
-    }
-
-    img{
+      .user-icon{
+        position: absolute;
+        right: 0;
+        top: 10px;
+        width: 30px;
         height: 30px;
-        margin-left: 20px;
-        margin-top: 10px;
+        border-radius: 50%;
+        background: url('../images/pu.jpg') right center no-repeat;
+        background-size: 30px;
+      }
+    }
+
+    .logout{
+      padding: 10px 40px;
+      cursor: pointer;
+      img{          
+        width: 30px;
+        height: 30px;
+      }
     }
 }
 
