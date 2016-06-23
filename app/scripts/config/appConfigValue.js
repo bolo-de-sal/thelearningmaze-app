@@ -20,7 +20,7 @@ angular.module('thelearningmaze')
 		},
 		// api: {
 		// 	identifier: '/learningmaze/services/api',
-		// 	endpoint: 'http://api-learningmaze.azurewebsites.net/api'
+		// 	endpoint: 'http://senaquiz.sistemasparainter.net'
 		// },
 		// signalr:{
 		// 	endpoint: 'http://senaquiz.sistemasparainter.net/learningmaze/services/signalr'

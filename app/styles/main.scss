@@ -188,6 +188,18 @@ button{
     }
 }
 
+.navbar-default .navbar-toggle{
+  border: 0;
+
+  .icon-bar{
+    background-color: $white;
+  }
+
+  &:hover, &:focus{
+    background: none;
+  }
+}
+
 .content{
     padding: 0px 30px;
     position: relative;
@@ -198,21 +210,9 @@ button{
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 320px) {
-    .lobby .top {
-        height: 330px !important;
-        .play{
-            position: relative !important;
-            right: inherit !important;
-            top: 30px !important;
-        }
-    }
 }
 
 @media screen and (min-width: 768px) {
-  .container {
-    // max-width: 730px;
-  }
-
   .navbar-default .navbar-nav > li > a{
       padding: 15px 28px;
   }
@@ -229,18 +229,6 @@ button{
     margin-bottom: 30px;
   }
   /* Remove the bottom border on the jumbotron for visual effect */
-  .jumbotron {
-    border-bottom: 0;
-  }
-
-  .lobby .top {
-        height: 200px !important;
-        .play{
-            position: absolute !important;
-            right: 100px !important;
-            top: 30px !important;
-        }
-    }
 
   .col-md-4 {
     float: left;
@@ -249,21 +237,12 @@ button{
   .lobby .groups .col-md-4 .group{
     width: 225px !important;
   }
-  .lobby .groups .col-md-4 .group > p:nth-child(2){
-    /*font-size: 26px !important;*/
-  }
 }
 
 @media (min-width: 992px){
   .col-md-4 {
     width: 33.33333333%;
   }
-  /*.lobby .groups .col-md-4 .group{
-    width: 260px !important;
-  }
-  .lobby .groups .col-md-4 .group > p:nth-child(2){
-    font-size: 30px !important;
-  }*/
 
   .bds, .timer-top{
     display: block !important;
@@ -271,13 +250,6 @@ button{
 }
 
 @media (min-width: 1200px){
-  .lobby .groups .col-md-4 .group{
-      width: 225px !important;
-  }
-  .lobby .groups .col-md-4 .group > p:nth-child(2){
-    font-size: 24px !important;
-  }
-
   .groups-to-play{
     display: block !important;
   }

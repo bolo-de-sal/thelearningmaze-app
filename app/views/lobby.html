@@ -1,9 +1,9 @@
 <div class="lobby">
-	<div class="top">
+	<div class="lobby-header">
 		<h1>{{lobby.event.descricao}}</h1>
 		<p>Formação de Grupos</p>
-		<a class="play" ng-click="lobby.initEvent(selectedEvent)">
-			<img src="images/play.png" alt="Professor Utonio">
+		<a href="#" class="play" ng-click="lobby.initEvent(selectedEvent);$event.preventDefault()">
+			<img src="images/play.png" alt="Jogar">
 			<p>JOGAR</p>
 		</a>
 	</div>
