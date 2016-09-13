@@ -1,0 +1,24 @@
+﻿<div class="wrapperLogin">
+    <!-- <p>L</p> -->
+
+    <img src="../images/logoLogin.png" alt="Logo Senac">
+    <form name="form" ng-submit="login.login()" role="form">
+        <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
+            <!-- <label for="username">USUÁRIO</label> -->
+            <input type="text" name="username" id="username" placeholder="USUÁRIO" class="" ng-model="login.username" required autofocus />
+            <!-- <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span> -->
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.password.$dirty && form.password.$error.required }">
+            <!-- <label for="password">SENHA</label> -->
+            <input type="password" name="password" id="password" placeholder="SENHA" class="" ng-model="login.password" required />
+            <!-- <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span> -->
+        </div>
+        <p>Esqueceu a senha?</p>
+        <div class="form-actions">
+            <button type="submit" ng-disabled="form.$invalid || login.dataLoading" class="btn btn-primary">ENTRAR</button>
+            <!-- <a href="#/register" class="btn btn-link">Register</a> -->
+
+            <span ng-show="form.username.$dirty && form.username.$error.required || form.password.$dirty && form.password.$error.required" class="help-block">Todos os campos são obrigatórios</span>
+        </div>
+    </form>
+</div>

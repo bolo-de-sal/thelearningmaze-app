@@ -1,0 +1,78 @@
+<div class="card open-events">
+	<h3 class="title">Evento Atual</h3>
+
+	<div ng-show="home.disableButtons == true">
+		<div class="title-columns">
+			<p>CÓDIGO</p>
+			<p>DATA</p>
+			<p>INICIO</p>
+			<p>STATUS</p>
+			<!-- <p>QTD GRUPOS</p> -->
+			<p>DETALHES</p>
+		</div>
+
+		<div class="events">
+			<div class="event">
+				<p>{{home.activeEvent.codEvento}}</p>
+				<p>{{home.activeEvent.data}}</p>
+				<p>{{home.activeEvent.inicio}}</p>
+				<p>{{home.activeEvent.codStatus}}</p>
+				<div class="btns">
+					<!-- <p class="list-button green" ng-show="activeEvent.codStatus == 'ABERTO'" ng-class="{'disabled': home.disableButtons == true , 'enabled': home.disableButtons == false}">Iniciar</p> -->
+					<p class="list-button green enabled" ng-show="home.activeEvent.codStatus == 'ABERTO'">Iniciar</p>
+					<p class="list-button green enabled" ng-show="home.activeEvent.codStatus == 'EXECUTANDO'">Ver</p>
+				</div>
+			</div>
+		</div>		
+	</div>
+
+	<div class="none-event" ng-show="home.disableButtons == false">
+		<p>Nenhum evento aberto ou em andamento</p>
+	</div>
+</div>
+
+<div class="card all-events">
+	<h3 class="title">Eventos</h3>
+	<div class="title-columns">
+		<p>CÓDIGO</p>
+		<p>DATA</p>
+		<p>INICIO</p>
+		<p>STATUS</p>
+		<!-- <p>QTD GRUPOS</p> -->
+		<p>DETALHES</p>
+	</div>
+
+	<div class="events">
+		<div class="event" ng-repeat="event in home.events.slice(((home.currentPage-1)*home.itemsPerPage), ((home.currentPage)*home.itemsPerPage))">
+			<p>{{event.codEvento}}</p>
+			<p>{{event.data}}</p>
+			<p>{{event.inicio}}</p>
+			<p>{{event.codStatus}}</p>
+			<!-- <p>4</p> -->
+			<div class="btns">
+				<p class="list-button green" ng-show="event.codStatus == 'ABERTO'" ng-class="{'disabled': home.disableButtons == true , 'enabled': home.disableButtons == false}">Iniciar</p>
+				<p class="list-button green" ng-show="event.codStatus == 'EXECUTANDO'" ng-class="{'disabled': home.disableButtons == true , 'enabled': home.disableButtons == false}">Ver</p>
+				<p class="list-button green" ng-show="event.codStatus == 'CRIADO'" ng-class="{'disabled': home.disableButtons == true , 'enabled': home.disableButtons == false}">Abrir</p>
+				<p class="list-button gray enabled" ng-show="event.codStatus == 'FECHADO'">Ver</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="pag">
+		<uib-pagination total-items="home.totalItems"
+					ng-model="home.currentPage"
+					ng-change="home.pageChanged()"
+					max-size="home.maxSize"
+					boundary-links="true"
+					boundary-link-numbers="true"
+					class="pagination-sm"
+					items-per-page="home.itemsPerPage"
+					previous-text="&lsaquo;"
+					next-text="&rsaquo;"
+					first-text="&laquo;"
+					last-text="&raquo;"
+					direction-links="true">
+		</uib-pagination>		
+	</div>
+
+</div>

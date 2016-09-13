@@ -1,0 +1,132 @@
+/*
+* IMPORT
+*/
+
+@import "util\/variables.scss";
+
+/*
+* END IMPORT
+*/
+
+.open-events{
+    .title{
+        margin: 0 0 16px;
+    }
+
+    .title-columns{        
+        background: $orange;
+
+        p{
+            width: 22.5%;
+        }
+    }
+
+    .none-event{
+        /*padding-top: 12px;*/
+
+        >p{
+            text-align: center;
+            font-size: 16px;
+            margin: 0px !important;
+        }
+    }
+}
+
+.all-events{
+    position: relative;
+
+    .title{
+        margin: 0 0 16px;
+    }
+
+    .events{
+        height: 440px;
+    }
+
+    .title-columns{        
+        background: $lightblue;
+
+        p{
+            width: 22.5%;
+        }
+    }
+}
+
+.events{
+    width: 100%;
+
+    .event:nth-child(odd){
+        background: white;
+    }
+
+    .event{
+        background: #EDEDED;
+        height: 44px;
+        padding-top: 12px;
+
+        p:first-of-type{
+            width: 10%;
+        }
+
+        div{
+            display: flex;
+
+            p{
+                width: 90px !important;
+                height: 26px;
+                margin: 0 auto;
+                margin-top: -3px;
+                border-radius: 4px;
+                padding-top: 2px;
+                color: white;
+                cursor: pointer;
+            }
+
+            .green{
+                background: $green;
+            }
+
+            .gray{
+                background: $lightgray;
+            }
+
+            .disabled{
+                opacity: 0.5;
+                cursor: not-allowed;
+                color: rgba(255,255,255,0.5);
+            }
+
+            .enabled{
+                opacity: 1;
+                cursor: pointer;
+            }
+
+            .list-button.enabled:hover{
+                opacity: .8;
+            }
+
+            .list-button.enabled:active{
+                color: black;
+            }
+        }
+
+        p,
+        div{
+            float: left;
+            width: 22.5%;
+            text-align: center;
+        }
+
+    }
+}
+
+.pag{
+    width: 100%;
+    height: 30px;
+    margin: 15px 0 5px;
+    text-align: center;
+
+    .pagination{
+        margin: 0;
+    }
+}
