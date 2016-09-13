@@ -1,3 +1,2 @@
 # thelearningmaze-app
-
-Bolo de Sal
+The application of The Learning Maze project.
